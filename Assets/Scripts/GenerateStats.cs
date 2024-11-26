@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using System;
 using Random = UnityEngine.Random;
+using System.Collections.Generic;
 
 public class GenerateStats : MonoBehaviour
 {
@@ -73,7 +74,16 @@ public class GenerateStats : MonoBehaviour
         Mage_Rogue_Archer
 	}
 
-    public TMP_Dropdown rarityDropdown;
+	private static readonly Dictionary<Class, float[]> classWeights = new Dictionary<Class, float[]>
+	{
+        // [Endurance, Strength, Dexterity, Agility, Intelligence, Spirit]
+		{ Class.Warrior, new float[] { 0.35f, 0.35f, 0.1f, 0.05f, 0f, 0f } }, 
+		{ Class.Archer, new float[] { 0.2f, 0.2f, 0.4f, 0.2f, 0f, 0f } },
+        { Class.Rogue, new float[] { 0.2f, 0.2f, 0.2f, 0.4f, 0f, 0f } },
+		{ Class.Mage, new float[] { 0.15f, 0.0f, 0.0f, 0.15f, 0.35f, 0.35f } }
+	};
+
+	public TMP_Dropdown rarityDropdown;
     public TMP_Dropdown classDropdown;
 
     private Rarity currentRarity;
@@ -98,14 +108,15 @@ public class GenerateStats : MonoBehaviour
         statPoints = CalculateStatPointsBasedOnLevel(level);
         Debug.Log("Total stat points: " +  statPoints);
 
-        // Distribute stats based on class and level
-        // 1 endurance is required
-        // Warrior gives mostly strength/endurance
-        // Archer gives mostly dexterity
-        // Rogue gives mostly Agility
-        // Mage gives mostly intelligence/spirit
+		// Dynamically merge classes' weights before distribution
+		// Distribute stats based on class and level
+		// 1 endurance is required
+		// Warrior gives mostly strength/endurance
+		// Archer gives mostly dexterity
+		// Rogue gives mostly Agility
+		// Mage gives mostly intelligence/spirit
 
-        statsTextLayoutGroup.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = enduranceStat.ToString();
+		statsTextLayoutGroup.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = enduranceStat.ToString();
 		statsTextLayoutGroup.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = strengthStat.ToString();
 		statsTextLayoutGroup.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = dexterityStat.ToString();
 		statsTextLayoutGroup.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = agilityStat.ToString();
@@ -191,7 +202,7 @@ public class GenerateStats : MonoBehaviour
         return sum;
     }
 
-	void Start()
+	public void Start()
 	{
 		rarityDropdown.options.Clear();
 		foreach (string rarityName in Enum.GetNames(typeof(Rarity)))
