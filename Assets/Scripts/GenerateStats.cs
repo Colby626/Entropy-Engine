@@ -76,11 +76,47 @@ public class GenerateStats : MonoBehaviour
 
 	private static readonly Dictionary<Class, float[]> classWeights = new Dictionary<Class, float[]>
 	{
-        // [Endurance, Strength, Dexterity, Agility, Intelligence, Spirit]
-		{ Class.Warrior, new float[] { 0.35f, 0.35f, 0.1f, 0.05f, 0f, 0f } }, 
+		{ Class.Warrior, new float[] { 0.35f, 0.35f, 0.2f, 0.1f, 0f, 0f } },
 		{ Class.Archer, new float[] { 0.2f, 0.2f, 0.4f, 0.2f, 0f, 0f } },
-        { Class.Rogue, new float[] { 0.2f, 0.2f, 0.2f, 0.4f, 0f, 0f } },
-		{ Class.Mage, new float[] { 0.15f, 0.0f, 0.0f, 0.15f, 0.35f, 0.35f } }
+		{ Class.Rogue, new float[] { 0.2f, 0.2f, 0.2f, 0.4f, 0f, 0f } },
+		{ Class.Mage, new float[] { 0.15f, 0.0f, 0.0f, 0.15f, 0.35f, 0.35f } },
+		{ Class.All_Rounder, new float[] { 0.225f, 0.1875f, 0.175f, 0.2f, 0.0875f, 0.0875f } },
+		{ Class.Warrior_Archer, new float[] { 0.3005f, 0.3005f, 0.2995f, 0.0995f, 0.0f, 0.0f } },
+		{ Class.Warrior_Rogue, new float[] { 0.2983f, 0.2983f, 0.1587f, 0.2447f, 0.0f, 0.0f } },
+		{ Class.Warrior_Mage, new float[] { 0.2825f, 0.0f, 0.0f, 0.2675f, 0.225f, 0.225f } },
+		{ Class.Archer_Warrior, new float[] { 0.2005f, 0.2005f, 0.499f, 0.1f, 0.0f, 0.0f } },
+		{ Class.Archer_Rogue, new float[] { 0.1667f, 0.1667f, 0.2667f, 0.3f, 0.0f, 0.0f } },
+		{ Class.Archer_Mage, new float[] { 0.185f, 0.0f, 0.0f, 0.135f, 0.45f, 0.45f } },
+		{ Class.Rogue_Warrior, new float[] { 0.2583f, 0.2583f, 0.1983f, 0.2851f, 0.0f, 0.0f } },
+		{ Class.Rogue_Archer, new float[] { 0.1677f, 0.1667f, 0.3079f, 0.4079f, 0.0f, 0.0f } },
+		{ Class.Rogue_Mage, new float[] { 0.1f, 0.0f, 0.0f, 0.1f, 0.4f, 0.4f } },
+		{ Class.Mage_Warrior, new float[] { 0.27f, 0.0f, 0.0f, 0.27f, 0.23f, 0.23f } },
+		{ Class.Mage_Archer, new float[] { 0.125f, 0.0f, 0.0f, 0.2f, 0.4f, 0.4f } },
+		{ Class.Mage_Rogue, new float[] { 0.1f, 0.0f, 0.0f, 0.1f, 0.4f, 0.4f } },
+		{ Class.Warrior_Archer_Rogue, new float[] { 0.2675f, 0.2675f, 0.2333f, 0.2333f, 0.0f, 0.0f } },
+		{ Class.Warrior_Archer_Mage, new float[] { 0.3f, 0.0f, 0.0f, 0.225f, 0.175f, 0.175f } },
+		{ Class.Warrior_Rogue_Archer, new float[] { 0.3417f, 0.2583f, 0.1583f, 0.2417f, 0.0f, 0.0f } },
+		{ Class.Warrior_Rogue_Mage, new float[] { 0.3f, 0.0f, 0.0f, 0.225f, 0.175f, 0.175f } },
+		{ Class.Warrior_Mage_Archer, new float[] { 0.3f, 0.0f, 0.0f, 0.225f, 0.175f, 0.175f } },
+		{ Class.Warrior_Mage_Rogue, new float[] { 0.3f, 0.0f, 0.0f, 0.225f, 0.175f, 0.175f } },
+		{ Class.Archer_Warrior_Rogue, new float[] { 0.3005f, 0.2005f, 0.299f, 0.2f, 0.0f, 0.0f } },
+		{ Class.Archer_Warrior_Mage, new float[] { 0.175f, 0.0f, 0.0f, 0.175f, 0.25f, 0.25f } },
+		{ Class.Archer_Rogue_Warrior, new float[] { 0.3667f, 0.1667f, 0.3167f, 0.3667f, 0.0f, 0.0f } },
+		{ Class.Archer_Rogue_Mage, new float[] { 0.325f, 0.0f, 0.0f, 0.23f, 0.4f, 0.4f } },
+		{ Class.Archer_Mage_Warrior, new float[] { 0.175f, 0.0f, 0.0f, 0.175f, 0.25f, 0.25f } },
+		{ Class.Archer_Mage_Rogue, new float[] { 0.125f, 0.0f, 0.0f, 0.125f, 0.4f, 0.4f } },
+		{ Class.Rogue_Warrior_Archer, new float[] { 0.2583f, 0.2583f, 0.1583f, 0.2417f, 0.0f, 0.0f } },
+		{ Class.Rogue_Warrior_Mage, new float[] { 0.225f, 0.0f, 0.0f, 0.225f, 0.175f, 0.175f } },
+		{ Class.Rogue_Archer_Warrior, new float[] { 0.1667f, 0.1667f, 0.2667f, 0.3667f, 0.0f, 0.0f } },
+		{ Class.Rogue_Archer_Mage, new float[] { 0.125f, 0.0f, 0.0f, 0.125f, 0.4f, 0.4f } },
+		{ Class.Rogue_Mage_Warrior, new float[] { 0.1f, 0.0f, 0.0f, 0.1f, 0.4f, 0.4f } },
+		{ Class.Rogue_Mage_Archer, new float[] { 0.1f, 0.0f, 0.0f, 0.1f, 0.4f, 0.4f } },
+		{ Class.Mage_Warrior_Archer, new float[] { 0.175f, 0.0f, 0.0f, 0.175f, 0.25f, 0.25f } },
+		{ Class.Mage_Warrior_Rogue, new float[] { 0.175f, 0.0f, 0.0f, 0.175f, 0.25f, 0.25f } },
+		{ Class.Mage_Archer_Warrior, new float[] { 0.175f, 0.0f, 0.0f, 0.175f, 0.25f, 0.25f } },
+		{ Class.Mage_Archer_Rogue, new float[] { 0.125f, 0.0f, 0.0f, 0.125f, 0.4f, 0.4f } },
+		{ Class.Mage_Rogue_Warrior, new float[] { 0.1f, 0.0f, 0.0f, 0.1f, 0.4f, 0.4f } },
+		{ Class.Mage_Rogue_Archer, new float[] { 0.1f, 0.0f, 0.0f, 0.1f, 0.4f, 0.4f } }
 	};
 
 	public TMP_Dropdown rarityDropdown;
@@ -88,9 +124,6 @@ public class GenerateStats : MonoBehaviour
 
     private Rarity currentRarity;
     private Class currentClass;
-
-    private int level = 0;
-    private int statPoints = 0;
 
     private int enduranceStat = 1;
     private int strengthStat = 0;
@@ -101,21 +134,23 @@ public class GenerateStats : MonoBehaviour
 
     public LayoutGroup statsTextLayoutGroup;
 
+	// Called by the Generate button
     public void GenerateStatPoints()
     {
-        level = CalculateLevelBasedOnRarity(currentRarity);
+		int level = CalculateLevelBasedOnRarity(currentRarity);
         Debug.Log("Level calculated: " + level);
-        statPoints = CalculateStatPointsBasedOnLevel(level);
+        int statPoints = CalculateStatPointsBasedOnLevel(level);
         Debug.Log("Total stat points: " +  statPoints);
 
-		// Dynamically merge classes' weights before distribution
-		// Distribute stats based on class and level
-		// 1 endurance is required
-		// Warrior gives mostly strength/endurance
-		// Archer gives mostly dexterity
-		// Rogue gives mostly Agility
-		// Mage gives mostly intelligence/spirit
+		enduranceStat = 1;
+		strengthStat = 0;
+		dexterityStat = 0;
+		agilityStat = 0;
+		intelligenceStat = 0;
+		spiritStat = 0;
+		DistributeStatPoints(statPoints - 1); // Minus 1 for the forced 1 endurance
 
+		// Set the text in the table to match the variables in this script
 		statsTextLayoutGroup.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = enduranceStat.ToString();
 		statsTextLayoutGroup.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = strengthStat.ToString();
 		statsTextLayoutGroup.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = dexterityStat.ToString();
@@ -124,49 +159,61 @@ public class GenerateStats : MonoBehaviour
 		statsTextLayoutGroup.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = spiritStat.ToString();
 	}
 
-    private int CalculateLevelBasedOnRarity(Rarity rarity)
-    {
-		switch (rarity)
+	private void DistributeStatPoints(int statPoints)
+	{
+		for (int i = 0; i < statPoints; i++) // For every stat point to distribute
 		{
-			case Rarity.Low_Common:
-				return Random.Range(1, 31);
-			case Rarity.Mid_Common:
-				return Random.Range(31, 61);
-			case Rarity.High_Common:
-				return Random.Range(61, 91);
-			case Rarity.Low_Uncommon:
-				return Random.Range(91, 141);
-			case Rarity.Mid_Uncommon:
-				return Random.Range(141, 191);
-			case Rarity.High_Uncommon:
-				return Random.Range(191, 241);
-			case Rarity.Low_Rare:
-				return Random.Range(241, 311);
-			case Rarity.Mid_Rare:
-				return Random.Range(311, 381);
-			case Rarity.High_Rare:
-				return Random.Range(381, 451);
-			case Rarity.Low_Epic:
-				return Random.Range(451, 541);
-			case Rarity.Mid_Epic:
-				return Random.Range(541, 631);
-			case Rarity.High_Epic:
-				return Random.Range(631, 721);
-			case Rarity.Low_Legendary:
-				return Random.Range(721, 831);
-			case Rarity.Mid_Legendary:
-				return Random.Range(831, 941);
-			case Rarity.High_Legendary:
-				return Random.Range(941, 1051);
-			case Rarity.Low_Cataclysmic:
-				return Random.Range(1051, 1181);
-			case Rarity.Mid_Cataclysmic:
-				return Random.Range(1181, 1311);
-			case Rarity.High_Cataclysmic:
-				return Random.Range(1311, 1441);
-            default:
-                return 0;
+			float random = Random.Range(0f, 1f); // Calculate a random number between 0 and 1
+			float cumulativeWeight = 0f;
+
+			// Go through each stat and check which range the random number falls into
+			for (int statWeight = 0; statWeight < 6; statWeight++)
+			{
+				// Increase the cumulative weight by the amount specified in the current classes' weight map
+				cumulativeWeight += classWeights[currentClass][statWeight]; 
+
+				if (random < cumulativeWeight)
+				{
+					// Increment the corresponding stat based on the random number falling within this weight range
+					switch (statWeight)
+					{
+						case 0: enduranceStat++; break;
+						case 1: strengthStat++; break;
+						case 2: dexterityStat++; break;
+						case 3: agilityStat++; break;
+						case 4: intelligenceStat++; break;
+						case 5: spiritStat++; break;
+					}
+					break;
+				}
+			}
 		}
+	}
+
+	private int CalculateLevelBasedOnRarity(Rarity rarity)
+    {
+		return rarity switch
+		{
+			Rarity.Low_Common => Random.Range(1, 31),
+			Rarity.Mid_Common => Random.Range(31, 61),
+			Rarity.High_Common => Random.Range(61, 91),
+			Rarity.Low_Uncommon => Random.Range(91, 141),
+			Rarity.Mid_Uncommon => Random.Range(141, 191),
+			Rarity.High_Uncommon => Random.Range(191, 241),
+			Rarity.Low_Rare => Random.Range(241, 311),
+			Rarity.Mid_Rare => Random.Range(311, 381),
+			Rarity.High_Rare => Random.Range(381, 451),
+			Rarity.Low_Epic => Random.Range(451, 541),
+			Rarity.Mid_Epic => Random.Range(541, 631),
+			Rarity.High_Epic => Random.Range(631, 721),
+			Rarity.Low_Legendary => Random.Range(721, 831),
+			Rarity.Mid_Legendary => Random.Range(831, 941),
+			Rarity.High_Legendary => Random.Range(941, 1051),
+			Rarity.Low_Cataclysmic => Random.Range(1051, 1181),
+			Rarity.Mid_Cataclysmic => Random.Range(1181, 1311),
+			Rarity.High_Cataclysmic => Random.Range(1311, 1441),
+			_ => 0,
+		};
 	}
 
     private int CalculateStatPointsBasedOnLevel(int level)
@@ -174,11 +221,11 @@ public class GenerateStats : MonoBehaviour
         int sum = 0;
         for (int i = 0; i < level; i++)
         {
-            if (i <= 90)
+            if (i <= 90) // For commons, they get 3 stat points per level
             {
                 sum += 3;
             }
-            else if (i <= 240)
+            else if (i <= 240) // Uncommons get 5 stat points per level
             {
                 sum += 5;
             }
@@ -204,6 +251,7 @@ public class GenerateStats : MonoBehaviour
 
 	public void Start()
 	{
+		// Sets the dropdown menus' to have the correct enum to choose from
 		rarityDropdown.options.Clear();
 		foreach (string rarityName in Enum.GetNames(typeof(Rarity)))
 		{
