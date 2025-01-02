@@ -30,4 +30,4 @@ Green cells are inputs, blue cells are outputs
 1 part warrior, 1 part archer is half warrior, half archer  
 3 part mage, 3 part archer, 1 part warrior is mostly a magic archer, with some warrior class mixed in 
 
-![image](https://github.com/user-attachments/assets/042462a3-cb0e-441a-b589-d59512c9eaa1)
+![image](https://github.com/user-attachments/assets/ed0b3e28-7162-4188-b70f-aaa499fc10a2)
