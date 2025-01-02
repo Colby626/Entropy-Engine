@@ -18,6 +18,11 @@ The base stats are
 - Intelligence
 - Spirit
 
+## Running the Project
+Download the entire folder for your platform (either MacBuild or WindowsBuild)
+
+Run the executable found within
+
 ## Adding a New Class
 1. Add your new class name under Assets/Scripts/GenerateStats.cs in the enum Class  
 2. Add your new class in the Dictionary classWeights in the same script with its weights  
