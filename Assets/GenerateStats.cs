@@ -232,27 +232,27 @@ public class GenerateStats : MonoBehaviour
         int sum = 0;
         for (int i = 0; i < level; i++)
         {
-            if (i <= 90) // For commons, they get 3 stat points per level
+            if (i <= 30) // For commons, they get 3 stat points per level
             {
                 sum += 3;
             }
-            else if (i <= 240) // Uncommons get 5 stat points per level
+            else if (i <= 60) // Uncommons get 5 stat points per level
             {
                 sum += 5;
             }
-            else if (i <= 450)
+            else if (i <= 90)
 			{
 				sum += 7;
 			}
-			else if (i <= 720)
+			else if (i <= 120)
 			{
 				sum += 9;
 			}
-			else if (i <= 1050)
+			else if (i <= 150)
 			{
 				sum += 11;
 			}
-			else if (i <= 1440)
+			else if (i <= 180)
 			{
 				sum += 13;
 			}
