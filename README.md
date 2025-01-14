@@ -19,7 +19,7 @@ The base stats are
 - Spirit
 
 ## Running the Project
-Download the entire folder for your platform (either MacBuild or WindowsBuild)
+Download the entire folder WindowsBuild
 
 Run the executable found within
 

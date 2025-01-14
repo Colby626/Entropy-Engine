@@ -1,0 +1,7 @@
+Windowed Mode
+Save each generated character to a user-visible list
+The character would have a name and on hover would display their stats
+The character would have a small 'x' on them to remove them from the list
+Clicking Roll Initiative would roll initiative for each character in the list and order them greatest to least top to bottom
+The character's would have current health and mana values edittable by the user
+Match the style of the exit button and Entropy Engine banner to the other UI 

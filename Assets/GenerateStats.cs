@@ -267,7 +267,7 @@ public class GenerateStats : MonoBehaviour
 		int damageResist = enduranceStat / 10;
 		int magicResist = spiritStat / 10;
 		int plusToHit = dexterityStat / 5;
-		int acInitiative = (agilityStat / 5) + 8;
+		int acInitiative = (agilityStat / 5);
 		int movementSpeed = (agilityStat / 10) * 5 + 25;
 
 		derivedStatCellsLayoutGroup.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = health.ToString();
