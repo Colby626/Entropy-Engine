@@ -143,6 +143,8 @@ public class GenerateStats : MonoBehaviour
     public LayoutGroup statCellsLayoutGroup;
 	public LayoutGroup derivedStatCellsLayoutGroup;
 
+	public GameObject characterListObject;
+
 	// Called by the Generate button
     public void GenerateStatPoints()
     {
@@ -158,6 +160,27 @@ public class GenerateStats : MonoBehaviour
 		intelligenceStat = 0;
 		spiritStat = 0;
 		DistributeStatPoints(statPoints - 1); // Minus 1 for the forced 1 endurance
+
+		characterListObject.GetComponent<CharacterList>().characters.Add(new CharacterList.Character()
+		{
+			Endurance = enduranceStat,
+			Strength = strengthStat,
+			Dexterity = dexterityStat,
+			Agility = agilityStat,
+			Intelligence = intelligenceStat,
+			Spirit = spiritStat,
+
+			MaxHealth = enduranceStat * 3,
+			CurrentHealth = enduranceStat * 3,
+			MaxMana = spiritStat * 2,
+			CurrentMana = spiritStat * 2,
+			PhysicalResistance = enduranceStat / 10,
+			MagicResistance = spiritStat / 10,
+			PlusToHit = dexterityStat / 5,
+			AgilityClass = (agilityStat / 5) + 8,
+			InitiativeBonus = agilityStat / 5,
+			MovementSpeed = (agilityStat / 10) * 5 + 25
+		});
 
 		// Set the text in the table to match the variables in this script
 		statCellsLayoutGroup.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = enduranceStat.ToString();
