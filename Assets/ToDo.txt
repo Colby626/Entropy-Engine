@@ -5,3 +5,4 @@ Clicking Roll Initiative would roll initiative for each character in the list an
 The character's would have current health and mana values edittable by the user
 Match the style of the exit button and Entropy Engine banner to the other UI 
 Scaling in windowed mode never takes away functionality from the edges going off-screen
+Add "Physical Damage" and "Magical Damage" buttons to the characters where the user can input a number and it will subtract that character's resistance from it and then subtract that number from their current health

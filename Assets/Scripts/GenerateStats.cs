@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System;
 using Random = UnityEngine.Random;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class GenerateStats : MonoBehaviour
 {
@@ -143,7 +144,7 @@ public class GenerateStats : MonoBehaviour
     public LayoutGroup statCellsLayoutGroup;
 	public LayoutGroup derivedStatCellsLayoutGroup;
 
-	public GameObject characterListObject;
+	public CharacterList characterList;
 
 	// Called by the Generate button
     public void GenerateStatPoints()
@@ -161,7 +162,23 @@ public class GenerateStats : MonoBehaviour
 		spiritStat = 0;
 		DistributeStatPoints(statPoints - 1); // Minus 1 for the forced 1 endurance
 
-		characterListObject.GetComponent<CharacterList>().characters.Add(new CharacterList.Character()
+		// Functionality of OriginalScene
+		if (characterList == null)
+		{
+			// Set the text in the table to match the variables in this script
+			statCellsLayoutGroup.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = enduranceStat.ToString();
+			statCellsLayoutGroup.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = strengthStat.ToString();
+			statCellsLayoutGroup.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = dexterityStat.ToString();
+			statCellsLayoutGroup.transform.GetChild(3).GetChild(0).GetComponent<TextMeshProUGUI>().text = agilityStat.ToString();
+			statCellsLayoutGroup.transform.GetChild(4).GetChild(0).GetComponent<TextMeshProUGUI>().text = intelligenceStat.ToString();
+			statCellsLayoutGroup.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text = spiritStat.ToString();
+
+			CalculateDerivedValues();
+
+			return;
+		}
+
+		characterList.characters.Add(new CharacterList.Character()
 		{
 			Endurance = enduranceStat,
 			Strength = strengthStat,
@@ -181,16 +198,6 @@ public class GenerateStats : MonoBehaviour
 			InitiativeBonus = agilityStat / 5,
 			MovementSpeed = (agilityStat / 10) * 5 + 25
 		});
-
-		// Set the text in the table to match the variables in this script
-		statCellsLayoutGroup.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = enduranceStat.ToString();
-		statCellsLayoutGroup.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = strengthStat.ToString();
-		statCellsLayoutGroup.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = dexterityStat.ToString();
-		statCellsLayoutGroup.transform.GetChild(3).GetChild(0).GetComponent<TextMeshProUGUI>().text = agilityStat.ToString();
-		statCellsLayoutGroup.transform.GetChild(4).GetChild(0).GetComponent<TextMeshProUGUI>().text = intelligenceStat.ToString();
-		statCellsLayoutGroup.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text = spiritStat.ToString();
-
-		CalculateDerivedValues();
 	}
 
 	private void DistributeStatPoints(int statPoints)

@@ -24,5 +24,5 @@ public class CharacterList : MonoBehaviour
 		public int MovementSpeed;
 	}
 
-	List<Character> characters = new List<Character>();
+	public List<Character> characters = new List<Character>();
 }
