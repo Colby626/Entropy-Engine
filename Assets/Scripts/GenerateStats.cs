@@ -128,6 +128,84 @@ public class GenerateStats : MonoBehaviour
 		{ Class.Mage_Rogue_Archer, new float[] { 0.175f, 0.1f, 0.1333333333f, 0.2416666667f, 0.175f, 0.175f } }
 	};
 
+	string[] adventurerAdjectives = new string[]
+	{
+		"Brash",
+		"Greedy",
+		"Rash",
+		"Fierce",
+		"Bold",
+		"Vain",
+		"Cruel",
+		"Proud",
+		"Stoic",
+		"Noble",
+		"Cunning",
+		"Feeble",
+		"Coward",
+		"Shifty",
+		"Brave",
+		"Savage",
+		"Lucky",
+		"Fickle",
+		"Sturdy",
+		"Jovial",
+		"Sullen",
+		"Rogue",
+		"Gloomy",
+		"Timid",
+		"Reckless",
+		"Vile",
+		"Heroic",
+		"Arrogant",
+		"Skilled",
+		"Daring",
+		"Fearful",
+		"Loyal",
+		"Hearty",
+		"Shrewd",
+		"Meek",
+		"Grim",
+		"Kind",
+		"Calm",
+		"Quiet",
+		"Tense",
+		"Harsh",
+		"Sneaky",
+		"Rough",
+		"Witty",
+		"Angry",
+		"Eager",
+		"Crafty",
+		"Mighty",
+		"Sly",
+		"Weary",
+		"Dire",
+		"Keen",
+		"Wary",
+		"Humble",
+		"Wise",
+		"Naive",
+		"Stern",
+		"Zany",
+		"Swift",
+		"Gentle",
+		"Tough",
+		"Hasty",
+		"Grumpy",
+		"Cheery",
+		"Savvy",
+		"Austere",
+		"Valiant",
+		"Spunky",
+		"Gracious",
+		"Frantic",
+		"Devious",
+		"Brutal",
+		"Wicked",
+		"Gallant"
+	};
+
 	public TMP_Dropdown rarityDropdown;
     public TMP_Dropdown classDropdown;
 
@@ -178,8 +256,13 @@ public class GenerateStats : MonoBehaviour
 			return;
 		}
 
-		characterList.characters.Add(new CharacterList.Character()
+		int randomIndex = Random.Range(0, adventurerAdjectives.Length);
+		string randomAdjective = adventurerAdjectives[randomIndex];
+
+		characterList.GenerateCharacter(new CharacterList.Character()
 		{
+			Name = randomAdjective + " " + currentClass.ToString(),
+
 			Endurance = enduranceStat,
 			Strength = strengthStat,
 			Dexterity = dexterityStat,
