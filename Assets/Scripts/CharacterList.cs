@@ -26,7 +26,7 @@ public class CharacterList : MonoBehaviour
 		public int MovementSpeed;
 	}
 
-	public List<Character> characters = new List<Character>();
+	private List<Character> characters = new();
 	public GameObject characterTemplatePrefab;
 	public Transform contentObjectInScrollview;
 	public Transform listOfStats;
