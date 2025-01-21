@@ -36,6 +36,12 @@ public class CharacterList : MonoBehaviour
 		characters.Add(character);
 		GameObject template = Instantiate(characterTemplatePrefab);
 		template.transform.SetParent(contentObjectInScrollview);
+
+		// Reset local position and local scale to ensure proper scaling and positioning
+		//RectTransform rectTransform = template.GetComponent<RectTransform>();
+		//rectTransform.localPosition = Vector3.zero;  // Reset the position relative to the parent
+		//rectTransform.localScale = Vector3.one;  // Ensure no scaling issues
+
 		CharacterTemplate characterTemplate = template.GetComponent<CharacterTemplate>();
 		characterTemplate.characterList = this;
 		characterTemplate.characterData = character;

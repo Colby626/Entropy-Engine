@@ -1,5 +1,5 @@
 Scaling in windowed mode allows strangely sized character templates to be created, BUG
 If a character's name is long, it should shrink the font and not run over one line
-Entropy Engine title design with a gear as the o in Entropy. This will replace the title banner
+Entropy Engine title design with a gear as the 'o' in Entropy. This will replace the title banner
 Clicking Roll Initiative would roll initiative for each character in the list and order them greatest to least top to bottom
 Add "Physical Damage" and "Magical Damage" buttons to the characters where the user can input a number and it will subtract that character's resistance from it and then subtract that number from their current health
