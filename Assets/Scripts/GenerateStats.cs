@@ -219,9 +219,6 @@ public class GenerateStats : MonoBehaviour
     private int intelligenceStat = 0;
     private int spiritStat = 0;
 
-    public LayoutGroup statCellsLayoutGroup;
-	public LayoutGroup derivedStatCellsLayoutGroup;
-
 	public CharacterList characterList;
 
 	// Called by the Generate button
@@ -239,22 +236,6 @@ public class GenerateStats : MonoBehaviour
 		intelligenceStat = 0;
 		spiritStat = 0;
 		DistributeStatPoints(statPoints - 1); // Minus 1 for the forced 1 endurance
-
-		// Functionality of OriginalScene
-		if (characterList == null)
-		{
-			// Set the text in the table to match the variables in this script
-			statCellsLayoutGroup.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = enduranceStat.ToString();
-			statCellsLayoutGroup.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = strengthStat.ToString();
-			statCellsLayoutGroup.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = dexterityStat.ToString();
-			statCellsLayoutGroup.transform.GetChild(3).GetChild(0).GetComponent<TextMeshProUGUI>().text = agilityStat.ToString();
-			statCellsLayoutGroup.transform.GetChild(4).GetChild(0).GetComponent<TextMeshProUGUI>().text = intelligenceStat.ToString();
-			statCellsLayoutGroup.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text = spiritStat.ToString();
-
-			CalculateDerivedValues();
-
-			return;
-		}
 
 		int randomIndex = Random.Range(0, adventurerAdjectives.Length);
 		string randomAdjective = adventurerAdjectives[randomIndex];
@@ -372,25 +353,6 @@ public class GenerateStats : MonoBehaviour
 		}
         return sum;
     }
-
-	private void CalculateDerivedValues()
-	{
-		int health = enduranceStat * 3;
-		int mana = spiritStat * 2;
-		int damageResist = enduranceStat / 10;
-		int magicResist = spiritStat / 10;
-		int plusToHit = dexterityStat / 5;
-		int acInitiative = (agilityStat / 5);
-		int movementSpeed = (agilityStat / 10) * 5 + 25;
-
-		derivedStatCellsLayoutGroup.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = health.ToString();
-		derivedStatCellsLayoutGroup.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = mana.ToString();
-		derivedStatCellsLayoutGroup.transform.GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = damageResist.ToString();
-		derivedStatCellsLayoutGroup.transform.GetChild(3).GetChild(0).GetComponent<TextMeshProUGUI>().text = magicResist.ToString();
-		derivedStatCellsLayoutGroup.transform.GetChild(4).GetChild(0).GetComponent<TextMeshProUGUI>().text = plusToHit.ToString();
-		derivedStatCellsLayoutGroup.transform.GetChild(5).GetChild(0).GetComponent<TextMeshProUGUI>().text = acInitiative.ToString();
-		derivedStatCellsLayoutGroup.transform.GetChild(6).GetChild(0).GetComponent<TextMeshProUGUI>().text = movementSpeed.ToString();
-	}
 
 	public void Start()
 	{
