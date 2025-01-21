@@ -1,6 +1,4 @@
-Scaling in windowed mode never takes away functionality from the edges going off-screen
-The list of characters scrollview stutters and can be dragged and shouldn't be able to
-Match the style of the exit button and Entropy Engine banner to the other UI 
+Scaling in windowed mode allows strangely sized character templates to be created, BUG
 If a character's name is long, it should shrink the font and not run over one line
 Entropy Engine title design with a gear as the o in Entropy. This will replace the title banner
 Clicking Roll Initiative would roll initiative for each character in the list and order them greatest to least top to bottom
