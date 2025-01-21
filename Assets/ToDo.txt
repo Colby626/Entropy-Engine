@@ -1,6 +1,5 @@
-The hover window spazzes
-The list of characters scrollview stutters and can be dragged and shouldn't be able to
-Clicking Roll Initiative would roll initiative for each character in the list and order them greatest to least top to bottom
-Match the style of the exit button and Entropy Engine banner to the other UI 
 Scaling in windowed mode never takes away functionality from the edges going off-screen
+The list of characters scrollview stutters and can be dragged and shouldn't be able to
+Match the style of the exit button and Entropy Engine banner to the other UI 
+Clicking Roll Initiative would roll initiative for each character in the list and order them greatest to least top to bottom
 Add "Physical Damage" and "Magical Damage" buttons to the characters where the user can input a number and it will subtract that character's resistance from it and then subtract that number from their current health

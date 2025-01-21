@@ -20,4 +20,9 @@ public class CharacterTemplate : MonoBehaviour
 	{
 		characterList.DeleteCharacter(this);
 	}
+
+	public void UpdateName(string name)
+	{
+		characterData.Name = name;
+	}
 }

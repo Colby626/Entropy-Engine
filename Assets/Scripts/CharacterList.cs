@@ -29,6 +29,7 @@ public class CharacterList : MonoBehaviour
 	public List<Character> characters = new List<Character>();
 	public GameObject characterTemplatePrefab;
 	public Transform contentObjectInScrollview;
+	public Transform listOfStats;
 
 	public void GenerateCharacter(Character character)
 	{
