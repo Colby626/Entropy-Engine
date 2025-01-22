@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CharacterList : MonoBehaviour
 {
-	public struct Character
+	public class Character
 	{
 		public string Name;
 
@@ -24,6 +25,8 @@ public class CharacterList : MonoBehaviour
 		public int AgilityClass;
 		public int InitiativeBonus;
 		public int MovementSpeed;
+
+		public int Initiative;
 	}
 
 	private List<Character> characters = new();
@@ -34,22 +37,50 @@ public class CharacterList : MonoBehaviour
 	public void GenerateCharacter(Character character)
 	{
 		characters.Add(character);
-		GameObject template = Instantiate(characterTemplatePrefab);
-		template.transform.SetParent(contentObjectInScrollview);
-
-		// Reset local position and local scale to ensure proper scaling and positioning
-		//RectTransform rectTransform = template.GetComponent<RectTransform>();
-		//rectTransform.localPosition = Vector3.zero;  // Reset the position relative to the parent
-		//rectTransform.localScale = Vector3.one;  // Ensure no scaling issues
-
-		CharacterTemplate characterTemplate = template.GetComponent<CharacterTemplate>();
-		characterTemplate.characterList = this;
-		characterTemplate.characterData = character;
+		AddCharacterToScrollview(character);
 	}
 
 	public void DeleteCharacter(CharacterTemplate template)
 	{
 		characters.Remove(template.characterData);
 		Destroy(template.gameObject);
+	}
+
+	public void RollInitiative()
+	{
+		// Each character rolls a d20 and adds their initiative bonus
+		foreach (Character character in characters)
+		{
+			character.Initiative = Random.Range(1, 21) + character.InitiativeBonus;
+		}
+
+		// The characters are sorted from greatest initative to lowest initative
+		characters.Sort((x, y) => y.Initiative.CompareTo(x.Initiative));
+
+		// The characters are sorted visually
+		for (int i = contentObjectInScrollview.childCount - 1; i >= 0; i--)
+		{
+			Transform child = contentObjectInScrollview.GetChild(i);
+			Destroy(child.gameObject);
+		}
+
+		foreach (Character character in characters)
+		{
+			AddCharacterToScrollview(character);
+		}
+	}
+
+	private void AddCharacterToScrollview(Character character)
+	{
+		GameObject template = Instantiate(characterTemplatePrefab);
+		template.transform.SetParent(contentObjectInScrollview);
+		// For whatever reason, this is required for the children to scale properly within the scrollview
+		template.transform.localScale = new Vector3(0.9244992f, 0.9244992f, 0.9244992f);
+		if (character.Initiative != 0)
+			template.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = character.Initiative.ToString();
+
+		CharacterTemplate characterTemplate = template.GetComponent<CharacterTemplate>();
+		characterTemplate.characterList = this;
+		characterTemplate.characterData = character;
 	}
 }
