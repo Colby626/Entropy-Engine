@@ -1,3 +1,3 @@
+If there are any characters in the list without an initiative (someone joined mid battle), the roll initiative button should just roll them and add them in, not reroll everyone
 Entropy Engine title design with a gear as the 'o' in Entropy. This will replace the title banner
-Clicking Roll Initiative would roll initiative for each character in the list and order them greatest to least top to bottom
 Add "Physical Damage" and "Magical Damage" buttons to the characters where the user can input a number and it will subtract that character's resistance from it and then subtract that number from their current health
