@@ -260,7 +260,9 @@ public class GenerateStats : MonoBehaviour
 			PlusToHit = dexterityStat / 5,
 			AgilityClass = (agilityStat / 5) + 8,
 			InitiativeBonus = agilityStat / 5,
-			MovementSpeed = (agilityStat / 10) * 5 + 25
+			MovementSpeed = (agilityStat / 10) * 5 + 25,
+
+			Initiative = 0
 		});
 	}
 

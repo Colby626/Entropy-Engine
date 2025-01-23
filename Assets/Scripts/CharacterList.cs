@@ -51,7 +51,10 @@ public class CharacterList : MonoBehaviour
 		// Each character rolls a d20 and adds their initiative bonus
 		foreach (Character character in characters)
 		{
-			character.Initiative = Random.Range(1, 21) + character.InitiativeBonus;
+			if (character.Initiative == 0)
+			{
+				character.Initiative = Random.Range(1, 21) + character.InitiativeBonus;
+			}
 		}
 
 		// The characters are sorted from greatest initative to lowest initative
