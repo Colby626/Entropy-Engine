@@ -30,7 +30,7 @@ public class HoverUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 		listOfStats.GetChild(11).GetComponent<TextMeshProUGUI>().text = "Agility Class: " + characterData.AgilityClass.ToString();
 		listOfStats.GetChild(12).GetComponent<TextMeshProUGUI>().text = "Plus To Hit: " + characterData.PlusToHit.ToString();
 		listOfStats.GetChild(13).GetComponent<TextMeshProUGUI>().text = "Initiative Bonus: " + characterData.InitiativeBonus.ToString();
-		listOfStats.GetChild(14).GetComponent<TextMeshProUGUI>().text = "Movement Speed: " + characterData.MovementSpeed.ToString();
+		listOfStats.GetChild(14).GetComponent<TextMeshProUGUI>().text = "Movement Spaces: " + characterData.MovementSpeed.ToString();
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
@@ -49,6 +49,6 @@ public class HoverUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 		listOfStats.GetChild(11).GetComponent<TextMeshProUGUI>().text = "Agility Class: ?";
 		listOfStats.GetChild(12).GetComponent<TextMeshProUGUI>().text = "Plus To Hit: ?";
 		listOfStats.GetChild(13).GetComponent<TextMeshProUGUI>().text = "Initiative Bonus: ?";
-		listOfStats.GetChild(14).GetComponent<TextMeshProUGUI>().text = "Movement Speed: ?";
+		listOfStats.GetChild(14).GetComponent<TextMeshProUGUI>().text = "Movement Spaces: ?";
 	}
 }
