@@ -1,8 +1,11 @@
+using TMPro;
 using UnityEngine;
 
 public class ItemGenerator : MonoBehaviour
 {
-	bool itemEnchantable = true;
+	public TextMeshProUGUI itemText;
+
+	private bool itemEnchantable = true;
     public void GenerateItem()
     {
 		string itemType = DetermineItemType();
@@ -50,11 +53,17 @@ public class ItemGenerator : MonoBehaviour
 
 		string item;
 		if (itemEnchantable)
-			item = itemEnchanted + " " + itemQuality + " " + itemTier + " " + itemType;
+		{
+			if (itemType != "Ring" && itemType != "Amulet")
+				item = itemEnchanted + " " + itemQuality + " " + itemTier + " " + itemType;
+			else
+				item = itemEnchanted + " " + itemTier + " " + itemType;
+		}
 		else
 			item = itemTier + " " + itemType;
 
 		Debug.Log(item);
+		itemText.text = item;
 	}
 
 	private string DetermineItemType()
@@ -70,12 +79,12 @@ public class ItemGenerator : MonoBehaviour
 		else if (itemTypeRoll >= 24 && itemTypeRoll < 39) // 15%
 		{
 			itemEnchantable = false;
-			return "Skill book";
+			return "Skill Book";
 		}
 		else if (itemTypeRoll >= 39 && itemTypeRoll < 54) // 15%
 		{
 			itemEnchantable = false;
-			return "Spell tome";
+			return "Spell Tome";
 		}
 		else if (itemTypeRoll >= 54 && itemTypeRoll < 56) // 2%
 			return "Shortsword";
@@ -104,11 +113,11 @@ public class ItemGenerator : MonoBehaviour
 		else if (itemTypeRoll >= 78 && itemTypeRoll < 80) // 2%
 			return "Staff";
 		else if (itemTypeRoll >= 80 && itemTypeRoll < 82) // 2%
-			return "Heavy armor";
+			return "Heavy Armor";
 		else if (itemTypeRoll >= 82 && itemTypeRoll < 84) // 2%
-			return "Light armor";
+			return "Light Armor";
 		else if (itemTypeRoll >= 84 && itemTypeRoll < 86) // 2%
-			return "Medium armor";
+			return "Medium Armor";
 		else if (itemTypeRoll >= 86 && itemTypeRoll < 88) // 2%
 			return "Amulet";
 		else if (itemTypeRoll >= 88 && itemTypeRoll < 90) // 2%
