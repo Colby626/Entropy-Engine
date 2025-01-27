@@ -35,4 +35,21 @@ Green cells are inputs, blue cells are outputs
 1 part warrior, 1 part archer is half warrior, half archer  
 3 part mage, 3 part archer, 1 part warrior is mostly a magic archer, with some warrior class mixed in 
 
-![image](https://github.com/user-attachments/assets/d960b4f5-1fdc-45d3-9c52-718a44edb28c)
+![image](https://github.com/user-attachments/assets/b9615952-d66e-43fe-972c-4cf66ccfbe10)
+
+## Generators
+This project also has a tab for generating items and loot
+
+![image](https://github.com/user-attachments/assets/0158c5a1-2a12-459d-b57b-4b9c461b5da9)
+
+Each item contains {Enchanted} {Quality} {Rarity} {Item Type}
+- Not all items can be enchanted
+- Quality determines how well made that particular item is. 
+- Rarity determines the material the item is made out of or how valuable it is.
+- There are a variety of different item types including weapons and armor.
+
+Additionally, there is a coin generator for different categories of loot
+- 1 Electrum = 1000 Platinum
+- 1 Platinum = 100 Gold
+- 1 Gold = 100 Silver
+- 1 Silver = 100 Copper
