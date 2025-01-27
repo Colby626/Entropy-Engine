@@ -1,10 +1,8 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 using System;
 using Random = UnityEngine.Random;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
 public class GenerateStats : MonoBehaviour
 {
