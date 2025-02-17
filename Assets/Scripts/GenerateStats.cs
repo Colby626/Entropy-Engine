@@ -73,6 +73,76 @@ public class GenerateStats : MonoBehaviour
         Mage_Rogue_Archer
 	}
 
+	public enum Rating
+	{
+		F,
+		E,
+		D,
+		C,
+		B,
+		A,
+		S,
+		SS,
+		SSS,
+		X
+	}
+
+	public enum Type
+	{
+		Civilian,
+		Soldier,
+		Champion,
+		Commander,
+		Mage,
+		Battlemage,
+		Skeleton,
+		Lich,
+		Wight,
+		Zombie,
+		CorpseLord,
+		Vampire,
+		Ghoul,
+		DeathKnight,
+		Devil,
+		Imp,
+		Demon,
+		Azklat,
+		Hellhound,
+		MurderCat,
+		Sin,
+		Mimic,
+		AbyssalRemnant,
+		EldritchHorror,
+		Sludge,
+		WakingNightmare,
+		Aspect,
+		Golem,
+		Ghost,
+		Wisp,
+		ManaVampire,
+		Catoblepas,
+		Beholder,
+		Treant,
+		Druid,
+		Dryad,
+		Nymph,
+		CreepingVine,
+		PoisonBulb,
+		VenusPersonTrap,
+		Messenger,
+		HeavenlySolider,
+		Scribe,
+		Angel,
+		Watcher,
+		Virtue,
+		Dragon,
+		Wyvern,
+		Ogre,
+		Goblin,
+		Bunyip,
+		Giant
+	}
+
 	private static readonly Dictionary<Class, float[]> classWeights = new Dictionary<Class, float[]>
 	{
 		{ Class.Warrior, new float[] { 0.4f, 0.3f, 0.2f, 0.1f, 0f, 0f } },
@@ -126,7 +196,36 @@ public class GenerateStats : MonoBehaviour
 		{ Class.Mage_Rogue_Archer, new float[] { 0.175f, 0.1f, 0.1333333333f, 0.2416666667f, 0.175f, 0.175f } }
 	};
 
-	string[] adventurerAdjectives = new string[]
+	private static readonly Dictionary<Type, float[]> typeWeights = new Dictionary<Type, float[]>
+	{
+		// Strength, Dexterity, Agility, Intelligence, Spirit, Charisma, Vitality, Fortitude
+		{ Type.Civilian, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+		{ Type.Soldier, new float[] { .225f, .225f, .025f, .025f, .025f, .025f, .225f, .225f } },
+	};
+
+	private static int modFromRating(Rating rating)
+	{
+		if (rating == Rating.F)
+			return 0;
+		else if (rating == Rating.E)
+			return 3;
+		else if (rating == Rating.D)
+			return 6;
+		else if (rating == Rating.C)
+			return 9;
+		else if (rating == Rating.B)
+			return 12;
+		else if (rating == Rating.A)
+			return 15;
+		else if (rating == Rating.S)
+			return 18;
+		else if (rating == Rating.SS)
+			return 21;
+		else
+			return 0;
+    }
+
+    string[] adventurerAdjectives = new string[]
 	{
 		"Brash",
 		"Greedy",
@@ -207,8 +306,13 @@ public class GenerateStats : MonoBehaviour
 	public TMP_Dropdown rarityDropdown;
     public TMP_Dropdown classDropdown;
 
+	public TMP_Dropdown lordshipRatingDropdown;
+	public TMP_Dropdown lordshipTypeDropdown;
+
     private Rarity currentRarity;
     private Class currentClass;
+	private Rating currentRating;
+	private Type currentType;
 
     private int enduranceStat = 1;
     private int strengthStat = 0;
@@ -217,10 +321,19 @@ public class GenerateStats : MonoBehaviour
     private int intelligenceStat = 0;
     private int spiritStat = 0;
 
-	public CharacterList characterList;
+    private Rating strengthRating = Rating.F;
+    private Rating dexterityRating = Rating.F;
+    private Rating agilityRating = Rating.F;
+    private Rating intelligenceRating = Rating.F;
+    private Rating spiritRating = Rating.F;
+	private Rating charismaRating = Rating.F;
+    private Rating vitalityRating = Rating.F;
+    private Rating fortitudeRating = Rating.F;
+
+    public CharacterList characterList;
 
 	// Called by the Generate button
-    public void GenerateStatPoints()
+    public void GenerateClassStatPoints()
     {
 		int level = CalculateLevelBasedOnRarity(currentRarity);
         Debug.Log("Level calculated: " + level);
@@ -264,6 +377,52 @@ public class GenerateStats : MonoBehaviour
 		});
 	}
 
+	// Called by the Generate button
+	public void GenerateLordshipStatPoints()
+	{
+        strengthRating = Rating.F;
+		dexterityRating = Rating.F;
+		agilityRating = Rating.F;
+		intelligenceRating = Rating.F;
+		spiritRating = Rating.F;
+		charismaRating = Rating.F;
+		vitalityRating = Rating.F;
+		fortitudeRating = Rating.F;
+
+		DistributeRatingPoints();
+
+        int randomIndex = Random.Range(0, adventurerAdjectives.Length);
+        string randomAdjective = adventurerAdjectives[randomIndex];
+
+        characterList.GenerateNPC(new CharacterList.NPC()
+		{
+			Name = randomAdjective + " " + currentType.ToString(),
+
+			Strength = strengthRating,
+			Dexterity = dexterityRating,
+			Agility = agilityRating,
+			Intelligence = intelligenceRating,
+			Spirit = spiritRating,
+			Charisma = charismaRating,
+			Vitality = vitalityRating,
+			Fortitude = fortitudeRating,
+
+			MaxHealth = (modFromRating(fortitudeRating) * 5) + 10,
+			CurrentHealth = (modFromRating(fortitudeRating) * 5) + 10,
+            MaxMana = (modFromRating(spiritRating) * 5) + 10,
+            CurrentMana = (modFromRating(spiritRating) * 5) + 10,
+            PhysicalResistance = modFromRating(fortitudeRating),
+            MagicResistance = modFromRating(fortitudeRating),
+            PlusToHit = (int)dexterityRating,
+			PhysicalDamageBonus = modFromRating(strengthRating),
+            MagicDamageBonus = modFromRating(intelligenceRating),
+            AgilityBonus = (int)agilityRating,
+			MovementSpeed = (int)agilityRating,
+
+			Initiative = 0
+		});
+	}
+
 	private void DistributeStatPoints(int statPoints)
 	{
 		for (int i = 0; i < statPoints; i++) // For every stat point to distribute
@@ -293,6 +452,53 @@ public class GenerateStats : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	private void DistributeRatingPoints()
+	{
+		int pointsToDistribute = (int)currentRating * 2;
+		int bonusPoints = 0;
+		int chanceOfBonus = 2;
+
+		for (int i = 0; i < pointsToDistribute; i++)
+		{
+			int randomNumber = Random.Range(0, 100);
+			if (randomNumber < chanceOfBonus)
+				bonusPoints++;
+			chanceOfBonus += 2;
+		}
+
+		pointsToDistribute += bonusPoints;
+
+		for (int i = 0; i < pointsToDistribute; i++)
+		{
+            float random = Random.Range(0f, 1f); // Calculate a random number between 0 and 1
+            float cumulativeWeight = 0f;
+
+            // Go through each stat rating and check which range the random number falls into
+            for (int statWeight = 0; statWeight < 8; statWeight++)
+            {
+                // Increase the cumulative weight by the amount specified in the current classes' weight map
+                cumulativeWeight += typeWeights[currentType][statWeight];
+
+                if (random < cumulativeWeight)
+                {
+                    // Increment the corresponding stat based on the random number falling within this weight range
+                    switch (statWeight)
+                    {
+                        case 0: strengthRating++; break;
+                        case 1: dexterityRating++; break;
+                        case 2: agilityRating++; break;
+                        case 3: intelligenceRating++; break;
+                        case 4: spiritRating++; break;
+                        case 5: charismaRating++; break;
+                        case 6: vitalityRating++; break;
+                        case 7: fortitudeRating++; break;
+                    }
+                    break;
+                }
+            }
+        }
 	}
 
 	private int CalculateLevelBasedOnRarity(Rarity rarity)
@@ -368,7 +574,24 @@ public class GenerateStats : MonoBehaviour
 			classDropdown.options.Add(new TMP_Dropdown.OptionData(className));
 		}
 
-		rarityDropdown.onValueChanged.AddListener(OnRarityDropdownValueChanged);
+        lordshipRatingDropdown.options.Clear();
+        foreach (string ratingName in Enum.GetNames(typeof(Rating)))
+        {
+            lordshipRatingDropdown.options.Add(new TMP_Dropdown.OptionData(ratingName));
+        }
+        lordshipTypeDropdown.options.Clear();
+        foreach (string typeName in Enum.GetNames(typeof(Type)))
+        {
+            lordshipTypeDropdown.options.Add(new TMP_Dropdown.OptionData(typeName));
+        }
+
+        lordshipRatingDropdown.onValueChanged.AddListener(OnRatingDropdownValueChanged);
+        lordshipTypeDropdown.onValueChanged.AddListener(OnTypeDropdownValueChanged);
+
+        lordshipRatingDropdown.RefreshShownValue();
+        lordshipTypeDropdown.RefreshShownValue();
+
+        rarityDropdown.onValueChanged.AddListener(OnRarityDropdownValueChanged);
         classDropdown.onValueChanged.AddListener(OnClassDropdownValueChanged);
 
 		rarityDropdown.RefreshShownValue();
@@ -386,4 +609,16 @@ public class GenerateStats : MonoBehaviour
 		currentClass = (Class)index;
 		Debug.Log("Class changed to: " + currentClass);
 	}
+
+    public void OnRatingDropdownValueChanged(int index)
+    {
+        currentRating = (Rating)index;
+        Debug.Log("Rating changed to: " + currentRating);
+    }
+
+    public void OnTypeDropdownValueChanged(int index)
+    {
+        currentType = (Type)index;
+        Debug.Log("Type changed to: " + currentType);
+    }
 }
