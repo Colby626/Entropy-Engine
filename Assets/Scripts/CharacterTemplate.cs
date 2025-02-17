@@ -44,6 +44,6 @@ public class CharacterTemplate : MonoBehaviour
 		if (characterData != null)
 			characterData.Name = name;
 		else
-			characterList.DeleteNPC(this);
+			npcData.Name = name;
 	}
 }
