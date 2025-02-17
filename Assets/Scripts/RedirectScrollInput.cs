@@ -44,7 +44,7 @@ public class RedirectScrollInput : MonoBehaviour
 			{
 				if (result.gameObject.GetComponent<InputField>() != null || result.gameObject.GetComponent<TMPro.TMP_InputField>() != null)
 				{
-					return true;
+                    return true;
 				}
 			}
 		}
@@ -56,6 +56,7 @@ public class RedirectScrollInput : MonoBehaviour
 	{
 		// Apply the scroll delta to the ScrollRect's vertical normalized position
 		float scrollDelta = Input.mouseScrollDelta.y;
-		scrollRect.verticalNormalizedPosition += scrollDelta * scrollSensitivityWhenOverInputfield;
+		if (scrollRect.verticalNormalizedPosition != null)
+			scrollRect.verticalNormalizedPosition += scrollDelta * scrollSensitivityWhenOverInputfield;
 	}
 }

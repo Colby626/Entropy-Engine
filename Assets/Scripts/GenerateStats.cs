@@ -250,7 +250,7 @@ public class GenerateStats : MonoBehaviour
         { Type.Misc_Ogre, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
         { Type.Misc_Goblin, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
         { Type.Misc_Bunyip, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
-        { Type.Misc_Gian, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Misc_Giant, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
     };
 
 	private int modFromRating(Rating rating)
