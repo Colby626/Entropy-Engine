@@ -57,7 +57,7 @@ public class ItemGenerator : MonoBehaviour
 			return "Misc";
 		}
 		else if (itemTypeRoll >= 38 && itemTypeRoll < 40) // 2%
-			return "Greatsword"
+			return "Greatsword";
 		else if (itemTypeRoll >= 40 && itemTypeRoll < 42) // 2%
 			return "Greataxe";
 		else if (itemTypeRoll >= 42 && itemTypeRoll < 44) // 2%
@@ -71,7 +71,7 @@ public class ItemGenerator : MonoBehaviour
 		else if (itemTypeRoll >= 50 && itemTypeRoll < 52) // 2%
 			return "Polearm";
 		else if (itemTypeRoll >= 52 && itemTypeRoll < 54) // 2%
-			return "Thrown Weapon"
+			return "Thrown Weapon";
 		else if (itemTypeRoll >= 54 && itemTypeRoll < 56) // 2%
 			return "Shortsword";
 		else if (itemTypeRoll >= 56 && itemTypeRoll < 58) // 2%
@@ -111,7 +111,7 @@ public class ItemGenerator : MonoBehaviour
 		else if (itemTypeRoll >= 90 && itemTypeRoll < 92) // 2%
 			return "Rapier";
 		else if (itemTypeRoll >= 92 && itemTypeRoll < 94) // 2%
-			return "Colossal"
+			return "Colossal";
 		else if (itemTypeRoll >= 94 && itemTypeRoll < 96) // 2%
 			return "Shield";
 		else if (itemTypeRoll >= 96 && itemTypeRoll < 98) // 2%
