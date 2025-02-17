@@ -8,11 +8,15 @@ public class HoverUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private Transform lordshipListOfStats;
     private CharacterList.Character characterData;
 	private CharacterList.NPC npcData;
+	private TextMeshProUGUI abilityDetailsText;
 
 	public void Start()
 	{
-		classListOfStats = GetComponent<CharacterTemplate>().characterList.classListOfStats;
-		lordshipListOfStats = GetComponent<CharacterTemplate>().characterList.lordshipListOfStats;
+		CharacterList characterList = GetComponent<CharacterTemplate>().characterList;
+
+        classListOfStats = characterList.classListOfStats;
+		lordshipListOfStats = characterList.lordshipListOfStats;
+		abilityDetailsText = characterList.abilityDetailsText;
     }
 
 	public void OnPointerEnter(PointerEventData eventData)
@@ -57,7 +61,9 @@ public class HoverUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 			lordshipListOfStats.GetChild(15).GetComponent<TextMeshProUGUI>().text = "Physical Damage Bonus: " + npcData.PhysicalDamageBonus.ToString();
 			lordshipListOfStats.GetChild(16).GetComponent<TextMeshProUGUI>().text = "Magic Damage Bonus: " + npcData.MagicDamageBonus.ToString();
 			lordshipListOfStats.GetChild(17).GetComponent<TextMeshProUGUI>().text = "Movement Spaces: " + npcData.MovementSpeed.ToString();
-		}
+			abilityDetailsText.text = npcData.Abilities;
+
+        }
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
@@ -101,6 +107,7 @@ public class HoverUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             lordshipListOfStats.GetChild(15).GetComponent<TextMeshProUGUI>().text = "Physical Damage Bonus: ?";
             lordshipListOfStats.GetChild(16).GetComponent<TextMeshProUGUI>().text = "Magic Damage Bonus: ?";
             lordshipListOfStats.GetChild(17).GetComponent<TextMeshProUGUI>().text = "Movement Spaces: ?";
+			abilityDetailsText.text = "";
         }
     }
 }

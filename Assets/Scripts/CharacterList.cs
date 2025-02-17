@@ -55,6 +55,7 @@ public class CharacterList : MonoBehaviour
         public int MovementSpeed;
 
         public int Initiative;
+		public string Abilities;
     }
 
 	private List<Character> characters = new();
@@ -64,6 +65,7 @@ public class CharacterList : MonoBehaviour
 	public Transform classListOfStats;
     public Transform lordshipContentObjectInScrollview;
     public Transform lordshipListOfStats;
+    public TextMeshProUGUI abilityDetailsText;
 
     public void GenerateCharacter(Character character)
 	{
