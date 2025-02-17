@@ -89,58 +89,58 @@ public class GenerateStats : MonoBehaviour
 
 	public enum Type
 	{
-		Civilian,
-		Soldier,
-		Champion,
-		Commander,
-		Mage,
-		Battlemage,
-		Skeleton,
-		Lich,
-		Wight,
-		Zombie,
-		CorpseLord,
-		Vampire,
-		Ghoul,
-		DeathKnight,
-		Devil,
-		Imp,
-		Demon,
-		Azklat,
-		Hellhound,
-		MurderCat,
-		Sin,
-		Mimic,
-		AbyssalRemnant,
-		EldritchHorror,
-		Sludge,
-		WakingNightmare,
-		Aspect,
-		Golem,
-		Ghost,
-		Wisp,
-		ManaVampire,
-		Catoblepas,
-		Beholder,
-		Treant,
-		Druid,
-		Dryad,
-		Nymph,
-		CreepingVine,
-		PoisonBulb,
-		VenusPersonTrap,
-		Messenger,
-		HeavenlySolider,
-		Scribe,
-		Angel,
-		Watcher,
-		Virtue,
-		Dragon,
-		Wyvern,
-		Ogre,
-		Goblin,
-		Bunyip,
-		Giant
+        Humanoid_Civilian,
+        Humanoid_Soldier,
+        Humanoid_Champion,
+		Humanoid_Commander,
+		Humanoid_Mage,
+		Humanoid_Battlemage,
+        Undead_Skeleton,
+		Undead_Lich,
+		Undead_Wight,
+		Undead_Zombie,
+		Undead_CorpseLord,
+		Undead_Vampire,
+        Undead_Ghoul,
+		Undead_DeathKnight,
+        Demonic_Devil,
+        Demonic_Imp,
+		Demonic_Demon,
+		Demonic_Azklat,
+		Demonic_Hellhound,
+		Demonic_MurderCat,
+		Demonic_Sin,
+        Abyssal_Mimic,
+		Abyssal_Remnant,
+        Abyssal_EldritchHorror,
+		Abyssal_Sludge,
+		Abyssal_WakingNightmare,
+		Abyssal_Aspect,
+        Aethereal_Golem,
+        Aethereal_Ghost,
+		Aethereal_Wisp,
+		Aethereal_ManaVampire,
+		Aethereal_Catoblepas,
+		Aethereal_Beholder,
+        Natural_Treant,
+        Natural_Druid,
+		Natural_Dryad,
+		Natural_Nymph,
+		Natural_CreepingVine,
+		Natural_PoisonBulb,
+		Natural_VenusPersonTrap,
+        Heavenly_Messenger,
+		Heavenly_Solider,
+        Heavenly_Scribe,
+		Heavenly_Angel,
+		Heavenly_Watcher,
+		Heavenly_Virtue,
+		Misc_Dragon,
+        Misc_Wyvern,
+		Misc_Ogre,
+		Misc_Goblin,
+		Misc_Bunyip,
+		Misc_Giant
 	}
 
 	private static readonly Dictionary<Class, float[]> classWeights = new Dictionary<Class, float[]>
@@ -199,28 +199,78 @@ public class GenerateStats : MonoBehaviour
 	private static readonly Dictionary<Type, float[]> typeWeights = new Dictionary<Type, float[]>
 	{
 		// Strength, Dexterity, Agility, Intelligence, Spirit, Charisma, Vitality, Fortitude
-		{ Type.Civilian, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
-		{ Type.Soldier, new float[] { .225f, .225f, .025f, .025f, .025f, .025f, .225f, .225f } },
-	};
+		{ Type.Humanoid_Civilian, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+		{ Type.Humanoid_Soldier, new float[] { .225f, .225f, .025f, .025f, .025f, .025f, .225f, .225f } },
+        { Type.Humanoid_Champion, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Humanoid_Commander, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Humanoid_Mage, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Humanoid_Battlemage, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Undead_Skeleton, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Undead_Lich, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Undead_Wight, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Undead_Zombie, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Undead_CorpseLord, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Undead_Vampire, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Undead_Ghoul, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Undead_DeathKnight, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Demonic_Devil, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Demonic_Imp, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Demonic_Demon, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Demonic_Azklat, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Demonic_Hellhound, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Demonic_MurderCat, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Demonic_Sin, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Abyssal_Mimic, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Abyssal_Remnant, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Abyssal_EldritchHorror, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Abyssal_Sludge, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Abyssal_WakingNightmare, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Abyssal_Aspect, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Aethereal_Golem, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Aethereal_Ghost, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Aethereal_Wisp, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Aethereal_ManaVampire, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Aethereal_Catoblepas, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Aethereal_Beholder, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Natural_Treant, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Natural_Druid, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Natural_Dryad, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Natural_Nymph, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Natural_CreepingVine, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Natural_PoisonBulb, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Natural_VenusPersonTrap, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Heavenly_Messenger, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Heavenly_Solider, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Heavenly_Scribe, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Heavenly_Angel, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Heavenly_Watcher, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Heavenly_Virtue, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Misc_Dragon, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Misc_Wyvern, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Misc_Ogre, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Misc_Goblin, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Misc_Bunyip, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+        { Type.Misc_Gian, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
+    };
 
-	private static int modFromRating(Rating rating)
+	private int modFromRating(Rating rating)
 	{
 		if (rating == Rating.F)
-			return 0;
+			return variables.F;
 		else if (rating == Rating.E)
-			return 3;
+			return variables.E;
 		else if (rating == Rating.D)
-			return 6;
+			return variables.D;
 		else if (rating == Rating.C)
-			return 9;
+			return variables.C;
 		else if (rating == Rating.B)
-			return 12;
+			return variables.B;
 		else if (rating == Rating.A)
-			return 15;
+			return variables.A;
 		else if (rating == Rating.S)
-			return 18;
+			return variables.S;
 		else if (rating == Rating.SS)
-			return 21;
+			return variables.SS;
 		else
 			return 0;
     }
@@ -331,6 +381,7 @@ public class GenerateStats : MonoBehaviour
     private Rating fortitudeRating = Rating.F;
 
     public CharacterList characterList;
+	public Variables variables;
 
 	// Called by the Generate button
     public void GenerateClassStatPoints()
@@ -417,7 +468,7 @@ public class GenerateStats : MonoBehaviour
 			PhysicalDamageBonus = modFromRating(strengthRating),
             MagicDamageBonus = modFromRating(intelligenceRating),
             AgilityBonus = (int)agilityRating,
-			MovementSpeed = (int)agilityRating,
+			MovementSpeed = (int)agilityRating + 3,
 
 			Initiative = 0
 		});
@@ -458,9 +509,9 @@ public class GenerateStats : MonoBehaviour
 	{
 		int pointsToDistribute = (int)currentRating * 2;
 		int bonusPoints = 0;
-		int chanceOfBonus = 2;
+		float chanceOfBonus = variables.chanceOfBonusPointOnRatingUp;
 
-		for (int i = 0; i < pointsToDistribute; i++)
+		for (int i = 0; i < pointsToDistribute / 2; i++)
 		{
 			int randomNumber = Random.Range(0, 100);
 			if (randomNumber < chanceOfBonus)
@@ -468,6 +519,7 @@ public class GenerateStats : MonoBehaviour
 			chanceOfBonus += 2;
 		}
 
+		Debug.Log("Bonus points awarded: " + bonusPoints);
 		pointsToDistribute += bonusPoints;
 
 		for (int i = 0; i < pointsToDistribute; i++)
