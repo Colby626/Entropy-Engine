@@ -529,7 +529,7 @@ public class GenerateStats : MonoBehaviour
 	{
 		int pointsToDistribute = (int)currentRating * 2;
 		int bonusPoints = 0;
-		float chanceOfBonus = variables.chanceOfBonusPointOnRatingUp;
+		float chanceOfBonus = variables.percentChanceOfBonusPointOnRatingUp;
 
 		for (int i = 0; i < pointsToDistribute / 2; i++)
 		{

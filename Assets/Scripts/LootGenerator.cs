@@ -137,5 +137,4 @@ public class LootGenerator : MonoBehaviour
 		Debug.Log(money);
 		moneyText.text = money;
 	}
-
 }

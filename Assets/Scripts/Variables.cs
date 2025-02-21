@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Variables : MonoBehaviour
 {
-    public float chanceOfBonusPointOnRatingUp = 2f;
+    public float percentChanceOfBonusPointOnRatingUp = 2f;
 
     [Header("Modifiers")]
     public int F = 0;

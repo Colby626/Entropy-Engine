@@ -9,24 +9,39 @@ public class CharacterTemplate : MonoBehaviour
 	public CharacterList.Character characterData;
 	[HideInInspector]
 	public CharacterList.NPC npcData;
-    public TextMeshProUGUI nameText;
-	public TextMeshProUGUI healthText;
-	public TextMeshProUGUI manaText;
+    public TextMeshProUGUI placeholderNameText;
+	public TextMeshProUGUI placeholderHealthText;
+	public TextMeshProUGUI placeholderManaText;
+	public TMP_InputField nameText;
+	public TMP_InputField healthText;
+	public TMP_InputField manaText;
 
 	public void Start()
 	{
 		if (characterData != null)
 		{
-			nameText.text = characterData.Name;
-			healthText.text = characterData.MaxHealth.ToString();
-			manaText.text = characterData.MaxMana.ToString();
+			placeholderNameText.text = characterData.Name;
+			if (characterData.Initiative > 0)
+				nameText.text = characterData.Name;
+
+			placeholderHealthText.text = characterData.MaxHealth.ToString();
+			healthText.text = characterData.CurrentHealth.ToString();
+
+			placeholderManaText.text = characterData.MaxMana.ToString();
+			manaText.text = characterData.CurrentMana.ToString();
 		}
 		else
 		{
-            nameText.text = npcData.Name;
-            healthText.text = npcData.MaxHealth.ToString();
-            manaText.text = npcData.MaxMana.ToString();
-        }
+			placeholderNameText.text = npcData.Name;
+			if (npcData.Initiative > 0)
+				nameText.text = npcData.Name;
+
+			placeholderHealthText.text = npcData.MaxHealth.ToString();
+			healthText.text = npcData.CurrentHealth.ToString();
+
+			placeholderManaText.text = npcData.MaxMana.ToString();
+			manaText.text = npcData.CurrentMana.ToString();
+		}
 	}
 
 	// Called by the delete button on the UI of the character template
@@ -45,5 +60,23 @@ public class CharacterTemplate : MonoBehaviour
 			characterData.Name = name;
 		else
 			npcData.Name = name;
+	}
+
+	// Called by the health input field of the character template
+	public void UpdateHealth(string health)
+	{
+		if (characterData != null)
+			characterData.CurrentHealth = int.Parse(health);
+		else
+			npcData.CurrentHealth = int.Parse(health);
+	}
+
+	// Called by the mana input field of the character template
+	public void UpdateMana(string mana)
+	{
+		if (characterData != null)
+			characterData.CurrentMana = int.Parse(mana);
+		else
+			npcData.CurrentMana = int.Parse(mana);
 	}
 }
