@@ -7,6 +7,7 @@ public class LootGenerator : MonoBehaviour
 {
 	public TMP_Dropdown lootAmountDropdown;
 	public TextMeshProUGUI moneyText;
+	private long totalCoins = 0;
 
 	private enum LootAmount
 	{
@@ -78,6 +79,7 @@ public class LootGenerator : MonoBehaviour
 				copper = (long)Random.Range(7500000000, 10000000001); // 7.5 electrum - 10 electrum
 		}
 
+		totalCoins = copper;
 		DisperseCoins(copper);
 	}
 
@@ -132,6 +134,41 @@ public class LootGenerator : MonoBehaviour
 		else if (silver > 0)
 			money = $"Silver: {silver} Copper: {copper}";
 		else 
+			money = $"Copper: {copper}";
+
+		Debug.Log(money);
+		moneyText.text = money;
+	}
+
+	public void MinimizeCoins()
+	{
+		long copper = totalCoins;
+		// Calculate Electrum (1 electrum = 1 billion copper)
+		long maxElectrum = copper / 1000000000L;
+		copper -= maxElectrum * 1000000000L;
+
+		// Calculate Platinum (1 platinum = 1 million copper)
+		long maxPlatinum = copper / 1000000L;
+		copper -= maxPlatinum * 1000000L;
+
+		// Calculate Gold (1 gold = 10,000 copper)
+		long maxGold = copper / 10000L;
+		copper -= maxGold * 10000L;
+
+		// Calculate Silver (1 silver = 100 copper)
+		long maxSilver = copper / 100L;
+		copper -= maxSilver * 100L;
+
+		string money;
+		if (maxElectrum > 0)
+			money = $"Electrum: {maxElectrum} Platinum: {maxPlatinum} Gold: {maxGold} Silver: {maxSilver} Copper: {copper}";
+		else if (maxPlatinum > 0)
+			money = $"Platinum: {maxPlatinum} Gold: {maxGold} Silver: {maxSilver} Copper: {copper}";
+		else if (maxGold > 0)
+			money = $"Gold: {maxGold} Silver: {maxSilver} Copper: {copper}";
+		else if (maxSilver > 0)
+			money = $"Silver: {maxSilver} Copper: {copper}";
+		else
 			money = $"Copper: {copper}";
 
 		Debug.Log(money);

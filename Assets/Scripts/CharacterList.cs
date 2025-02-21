@@ -91,6 +91,7 @@ public class CharacterList : MonoBehaviour
         Destroy(template.gameObject);
     }
 
+	// Called by the roll initiative button in the Class System tab
     public void RollInitiative()
 	{
 		// Each character rolls a d20 and adds their initiative bonus
@@ -118,7 +119,8 @@ public class CharacterList : MonoBehaviour
 		}
 	}
 
-    public void RollLordshipInitiative()
+	// Called by the roll initiative button in the Lordship tab
+	public void RollLordshipInitiative()
     {
         // Each character rolls a d20 and adds their initiative bonus
         foreach (NPC npc in npcs)
