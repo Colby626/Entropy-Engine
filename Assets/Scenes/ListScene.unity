@@ -2539,7 +2539,6 @@ MonoBehaviour:
   lordshipRatingDropdown: {fileID: 131691905}
   lordshipTypeDropdown: {fileID: 1489725097}
   characterList: {fileID: 150201057}
-  variables: {fileID: 524159450}
 --- !u!1 &275017170
 GameObject:
   m_ObjectHideFlags: 0
@@ -4941,6 +4940,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   percentChanceOfBonusPointOnRatingUp: 2
+  numberOfStartingSkills: 2
   F: 0
   E: 3
   D: 6
@@ -17768,7 +17768,6 @@ MonoBehaviour:
   lordshipRatingDropdown: {fileID: 131691905}
   lordshipTypeDropdown: {fileID: 1489725097}
   characterList: {fileID: 150201057}
-  variables: {fileID: 524159450}
 --- !u!114 &2015741475
 MonoBehaviour:
   m_ObjectHideFlags: 0

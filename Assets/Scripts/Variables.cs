@@ -3,6 +3,7 @@ using UnityEngine;
 public class Variables : MonoBehaviour
 {
     public float percentChanceOfBonusPointOnRatingUp = 2f;
+    public int numberOfStartingSkills = 2;
 
     [Header("Modifiers")]
     public int F = 0;

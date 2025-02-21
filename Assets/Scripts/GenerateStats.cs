@@ -382,7 +382,7 @@ public class GenerateStats : MonoBehaviour
     private Rating fortitudeRating = Rating.F;
 
     public CharacterList characterList;
-	public Variables variables;
+	private Variables variables;
 
 	// Called by the Generate button
     public void GenerateClassStatPoints()
@@ -521,9 +521,8 @@ public class GenerateStats : MonoBehaviour
 			_ => new string[] { "Unknown Ability" }
 		};
 
-		// Pick 2 random skills
-		string[] selectedSkills = new string[2];
-		for (int i = 0; i < 2; i++)
+		string[] selectedSkills = new string[variables.numberOfStartingSkills];
+		for (int i = 0; i < variables.numberOfStartingSkills; i++)
 		{
 			int skillIndex = Random.Range(0, Abilities.skills.Length);
 			selectedSkills[i] = Abilities.skills[skillIndex];
@@ -710,6 +709,8 @@ public class GenerateStats : MonoBehaviour
 
 	public void Start()
 	{
+		variables = FindAnyObjectByType<Variables>();
+
 		// Sets the dropdown menus' to have the correct enum to choose from
 		rarityDropdown.options.Clear();
 		foreach (string rarityName in Enum.GetNames(typeof(Rarity)))
