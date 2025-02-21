@@ -1,12 +1,14 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class LootGenerator : MonoBehaviour
 {
 	public TMP_Dropdown lootAmountDropdown;
 	public TextMeshProUGUI moneyText;
+	public GameObject minimizeCoinsButton;
 	private long totalCoins = 0;
 
 	private enum LootAmount
@@ -138,6 +140,9 @@ public class LootGenerator : MonoBehaviour
 
 		Debug.Log(money);
 		moneyText.text = money;
+
+		if (silver < maxSilver || gold < maxGold || platinum < maxPlatinum || electrum < maxElectrum)
+			minimizeCoinsButton.SetActive(true);
 	}
 
 	public void MinimizeCoins()
