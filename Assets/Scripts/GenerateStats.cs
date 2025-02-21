@@ -254,13 +254,6 @@ public class GenerateStats : MonoBehaviour
 		{ Type.Misc_Giant, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
 	};
 
-	// Needs a string[] for every type
-	private static readonly string[] abilities =
-	{
-		"This is an example ability: it does this",
-		"This is another ability: it does this"
-	};
-
     private int modFromRating(Rating rating)
 	{
 		if (rating == Rating.F)
@@ -453,16 +446,99 @@ public class GenerateStats : MonoBehaviour
         int randomIndex = Random.Range(0, adventurerAdjectives.Length);
         string randomAdjective = adventurerAdjectives[randomIndex];
 
-		// Need to start with 1 feat and 2 skills
-		int featPoints = 4 * ((int)currentRating - 1);
-		// 50% of picking or upgrading a feat or picking or upgrating a skill for every 4 points
+		// Determine which ability list to use based on currentType
+		string[] featsPool = currentType switch
+		{
+			// Humanoids
+			Type.Humanoid_Civilian => Abilities.humanoidCivilianAbilities,
+			Type.Humanoid_Soldier => Abilities.humanoidSoldierAbilities,
+			Type.Humanoid_Champion => Abilities.humanoidChampionAbilities,
+			Type.Humanoid_Commander => Abilities.humanoidCommanderAbilities,
+			Type.Humanoid_Mage => Abilities.humanoidMageAbilities,
+			Type.Humanoid_Battlemage => Abilities.humanoidBattlemageAbilities,
+
+			// Undead
+			Type.Undead_Skeleton => Abilities.undeadSkeletonAbilities,
+			Type.Undead_Lich => Abilities.undeadLichAbilities,
+			Type.Undead_Wight => Abilities.undeadWightAbilities,
+			Type.Undead_Zombie => Abilities.undeadZombieAbilities,
+			Type.Undead_CorpseLord => Abilities.undeadCorpseLordAbilities,
+			Type.Undead_Vampire => Abilities.undeadVampireAbilities,
+			Type.Undead_Ghoul => Abilities.undeadGhoulAbilities,
+			Type.Undead_DeathKnight => Abilities.undeadDeathKnightAbilities,
+
+			// Demonic
+			Type.Demonic_Devil => Abilities.demonicDevilAbilities,
+			Type.Demonic_Imp => Abilities.demonicImpAbilities,
+			Type.Demonic_Demon => Abilities.demonicDemonAbilities,
+			Type.Demonic_Azklat => Abilities.demonicAzklatAbilities,
+			Type.Demonic_Hellhound => Abilities.demonicHellhoundAbilities,
+			Type.Demonic_MurderCat => Abilities.demonicMurderCatAbilities,
+			Type.Demonic_Sin => Abilities.demonicSinAbilities,
+
+			// Abyssal
+			Type.Abyssal_Mimic => Abilities.abyssalMimicAbilities,
+			Type.Abyssal_Remnant => Abilities.abyssalRemnantAbilities,
+			Type.Abyssal_EldritchHorror => Abilities.abyssalEldritchHorrorAbilities,
+			Type.Abyssal_Sludge => Abilities.abyssalSludgeAbilities,
+			Type.Abyssal_WakingNightmare => Abilities.abyssalWakingNightmareAbilities,
+			Type.Abyssal_Aspect => Abilities.abyssalAspectAbilities,
+
+			// Aethereal
+			Type.Aethereal_Golem => Abilities.aetherealGolemAbilities,
+			Type.Aethereal_Ghost => Abilities.aetherealGhostAbilities,
+			Type.Aethereal_Wisp => Abilities.aetherealWispAbilities,
+			Type.Aethereal_ManaVampire => Abilities.aetherealManaVampireAbilities,
+			Type.Aethereal_Catoblepas => Abilities.aetherealCatoblepasAbilities,
+			Type.Aethereal_Beholder => Abilities.aetherealBeholderAbilities,
+
+			// Natural
+			Type.Natural_Treant => Abilities.naturalTreantAbilities,
+			Type.Natural_Druid => Abilities.naturalDruidAbilities,
+			Type.Natural_Dryad => Abilities.naturalDryadAbilities,
+			Type.Natural_Nymph => Abilities.naturalNymphAbilities,
+			Type.Natural_CreepingVine => Abilities.naturalCreepingVineAbilities,
+			Type.Natural_PoisonBulb => Abilities.naturalPoisonBulbAbilities,
+			Type.Natural_VenusPersonTrap => Abilities.naturalVenusPersonTrapAbilities,
+
+			// Heavenly
+			Type.Heavenly_Messenger => Abilities.heavenlyMessengerAbilities,
+			Type.Heavenly_Solider => Abilities.heavenlySoldierAbilities,
+			Type.Heavenly_Scribe => Abilities.heavenlyScribeAbilities,
+			Type.Heavenly_Angel => Abilities.heavenlyAngelAbilities,
+			Type.Heavenly_Watcher => Abilities.heavenlyWatcherAbilities,
+			Type.Heavenly_Virtue => Abilities.heavenlyVirtueAbilities,
+
+			// Miscellaneous
+			Type.Misc_Dragon => Abilities.miscDragonAbilities,
+			Type.Misc_Wyvern => Abilities.miscWyvernAbilities,
+			Type.Misc_Ogre => Abilities.miscOgreAbilities,
+			Type.Misc_Goblin => Abilities.miscGoblinAbilities,
+			Type.Misc_Bunyip => Abilities.miscBunyipAbilities,
+			Type.Misc_Giant => Abilities.miscGiantAbilities,
+
+			// Default Case (Failsafe)
+			_ => new string[] { "Unknown Ability" }
+		};
+
+		// Pick 2 random skills
+		string[] selectedSkills = new string[2];
+		for (int i = 0; i < 2; i++)
+		{
+			int skillIndex = Random.Range(0, Abilities.skills.Length);
+			selectedSkills[i] = Abilities.skills[skillIndex];
+		}
+
+		// Pick 1 random feat
+		int featIndex = Random.Range(0, featsPool.Length);
+		string selectedFeat = featsPool[featIndex];
+
+		// Calculate feat points
+		int featPoints = 4 * (int)currentRating;
+
+		// 50% of picking or upgrading a feat or picking or upgrading a skill for every 4 points
 
 		// At X rank, there should be no reason to have any featPoints left over, but up until then, a creature may save them to upgrade feats later
-
-		// abilities.Length should be replaced by Abilities.cs for whatever {currentType} is
-		randomIndex = Random.Range(0, abilities.Length);
-		// abilities[randomIndex] should be replaced by Abilities.cs for whatever {currentType} is
-		string abilityDetails = abilities[randomIndex];
 
         characterList.GenerateNPC(new CharacterList.NPC()
 		{
@@ -490,7 +566,7 @@ public class GenerateStats : MonoBehaviour
 			MovementSpeed = (int)agilityRating + 3,
 
 			Initiative = 0,
-			Abilities = abilityDetails
+			Abilities = string.Join("\n", selectedSkills) + "\n" + selectedFeat
 		});
 	}
 

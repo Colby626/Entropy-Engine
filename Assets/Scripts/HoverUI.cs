@@ -68,6 +68,7 @@ public class HoverUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
+		/*
 		if (characterData != null)
 		{
 			classListOfStats.GetChild(0).GetComponent<TextMeshProUGUI>().text = "?";
@@ -109,5 +110,6 @@ public class HoverUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             lordshipListOfStats.GetChild(17).GetComponent<TextMeshProUGUI>().text = "Movement Spaces: ?";
 			abilityDetailsText.text = "";
         }
+		*/
     }
 }
