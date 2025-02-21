@@ -56,7 +56,6 @@ public class RedirectScrollInput : MonoBehaviour
 	{
 		// Apply the scroll delta to the ScrollRect's vertical normalized position
 		float scrollDelta = Input.mouseScrollDelta.y;
-		if (scrollRect.verticalNormalizedPosition != null)
-			scrollRect.verticalNormalizedPosition += scrollDelta * scrollSensitivityWhenOverInputfield;
+		scrollRect.verticalNormalizedPosition += scrollDelta * scrollSensitivityWhenOverInputfield;
 	}
 }
