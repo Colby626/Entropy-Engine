@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Variables : MonoBehaviour
 {
+    public int startingStatPoints = 2;
+    public int statPointsPerLevelUp = 2;
     public float percentChanceOfBonusPointOnRatingUp = 2f;
     public int numberOfStartingSkills = 2;
 
