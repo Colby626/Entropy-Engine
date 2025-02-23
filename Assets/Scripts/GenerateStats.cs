@@ -196,7 +196,6 @@ public class GenerateStats : MonoBehaviour
 		{ Class.Mage_Rogue_Archer, new float[] { 0.175f, 0.1f, 0.1333333333f, 0.2416666667f, 0.175f, 0.175f } }
 	};
 
-	// Needs weights updated
 	private static readonly Dictionary<Type, float[]> typeWeights = new Dictionary<Type, float[]>
 	{
 		// Strength, Dexterity, Agility, Intelligence, Spirit, Charisma, Vitality, Fortitude
@@ -552,8 +551,8 @@ public class GenerateStats : MonoBehaviour
 			Vitality = vitalityRating,
 			Fortitude = fortitudeRating,
 
-			MaxHealth = (modFromRating(fortitudeRating) * 5) + 10,
-			CurrentHealth = (modFromRating(fortitudeRating) * 5) + 10,
+			MaxHealth = (modFromRating(vitalityRating) * 5) + 10,
+			CurrentHealth = (modFromRating(vitalityRating) * 5) + 10,
 			MaxMana = (modFromRating(spiritRating) * 5) + 10,
 			CurrentMana = (modFromRating(spiritRating) * 5) + 10,
 			PhysicalResistance = modFromRating(fortitudeRating),
