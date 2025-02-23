@@ -1,14 +1,477 @@
 public static class Abilities
 {
-	public static string[] skills =
+	#region Skills
+	public static string[] humanoidCivilianSkills =
 	{
-		"Stealth",
-		"Survival",
-		"Perception",
-		"Sleight of Hand",
-		"Athletics"
+		"Basic Crafting",
+		"Cooking",
+		"Herbalism",
+		"Basic Diplomacy",
+		"Trade"
 	};
 
+	public static string[] humanoidSoldierSkills =
+	{
+		"Swords",
+		"Axes",
+		"Maces",
+		"Spears",
+		"Shield Defense",
+		"Tactics"
+	};
+
+	public static string[] humanoidChampionSkills =
+	{
+		"Swordmastery",
+		"Shield Mastery",
+		"Battle Cry",
+		"Leadership",
+		"Tactical Strikes"
+	};
+
+	public static string[] humanoidCommanderSkills =
+	{
+		"Tactics",
+		"Leadership",
+		"Commanding Presence",
+		"Morale Boost",
+		"Strategic Planning"
+	};
+
+	public static string[] humanoidMageSkills =
+	{
+		"Fire Magic",
+		"Ice Magic",
+		"Arcane Knowledge",
+		"Spellcasting",
+		"Enchanting"
+	};
+
+	public static string[] humanoidBattlemageSkills =
+	{
+		"Fire Magic",
+		"Swordsmanship",
+		"Arcane Magic",
+		"Armor Use",
+		"Elemental Channeling"
+	};
+
+	public static string[] undeadSkeletonSkills =
+	{
+		"Bone Manipulation",
+		"Basic Weaponry",
+		"Unholy Resistance",
+		"Necromantic Power",
+		"Undead Endurance"
+	};
+
+	public static string[] undeadLichSkills =
+	{
+		"Necromancy",
+		"Soul Manipulation",
+		"Arcane Mastery",
+		"Forbidden Knowledge",
+		"Life Drain"
+	};
+
+	public static string[] undeadWightSkills =
+	{
+		"Necromancy",
+		"Dark Aura",
+		"Life Drain",
+		"Combat Expertise",
+		"Curse Weaving"
+	};
+
+	public static string[] undeadZombieSkills =
+	{
+		"Basic Claws",
+		"Undead Resistance",
+		"Mindless Strength",
+		"Decay Aura",
+		"Zombie Horde"
+	};
+
+	public static string[] undeadCorpseLordSkills =
+	{
+		"Necromancy",
+		"Corpse Control",
+		"Undead Command",
+		"Dark Resurrection",
+		"Death Touch"
+	};
+
+	public static string[] undeadVampireSkills =
+	{
+		"Blood Magic",
+		"Life Drain",
+		"Night Vision",
+		"Stealth",
+		"Charm"
+	};
+
+	public static string[] undeadGhoulSkills =
+	{
+		"Flesh Eating",
+		"Decay Aura",
+		"Claws",
+		"Regeneration",
+		"Undead Endurance"
+	};
+
+	public static string[] undeadDeathKnightSkills =
+	{
+		"Necromancy",
+		"Unholy Blade",
+		"Dark Aura",
+		"Death Strike",
+		"Undying Warrior"
+	};
+
+	public static string[] demonicDevilSkills =
+	{
+		"Infernal Magic",
+		"Fire Resistance",
+		"Corruption",
+		"Deception",
+		"Temptation"
+	};
+
+	public static string[] demonicImpSkills =
+	{
+		"Fire Magic",
+		"Trickery",
+		"Stealth",
+		"Fire Immunity",
+		"Poisonous Bite"
+	};
+
+	public static string[] demonicDemonSkills =
+	{
+		"Infernal Magic",
+		"Hellfire",
+		"Summoning",
+		"Strength",
+		"Corruption Aura"
+	};
+
+	public static string[] demonicAzklatSkills =
+	{
+		"Chaos Magic",
+		"Summoning",
+		"Infernal Strength",
+		"Demonic Influence",
+		"Fireball"
+	};
+
+	public static string[] demonicHellhoundSkills =
+	{
+		"Fire Breath",
+		"Speed",
+		"Tracking",
+		"Pack Tactics",
+		"Hellfire Bite"
+	};
+
+	public static string[] demonicMurderCatSkills =
+	{
+		"Claws",
+		"Stealth",
+		"Deception",
+		"Venomous Bite",
+		"Night Stalker"
+	};
+
+	public static string[] demonicSinSkills =
+	{
+		"Sinful Aura",
+		"Corruption",
+		"Temptation",
+		"Infernal Magic",
+		"Soul Siphon"
+	};
+
+	public static string[] abyssalMimicSkills =
+	{
+		"Shapeshifting",
+		"Deception",
+		"Trap Mimicry",
+		"Ambush",
+		"Regeneration"
+	};
+
+	public static string[] abyssalRemnantSkills =
+	{
+		"Abyssal Magic",
+		"Undead Resistance",
+		"Shadow Step",
+		"Whispers of the Void",
+		"Essence Drain"
+	};
+
+	public static string[] abyssalEldritchHorrorSkills =
+	{
+		"Reality Warp",
+		"Mind Control",
+		"Tentacle Slam",
+		"Psychic Screams",
+		"Abyssal Influence"
+	};
+
+	public static string[] abyssalSludgeSkills =
+	{
+		"Corrosion",
+		"Slime Spit",
+		"Toxic Aura",
+		"Acid Resistance",
+		"Growth"
+	};
+
+	public static string[] abyssalWakingNightmareSkills =
+	{
+		"Dreamwalking",
+		"Fear Aura",
+		"Mind Shatter",
+		"Nightmare Spawn",
+		"Sleep Control"
+	};
+
+	public static string[] abyssalAspectSkills =
+	{
+		"Shapechange",
+		"Abyssal Magic",
+		"Fear Aura",
+		"Summoning",
+		"Corruption"
+	};
+
+	public static string[] aetherealGolemSkills =
+	{
+		"Earth Magic",
+		"Arcane Resistance",
+		"Immunity to Physical Damage",
+		"Stoneform",
+		"Unyielding Strength"
+	};
+
+	public static string[] aetherealGhostSkills =
+	{
+		"Invisibility",
+		"Phantom Touch",
+		"Possession",
+		"Ethereal Travel",
+		"Haunting"
+	};
+
+	public static string[] aetherealWispSkills =
+	{
+		"Light Manipulation",
+		"Intangibility",
+		"Aetherial Movement",
+		"Energy Drain",
+		"Illumination"
+	};
+
+	public static string[] aetherealManaVampireSkills =
+	{
+		"Mana Drain",
+		"Spellcasting",
+		"Intangibility",
+		"Energy Absorption",
+		"Ethereal Form"
+	};
+
+	public static string[] aetherealCatoblepasSkills =
+	{
+		"Poison Gaze",
+		"Stone Gaze",
+		"Acid Resistance",
+		"Aura of Dread",
+		"Toxic Resistance"
+	};
+
+	public static string[] aetherealBeholderSkills =
+	{
+		"Eye Rays",
+		"Telepathy",
+		"Flight",
+		"Anti-Magic Ray",
+		"Eyeball Manipulation"
+	};
+
+	public static string[] naturalTreantSkills =
+	{
+		"Nature Magic",
+		"Tree Growth",
+		"Wooden Strength",
+		"Nature Resistance",
+		"Summon Allies"
+	};
+
+	public static string[] naturalDruidSkills =
+	{
+		"Nature Magic",
+		"Wild Shape",
+		"Herbalism",
+		"Animal Empathy",
+		"Elemental Magic"
+	};
+
+	public static string[] naturalDryadSkills =
+	{
+		"Nature Magic",
+		"Treebinding",
+		"Forest Ambush",
+		"Animal Communication",
+		"Fey Magic"
+	};
+
+	public static string[] naturalNymphSkills =
+	{
+		"Charm",
+		"Healing Magic",
+		"Nature Affinity",
+		"Animal Empathy",
+		"Water Control"
+	};
+
+	public static string[] naturalCreepingVineSkills =
+	{
+		"Entangling Vines",
+		"Poisonous Growth",
+		"Regeneration",
+		"Nature Resistance",
+		"Venomous Claws"
+	};
+
+	public static string[] naturalPoisonBulbSkills =
+	{
+		"Toxic Bloom",
+		"Poisonous Spore",
+		"Venomous Bite",
+		"Regeneration",
+		"Camouflage"
+	};
+
+	public static string[] naturalVenusPersonTrapSkills =
+	{
+		"Venomous Bite",
+		"Entangling Vines",
+		"Healing Nectar",
+		"Plant Growth",
+		"Poison Resistance"
+	};
+
+	public static string[] heavenlyMessengerSkills =
+	{
+		"Divine Healing",
+		"Holy Aura",
+		"Light Magic",
+		"Flight",
+		"Blessings"
+	};
+
+	public static string[] heavenlySoldierSkills =
+	{
+		"Divine Magic",
+		"Holy Strikes",
+		"Shield Mastery",
+		"Courage",
+		"Blessings"
+	};
+
+	public static string[] heavenlyScribeSkills =
+	{
+		"Holy Knowledge",
+		"Divine Healing",
+		"Spellcasting",
+		"Holy Protection",
+		"Blessings"
+	};
+
+	public static string[] heavenlyAngelSkills =
+	{
+		"Holy Light",
+		"Flight",
+		"Divine Healing",
+		"Blessings",
+		"Celestial Swordsmanship"
+	};
+
+	public static string[] heavenlyWatcherSkills =
+	{
+		"Divine Insight",
+		"Protection Aura",
+		"Divine Magic",
+		"Celestial Summoning",
+		"Heavenly Sight"
+	};
+
+	public static string[] heavenlyVirtueSkills =
+	{
+		"Divine Protection",
+		"Virtuous Aura",
+		"Healing Touch",
+		"Holy Knowledge",
+		"Sacred Blade"
+	};
+
+	public static string[] miscDragonSkills =
+	{
+		"Fire Breath",
+		"Flight",
+		"Scale Armor",
+		"Claw Strikes",
+		"Legendary Roar"
+	};
+
+	public static string[] miscWyvernSkills =
+	{
+		"Poisonous Sting",
+		"Flight",
+		"Claw Strikes",
+		"Keen Senses",
+		"Pack Hunter"
+	};
+
+	public static string[] miscOgreSkills =
+	{
+		"Melee Strength",
+		"Toughness",
+		"Throwing",
+		"Smash",
+		"Intimidation"
+	};
+
+	public static string[] miscGoblinSkills =
+	{
+		"Stealth",
+		"Traps",
+		"Speed",
+		"Knife Fighting",
+		"Scavenging"
+	};
+
+	public static string[] miscBunyipSkills =
+	{
+		"Water Manipulation",
+		"Bite",
+		"Regeneration",
+		"Swamp Movement",
+		"Sonic Roar"
+	};
+
+	public static string[] miscGiantSkills =
+	{
+		"Melee Strength",
+		"Throwing",
+		"Earth Magic",
+		"Toughness",
+		"Intimidation"
+	};
+	#endregion
+
+	#region Feats
 	// Humanoids
 	public static string[] humanoidCivilianAbilities =
 	{
@@ -381,4 +844,5 @@ public static class Abilities
 		"Earthshaker: Stomp to knock enemies prone.",
 		"Titanic Strength: Can uproot trees or break walls."
 	};
+	#endregion
 }

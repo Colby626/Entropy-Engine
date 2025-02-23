@@ -6,6 +6,7 @@ public class Variables : MonoBehaviour
     public int statPointsPerLevelUp = 2;
     public float percentChanceOfBonusPointOnRatingUp = 2f;
     public int numberOfStartingSkills = 2;
+    public int upgradePointsPerLevel = 4;
 
     [Header("Modifiers")]
     public int F = 0;

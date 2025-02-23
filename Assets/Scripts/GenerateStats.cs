@@ -3,6 +3,7 @@ using TMPro;
 using System;
 using Random = UnityEngine.Random;
 using System.Collections.Generic;
+using System.Text;
 
 public class GenerateStats : MonoBehaviour
 {
@@ -442,11 +443,237 @@ public class GenerateStats : MonoBehaviour
 
 		DistributeRatingPoints();
 
+		int upgradePoints = variables.upgradePointsPerLevel * (int)currentRating;
+
         int randomIndex = Random.Range(0, adventurerAdjectives.Length);
         string randomAdjective = adventurerAdjectives[randomIndex];
 
-		// Determine which ability list to use based on currentType
-		string[] featsPool = currentType switch
+        characterList.GenerateNPC(new CharacterList.NPC()
+		{
+			Name = randomAdjective + " " + currentType.ToString(),
+
+			Strength = strengthRating,
+			Dexterity = dexterityRating,
+			Agility = agilityRating,
+			Intelligence = intelligenceRating,
+			Spirit = spiritRating,
+			Charisma = charismaRating,
+			Vitality = vitalityRating,
+			Fortitude = fortitudeRating,
+
+			MaxHealth = (modFromRating(vitalityRating) * 5) + 10,
+			CurrentHealth = (modFromRating(vitalityRating) * 5) + 10,
+			MaxMana = (modFromRating(spiritRating) * 5) + 10,
+			CurrentMana = (modFromRating(spiritRating) * 5) + 10,
+			PhysicalResistance = modFromRating(fortitudeRating),
+			MagicResistance = modFromRating(fortitudeRating),
+			PlusToHit = (int)dexterityRating,
+			PhysicalDamageBonus = modFromRating(strengthRating),
+			MagicDamageBonus = modFromRating(intelligenceRating),
+			AgilityBonus = (int)agilityRating,
+			MovementSpeed = (int)agilityRating + 3,
+
+			Initiative = 0,
+			Abilities = GenerateAbilities(upgradePoints, SkillsPoolFromType(), FeatsPoolFromType())
+		});
+	}
+
+	private string GenerateAbilities(int upgradePoints, string[] skillsPool, string[] featsPool)
+	{
+		string[] selectedSkills;
+		Dictionary<string, int> skillLevels = new Dictionary<string, int>();
+		Dictionary<string, int> featLevels = new Dictionary<string, int>();
+
+		selectedSkills = new string[variables.numberOfStartingSkills];
+		List<string> availableSkills = new List<string>(skillsPool);
+		List<string> availableFeats = new List<string>(featsPool);
+
+		// Pick unique starting skills
+		for (int i = 0; i < variables.numberOfStartingSkills; i++)
+		{
+			if (availableSkills.Count == 0) break; // Safety check
+			int index = Random.Range(0, availableSkills.Count);
+			string skill = availableSkills[index];
+			availableSkills.RemoveAt(index);
+			selectedSkills[i] = skill;
+			skillLevels[skill] = 1; // Start at level 1
+		}
+
+		// Pick one random feat
+		if (availableFeats.Count > 0)
+		{
+			int index = Random.Range(0, availableFeats.Count);
+			string feat = availableFeats[index];
+			availableFeats.RemoveAt(index);
+			featLevels[feat] = 1; // Feats start at level 1
+		}
+
+		// Spend feat points
+		while (upgradePoints > 0)
+		{
+			bool spentPoints = false;
+
+			// Randomly decide whether to upgrade a skill, upgrade a feat, or pick a new one
+			int choice = Random.Range(0, 3); // 0 = skill upgrade, 1 = feat upgrade, 2 = new pick
+
+			if (choice == 0 && skillLevels.Count > 0)
+			{
+				// Upgrade an existing skill
+				List<string> upgradableSkills = new List<string>();
+				foreach (var skill in skillLevels)
+				{
+					if (skill.Value < 5 && upgradePoints >= skill.Value + 1) // Ensure enough points
+						upgradableSkills.Add(skill.Key);
+				}
+
+				if (upgradableSkills.Count > 0)
+				{
+					string skillToUpgrade = upgradableSkills[Random.Range(0, upgradableSkills.Count)];
+					int cost = skillLevels[skillToUpgrade] + 1;
+					skillLevels[skillToUpgrade]++;
+					upgradePoints -= cost;
+					spentPoints = true;
+				}
+			}
+			else if (choice == 1 && featLevels.Count > 0)
+			{
+				// Upgrade an existing feat
+				List<string> upgradableFeats = new List<string>();
+				foreach (var feat in featLevels)
+				{
+					if (feat.Value < 3 && upgradePoints >= (feat.Value + 1) * 2) // Ensure enough points
+						upgradableFeats.Add(feat.Key);
+				}
+
+				if (upgradableFeats.Count > 0)
+				{
+					string featToUpgrade = upgradableFeats[Random.Range(0, upgradableFeats.Count)];
+					int cost = (featLevels[featToUpgrade] + 1) * 2;
+					featLevels[featToUpgrade]++;
+					upgradePoints -= cost;
+					spentPoints = true;
+				}
+			}
+			else if (choice == 2 && availableSkills.Count > 0 && skillLevels.Count < 5)
+			{
+				// Pick a new skill
+				int index = Random.Range(0, availableSkills.Count);
+				string newSkill = availableSkills[index];
+				availableSkills.RemoveAt(index);
+				skillLevels[newSkill] = 1;
+				upgradePoints -= 1;
+				spentPoints = true;
+			}
+			else if (choice == 2 && availableFeats.Count > 0 && featLevels.Count < 5 && upgradePoints >= 2)
+			{
+				// Pick a new feat
+				int index = Random.Range(0, availableFeats.Count);
+				string newFeat = availableFeats[index];
+				availableFeats.RemoveAt(index);
+				featLevels[newFeat] = 1;
+				upgradePoints -= 2;
+				spentPoints = true;
+			}
+
+			// If no valid action could be taken, break to avoid infinite loops
+			if (!spentPoints) break;
+		}
+
+		StringBuilder result = new StringBuilder();
+
+		foreach (var skill in skillLevels)
+		{
+			result.AppendLine($"{skill.Key}: {skill.Value}");
+		}
+
+		foreach (var feat in featLevels)
+		{
+			result.AppendLine($"{feat.Key}: {feat.Value}");
+		}
+
+		return result.ToString();
+	}
+
+	private string[] SkillsPoolFromType()
+	{
+		return currentType switch
+		{
+			// Humanoids
+			Type.Humanoid_Civilian => Abilities.humanoidCivilianSkills,
+			Type.Humanoid_Soldier => Abilities.humanoidSoldierSkills,
+			Type.Humanoid_Champion => Abilities.humanoidChampionSkills,
+			Type.Humanoid_Commander => Abilities.humanoidCommanderSkills,
+			Type.Humanoid_Mage => Abilities.humanoidMageSkills,
+			Type.Humanoid_Battlemage => Abilities.humanoidBattlemageSkills,
+
+			// Undead
+			Type.Undead_Skeleton => Abilities.undeadSkeletonSkills,
+			Type.Undead_Lich => Abilities.undeadLichSkills,
+			Type.Undead_Wight => Abilities.undeadWightSkills,
+			Type.Undead_Zombie => Abilities.undeadZombieSkills,
+			Type.Undead_CorpseLord => Abilities.undeadCorpseLordSkills,
+			Type.Undead_Vampire => Abilities.undeadVampireSkills,
+			Type.Undead_Ghoul => Abilities.undeadGhoulSkills,
+			Type.Undead_DeathKnight => Abilities.undeadDeathKnightSkills,
+
+			// Demonic
+			Type.Demonic_Devil => Abilities.demonicDevilSkills,
+			Type.Demonic_Imp => Abilities.demonicImpSkills,
+			Type.Demonic_Demon => Abilities.demonicDemonSkills,
+			Type.Demonic_Azklat => Abilities.demonicAzklatSkills,
+			Type.Demonic_Hellhound => Abilities.demonicHellhoundSkills,
+			Type.Demonic_MurderCat => Abilities.demonicMurderCatSkills,
+			Type.Demonic_Sin => Abilities.demonicSinSkills,
+
+			// Abyssal
+			Type.Abyssal_Mimic => Abilities.abyssalMimicSkills,
+			Type.Abyssal_Remnant => Abilities.abyssalRemnantSkills,
+			Type.Abyssal_EldritchHorror => Abilities.abyssalEldritchHorrorSkills,
+			Type.Abyssal_Sludge => Abilities.abyssalSludgeSkills,
+			Type.Abyssal_WakingNightmare => Abilities.abyssalWakingNightmareSkills,
+			Type.Abyssal_Aspect => Abilities.abyssalAspectSkills,
+
+			// Aethereal
+			Type.Aethereal_Golem => Abilities.aetherealGolemSkills,
+			Type.Aethereal_Ghost => Abilities.aetherealGhostSkills,
+			Type.Aethereal_Wisp => Abilities.aetherealWispSkills,
+			Type.Aethereal_ManaVampire => Abilities.aetherealManaVampireSkills,
+			Type.Aethereal_Catoblepas => Abilities.aetherealCatoblepasSkills,
+			Type.Aethereal_Beholder => Abilities.aetherealBeholderSkills,
+
+			// Natural
+			Type.Natural_Treant => Abilities.naturalTreantSkills,
+			Type.Natural_Druid => Abilities.naturalDruidSkills,
+			Type.Natural_Dryad => Abilities.naturalDryadSkills,
+			Type.Natural_Nymph => Abilities.naturalNymphSkills,
+			Type.Natural_CreepingVine => Abilities.naturalCreepingVineSkills,
+			Type.Natural_PoisonBulb => Abilities.naturalPoisonBulbSkills,
+			Type.Natural_VenusPersonTrap => Abilities.naturalVenusPersonTrapSkills,
+
+			// Heavenly
+			Type.Heavenly_Messenger => Abilities.heavenlyMessengerSkills,
+			Type.Heavenly_Solider => Abilities.heavenlySoldierSkills,
+			Type.Heavenly_Scribe => Abilities.heavenlyScribeSkills,
+			Type.Heavenly_Angel => Abilities.heavenlyAngelSkills,
+			Type.Heavenly_Watcher => Abilities.heavenlyWatcherSkills,
+			Type.Heavenly_Virtue => Abilities.heavenlyVirtueSkills,
+
+			// Miscellaneous
+			Type.Misc_Dragon => Abilities.miscDragonSkills,
+			Type.Misc_Wyvern => Abilities.miscWyvernSkills,
+			Type.Misc_Ogre => Abilities.miscOgreSkills,
+			Type.Misc_Goblin => Abilities.miscGoblinSkills,
+			Type.Misc_Bunyip => Abilities.miscBunyipSkills,
+			Type.Misc_Giant => Abilities.miscGiantSkills,
+
+			// Default Case (Failsafe)
+			_ => new string[] { "Unknown Skill" }
+		};
+	}
+
+	private string[] FeatsPoolFromType()
+	{
+		return currentType switch
 		{
 			// Humanoids
 			Type.Humanoid_Civilian => Abilities.humanoidCivilianAbilities,
@@ -519,53 +746,6 @@ public class GenerateStats : MonoBehaviour
 			// Default Case (Failsafe)
 			_ => new string[] { "Unknown Ability" }
 		};
-
-		string[] selectedSkills = new string[variables.numberOfStartingSkills];
-		for (int i = 0; i < variables.numberOfStartingSkills; i++)
-		{
-			int skillIndex = Random.Range(0, Abilities.skills.Length);
-			selectedSkills[i] = Abilities.skills[skillIndex];
-		}
-
-		// Pick 1 random feat
-		int featIndex = Random.Range(0, featsPool.Length);
-		string selectedFeat = featsPool[featIndex];
-
-		// Calculate feat points
-		int featPoints = 4 * (int)currentRating;
-
-		// 50% of picking or upgrading a feat or picking or upgrading a skill for every 4 points
-
-		// At X rank, there should be no reason to have any featPoints left over, but up until then, a creature may save them to upgrade feats later
-
-        characterList.GenerateNPC(new CharacterList.NPC()
-		{
-			Name = randomAdjective + " " + currentType.ToString(),
-
-			Strength = strengthRating,
-			Dexterity = dexterityRating,
-			Agility = agilityRating,
-			Intelligence = intelligenceRating,
-			Spirit = spiritRating,
-			Charisma = charismaRating,
-			Vitality = vitalityRating,
-			Fortitude = fortitudeRating,
-
-			MaxHealth = (modFromRating(vitalityRating) * 5) + 10,
-			CurrentHealth = (modFromRating(vitalityRating) * 5) + 10,
-			MaxMana = (modFromRating(spiritRating) * 5) + 10,
-			CurrentMana = (modFromRating(spiritRating) * 5) + 10,
-			PhysicalResistance = modFromRating(fortitudeRating),
-			MagicResistance = modFromRating(fortitudeRating),
-			PlusToHit = (int)dexterityRating,
-			PhysicalDamageBonus = modFromRating(strengthRating),
-			MagicDamageBonus = modFromRating(intelligenceRating),
-			AgilityBonus = (int)agilityRating,
-			MovementSpeed = (int)agilityRating + 3,
-
-			Initiative = 0,
-			Abilities = string.Join("\n", selectedSkills) + "\n" + selectedFeat
-		});
 	}
 
 	private void DistributeStatPoints(int statPoints)
