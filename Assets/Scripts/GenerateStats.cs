@@ -554,7 +554,7 @@ public class GenerateStats : MonoBehaviour
 					spentPoints = true;
 				}
 			}
-			else if (choice == 2 && availableSkills.Count > 0 && skillLevels.Count < 5)
+			else if (choice == 2 && availableSkills.Count > 0 && skillLevels.Count < variables.maximumSkills)
 			{
 				// Pick a new skill
 				int index = Random.Range(0, availableSkills.Count);
@@ -564,7 +564,7 @@ public class GenerateStats : MonoBehaviour
 				upgradePoints -= 1;
 				spentPoints = true;
 			}
-			else if (choice == 2 && availableFeats.Count > 0 && featLevels.Count < 5 && upgradePoints >= 2)
+			else if (choice == 2 && availableFeats.Count > 0 && featLevels.Count < variables.maximumFeats && upgradePoints >= 2)
 			{
 				// Pick a new feat
 				int index = Random.Range(0, availableFeats.Count);
