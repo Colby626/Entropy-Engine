@@ -56,6 +56,7 @@ public class CharacterList : MonoBehaviour
 
         public int Initiative;
 		public string Abilities;
+		public string Notes;
     }
 
 	private List<Character> characters = new();

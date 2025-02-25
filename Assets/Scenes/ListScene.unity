@@ -2473,7 +2473,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 256733661}
-        m_TargetAssemblyTypeName: GenerateStats, Assembly-CSharp
+        m_TargetAssemblyTypeName: GenerateClassStats, Assembly-CSharp
         m_MethodName: GenerateClassStatPoints
         m_Mode: 1
         m_Arguments:
@@ -2531,13 +2531,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 256733656}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74be10b26575ee94eaf0b9b3476dc2ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 2fb69fb0d95adba47ac9bdc55814967a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rarityDropdown: {fileID: 2078300010}
   classDropdown: {fileID: 1788421839}
-  lordshipRatingDropdown: {fileID: 131691905}
-  lordshipTypeDropdown: {fileID: 1489725097}
   characterList: {fileID: 150201057}
 --- !u!1 &275017170
 GameObject:
@@ -4943,6 +4941,9 @@ MonoBehaviour:
   statPointsPerLevelUp: 2
   percentChanceOfBonusPointOnRatingUp: 25
   numberOfStartingSkills: 2
+  upgradePointsPerLevel: 4
+  maximumSkills: 5
+  maximumFeats: 5
   F: 0
   E: 3
   D: 6
@@ -17765,8 +17766,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74be10b26575ee94eaf0b9b3476dc2ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rarityDropdown: {fileID: 2078300010}
-  classDropdown: {fileID: 1788421839}
   lordshipRatingDropdown: {fileID: 131691905}
   lordshipTypeDropdown: {fileID: 1489725097}
   characterList: {fileID: 150201057}

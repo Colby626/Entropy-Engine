@@ -1,6 +1,55 @@
 public static class Abilities
 {
 	#region Skills
+	public static string[] martialSkills =
+	{
+		"Swords",
+		"Thrusting Swords",
+		"Daggers",
+		"Axes",
+		"Spears",
+		"Polearms",
+		"Maces",
+		"Colossal Weapons",
+		"Throwing Weapons",
+		"Archery",
+		"Light Shields",
+		"Heavy Shields",
+		"Staves",
+		"Heavy Armor",
+		"Medium Armor",
+		"Light Armor",
+	};
+
+	public static string[] arcaneSkills =
+	{
+		"Destruction",
+		"Alteration",
+		"Conjuration",
+		"Necromancy",
+		"Strengthening",
+		"Weakening",
+		"Movement",
+		"Shielding",
+		"Curative",
+		"Manipulation"
+	};
+
+	public static string[] craftingSkills =
+	{
+		"Smithing",
+		"Alchemy",
+		"Enchanting",
+	};
+
+	public static string[] miscSkills =
+	{
+		"Fortification",
+		"General Thievery",
+		"Dodging",
+		"Striking",
+	};
+
 	public static string[] humanoidCivilianSkills =
 	{
 		"Basic Crafting",
