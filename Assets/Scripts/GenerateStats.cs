@@ -77,7 +77,7 @@ public class GenerateStats : MonoBehaviour
 		Misc_Giant
 	}
 
-	private static readonly Dictionary<Type, float[]> typeWeights = new Dictionary<Type, float[]>
+	private static readonly Dictionary<Type, float[]> typeWeights = new ()
 	{
 		// Strength, Dexterity, Agility, Intelligence, Spirit, Charisma, Vitality, Fortitude
 		{ Type.Humanoid_Civilian, new float[] { .125f, .125f, .125f, .125f, .125f, .125f, .125f, .125f } },
@@ -184,15 +184,15 @@ public class GenerateStats : MonoBehaviour
 			Vitality = vitalityRating,
 			Fortitude = fortitudeRating,
 
-			MaxHealth = (modFromRating(vitalityRating) * 5) + 10,
-			CurrentHealth = (modFromRating(vitalityRating) * 5) + 10,
-			MaxMana = (modFromRating(spiritRating) * 5) + 10,
-			CurrentMana = (modFromRating(spiritRating) * 5) + 10,
-			PhysicalResistance = modFromRating(fortitudeRating),
-			MagicResistance = modFromRating(fortitudeRating),
+			MaxHealth = (ModFromRating(vitalityRating) * 5) + 10,
+			CurrentHealth = (ModFromRating(vitalityRating) * 5) + 10,
+			MaxMana = (ModFromRating(spiritRating) * 5) + 10,
+			CurrentMana = (ModFromRating(spiritRating) * 5) + 10,
+			PhysicalResistance = ModFromRating(fortitudeRating),
+			MagicResistance = ModFromRating(fortitudeRating),
 			PlusToHit = (int)dexterityRating,
-			PhysicalDamageBonus = modFromRating(strengthRating),
-			MagicDamageBonus = modFromRating(intelligenceRating),
+			PhysicalDamageBonus = ModFromRating(strengthRating),
+			MagicDamageBonus = ModFromRating(intelligenceRating),
 			AgilityBonus = (int)agilityRating,
 			MovementSpeed = (int)agilityRating + 3,
 
@@ -205,15 +205,33 @@ public class GenerateStats : MonoBehaviour
 	private string GenerateAbilities(int upgradePoints, string[] skillsPool, string[] featsPool)
 	{
 		string[] selectedSkills;
-		Dictionary<string, int> skillLevels = new Dictionary<string, int>();
-		Dictionary<string, int> featLevels = new Dictionary<string, int>();
+		Dictionary<string, int> skillLevels = new ();
+		Dictionary<string, int> featLevels = new ();
 
 		selectedSkills = new string[variables.numberOfStartingSkills];
-		List<string> availableSkills = new List<string>(skillsPool);
-		List<string> availableFeats = new List<string>(featsPool);
+		List<string> availableSkills = new (skillsPool);
+		List<string> availableFeats = new (featsPool);
+		int numberOfStartingSkills = variables.numberOfStartingSkills;
 
 		// Pick unique starting skills
-		for (int i = 0; i < variables.numberOfStartingSkills; i++)
+		// Humanoids must have at least one martial skill or magic skill
+		if (currentType == Type.Humanoid_Champion ||
+			currentType == Type.Humanoid_Civilian ||
+			currentType == Type.Humanoid_Commander ||
+			currentType == Type.Humanoid_Soldier)
+		{
+			int index = Random.Range(0, Abilities.martialSkills.Length);
+			skillLevels[Abilities.martialSkills[index]] = 1;
+			numberOfStartingSkills--;
+		}
+		if (currentType == Type.Humanoid_Battlemage ||
+			currentType == Type.Humanoid_Mage)
+		{
+			int index = Random.Range(0, Abilities.arcaneSkills.Length);
+			skillLevels[Abilities.arcaneSkills[index]] = 1;
+			numberOfStartingSkills--;
+		}
+		for (int i = 0; i < numberOfStartingSkills; i++)
 		{
 			if (availableSkills.Count == 0) break; // Safety check
 			int index = Random.Range(0, availableSkills.Count);
@@ -580,7 +598,7 @@ public class GenerateStats : MonoBehaviour
         }
 	}
 
-	private int modFromRating(Rating rating)
+	private int ModFromRating(Rating rating)
 	{
 		if (rating == Rating.F)
 			return variables.F;
