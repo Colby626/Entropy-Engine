@@ -250,10 +250,10 @@ public class GenerateStats : MonoBehaviour
 			featLevels[feat] = 1; // Feats start at level 1
 		}
 
-		// Spend feat points
+		// Spend upgrade points
 		while (upgradePoints > 0)
 		{
-			bool spentPoints = false;
+			bool validUpgradeFound = false;  // Track if any valid upgrade is found
 
 			// Randomly decide whether to upgrade a skill, upgrade a feat, or pick a new one
 			int choice = Random.Range(0, 3); // 0 = skill upgrade, 1 = feat upgrade, 2 = new pick
@@ -274,13 +274,13 @@ public class GenerateStats : MonoBehaviour
 					int cost = skillLevels[skillToUpgrade] + 1;
 					skillLevels[skillToUpgrade]++;
 					upgradePoints -= cost;
-					spentPoints = true;
+					validUpgradeFound = true;
 				}
 			}
 			else if (choice == 1 && featLevels.Count > 0)
 			{
 				// Upgrade an existing feat
-				List<string> upgradableFeats = new List<string>();
+				List<string> upgradableFeats = new ();
 				foreach (var feat in featLevels)
 				{
 					if (feat.Value < 3 && upgradePoints >= (feat.Value + 1) * 2) // Ensure enough points
@@ -293,7 +293,7 @@ public class GenerateStats : MonoBehaviour
 					int cost = (featLevels[featToUpgrade] + 1) * 2;
 					featLevels[featToUpgrade]++;
 					upgradePoints -= cost;
-					spentPoints = true;
+					validUpgradeFound = true;
 				}
 			}
 			else if (choice == 2 && availableSkills.Count > 0 && skillLevels.Count < variables.maximumSkills)
@@ -304,7 +304,7 @@ public class GenerateStats : MonoBehaviour
 				availableSkills.RemoveAt(index);
 				skillLevels[newSkill] = 1;
 				upgradePoints -= 1;
-				spentPoints = true;
+				validUpgradeFound = true;
 			}
 			else if (choice == 2 && availableFeats.Count > 0 && featLevels.Count < variables.maximumFeats && upgradePoints >= 2)
 			{
@@ -314,14 +314,18 @@ public class GenerateStats : MonoBehaviour
 				availableFeats.RemoveAt(index);
 				featLevels[newFeat] = 1;
 				upgradePoints -= 2;
-				spentPoints = true;
+				validUpgradeFound = true;
 			}
 
-			// If no valid action could be taken, break to avoid infinite loops
-			if (!spentPoints) break;
+			// If no valid upgrade was found, check for the next valid action instead of exiting
+			if (!validUpgradeFound && upgradePoints < 6) // Go through the loop again if you can purchase the most expensive upgrade
+			{
+				// If no valid upgrades are available, break the loop to avoid infinite loops
+				break;
+			}
 		}
 
-		StringBuilder result = new StringBuilder();
+		StringBuilder result = new ();
 
 		foreach (var skill in skillLevels)
 		{
