@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CharacterList : MonoBehaviour
 {
@@ -65,8 +67,9 @@ public class CharacterList : MonoBehaviour
 	public Transform classContentObjectInScrollview;
 	public Transform classListOfStats;
     public Transform lordshipContentObjectInScrollview;
-    public Transform lordshipListOfStats;
+    public TextMeshProUGUI lordshipListOfStats;
     public TextMeshProUGUI abilityDetailsText;
+	public TMP_InputField notes;
 
     public void GenerateCharacter(Character character)
 	{
@@ -89,11 +92,32 @@ public class CharacterList : MonoBehaviour
     public void DeleteNPC(CharacterTemplate template)
     {
         npcs.Remove(template.npcData);
+
+		// Clear text if deleting the selected NPC
+		int newlineIndex = lordshipListOfStats.text.IndexOf("\n");
+		if (newlineIndex >= 0)
+		{
+			string npcName = lordshipListOfStats.text.Substring(0, newlineIndex);
+			npcName = RemoveHtmlTags(npcName).Trim();
+			if (template.npcData.Name == npcName)
+			{
+				lordshipListOfStats.text = "";
+				abilityDetailsText.text = "";
+				notes.gameObject.SetActive(false);
+			}
+		}
+
         Destroy(template.gameObject);
     }
 
+	public string RemoveHtmlTags(string input)
+	{
+		// Remove anything between < and >, including the angle brackets
+		return Regex.Replace(input, "<.*?>", string.Empty);
+	}
+
 	// Called by the roll initiative button in the Class System tab
-    public void RollInitiative()
+	public void RollInitiative()
 	{
 		// Each character rolls a d20 and adds their initiative bonus
 		foreach (Character character in characters)
