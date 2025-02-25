@@ -49,6 +49,13 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 
 			StringBuilder statsText = new ();
 			statsText.AppendLine($"<b><u>{npcData.Name}</u></b>"); // Underline and bold
+			statsText.AppendLine("Physical Resistance: " + npcData.PhysicalResistance);
+			statsText.AppendLine("Magical Resistance: " + npcData.MagicResistance);
+			statsText.AppendLine("Agility Bonus: " + npcData.AgilityBonus);
+			statsText.AppendLine("Plus To Hit: " + npcData.PlusToHit);
+			statsText.AppendLine("Physical Damage Bonus: " + npcData.PhysicalDamageBonus);
+			statsText.AppendLine("Magic Damage Bonus: " + npcData.MagicDamageBonus);
+			statsText.AppendLine("Movement Spaces: " + npcData.MovementSpeed);
 			statsText.AppendLine("Strength: " + npcData.Strength);
 			statsText.AppendLine("Dexterity: " + npcData.Dexterity);
 			statsText.AppendLine("Agility: " + npcData.Agility);
@@ -59,13 +66,6 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 			statsText.AppendLine("Fortitude: " + npcData.Fortitude);
 			statsText.AppendLine("Max Health: " + npcData.MaxHealth);
 			statsText.AppendLine("Max Mana: " + npcData.MaxMana);
-			statsText.AppendLine("Physical Resistance: " + npcData.PhysicalResistance);
-			statsText.AppendLine("Magical Resistance: " + npcData.MagicResistance);
-			statsText.AppendLine("Agility Bonus: " + npcData.AgilityBonus);
-			statsText.AppendLine("Plus To Hit: " + npcData.PlusToHit);
-			statsText.AppendLine("Physical Damage Bonus: " + npcData.PhysicalDamageBonus);
-			statsText.AppendLine("Magic Damage Bonus: " + npcData.MagicDamageBonus);
-			statsText.AppendLine("Movement Spaces: " + npcData.MovementSpeed);
 
 			lordshipListOfStats.text = statsText.ToString();
 			abilityDetailsText.text = npcData.Abilities;
