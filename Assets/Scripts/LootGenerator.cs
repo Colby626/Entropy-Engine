@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class LootGenerator : MonoBehaviour
@@ -9,7 +10,10 @@ public class LootGenerator : MonoBehaviour
 	public TMP_Dropdown lootAmountDropdown;
 	public TextMeshProUGUI moneyText;
 	public GameObject minimizeCoinsButton;
+	public GameObject generateTreasureButton;
+	public TextMeshProUGUI treasureText;
 	private long totalCoins = 0;
+	private Variables variables;
 
 	private enum LootAmount
 	{
@@ -23,7 +27,8 @@ public class LootGenerator : MonoBehaviour
 
 	private LootAmount currentLootAmount;
 
-    public void GenerateLoot()
+	// Called by the button
+	public void GenerateLoot()
     {
 		/*
 		100 copper = 1 silver
@@ -82,6 +87,10 @@ public class LootGenerator : MonoBehaviour
 		}
 
 		totalCoins = copper;
+		if (totalCoins > 25 && CalculateTreasureValue() > 0)
+		{
+			generateTreasureButton.SetActive(true);
+		}
 		DisperseCoins(copper);
 	}
 
@@ -96,12 +105,13 @@ public class LootGenerator : MonoBehaviour
 
 		lootAmountDropdown.onValueChanged.AddListener(OnLootAmountDropdownChanged);
 		lootAmountDropdown.RefreshShownValue();
+
+		variables = FindObjectOfType<Variables>();
 	}
 
 	public void OnLootAmountDropdownChanged(int index)
 	{
 		currentLootAmount = (LootAmount)index;
-		Debug.Log("Loot Amount changed to: " + currentLootAmount);
 	}
 
 	private void DisperseCoins(long copper)
@@ -138,13 +148,13 @@ public class LootGenerator : MonoBehaviour
 		else 
 			money = $"Copper: {copper}";
 
-		Debug.Log(money);
 		moneyText.text = money;
 
 		if (silver < maxSilver || gold < maxGold || platinum < maxPlatinum || electrum < maxElectrum)
 			minimizeCoinsButton.SetActive(true);
 	}
 
+	// Called by the button
 	public void MinimizeCoins()
 	{
 		long copper = totalCoins;
@@ -176,7 +186,145 @@ public class LootGenerator : MonoBehaviour
 		else
 			money = $"Copper: {copper}";
 
-		Debug.Log(money);
 		moneyText.text = money;
+	}
+
+	// Called by the button
+	public void GenerateTreasure()
+	{
+		long treasureValue = CalculateTreasureValue();
+
+		if (treasureValue == 0)
+		{
+			return;
+		}
+
+		string chosenTreasuresString = "";
+		Dictionary<string, int> chosenTreasures = new(); // <Name, Quantity>
+		List<KeyValuePair<string, int>> affordableTreasures = new (Variables.treasureList); // <Name, Value>
+		List<KeyValuePair<string, int>> topTreasures = new(); // <Name, Value>
+		long sumOfTreasureValue = 0;
+
+		while (treasureValue >= 25) // The cheapest treasure
+		{
+			List<KeyValuePair<string, int>> treasuresToRemove = new();
+
+			foreach (var treasure in affordableTreasures)
+			{
+				if (treasure.Value > treasureValue)
+				{
+					treasuresToRemove.Add(treasure);
+				}
+			}
+
+			foreach (var treasure in treasuresToRemove)
+			{
+				affordableTreasures.Remove(treasure);
+			}
+
+			if (affordableTreasures.Count() == 0)
+			{
+				break;
+			}
+
+			topTreasures.Clear();
+			if (affordableTreasures.Count() < variables.treasureVariance)
+			{
+				for (int i = 0; i < affordableTreasures.Count(); i++)
+				{
+					topTreasures.Add(affordableTreasures[i]);
+				}
+				for (int i = affordableTreasures.Count(); i < variables.treasureVariance; i++)
+				{
+					topTreasures.Add(new KeyValuePair<string, int>("Nothing", 0));
+				}
+			}
+			else
+			{
+				for (int i = 0; i < variables.treasureVariance; i++)
+				{
+					topTreasures.Add(affordableTreasures[i]);
+				}
+			}
+
+			int indexToPick = Random.Range(0, topTreasures.Count);
+			var selectedTreasure = topTreasures[indexToPick];
+			if (selectedTreasure.Value == 0)
+				break;
+			treasureValue -= selectedTreasure.Value;
+			sumOfTreasureValue += selectedTreasure.Value;
+			if (chosenTreasures.ContainsKey(selectedTreasure.Key))
+			{
+				chosenTreasures[selectedTreasure.Key]++;
+			}
+			else
+			{
+				chosenTreasures.Add(selectedTreasure.Key, 1);
+			}
+		}
+		
+		foreach (var treasure in chosenTreasures)
+		{
+			string plural = treasure.Value > 1 ? "s" : "";
+			chosenTreasuresString += treasure.Value + " " + treasure.Key + plural + " " + ConvertToLargestCoinage(Variables.treasureList[treasure.Key]) + "\n";
+		}
+		chosenTreasuresString += "Sum: " + ConvertToLargestCoinage(sumOfTreasureValue);
+		treasureText.text = chosenTreasuresString;
+		totalCoins -= sumOfTreasureValue;
+		DisperseCoins(totalCoins);
+	}
+
+	private long CalculateTreasureValue()
+	{
+		if (currentLootAmount == LootAmount.Coinpurse)
+		{
+			return (long)Math.Round(variables.percentOfCoinpurseAsTreasure * totalCoins);
+		}
+		else if (currentLootAmount == LootAmount.Stash)
+		{
+			return (long)Math.Round(variables.percentOfStashAsTreasure * totalCoins);
+		}
+		else if (currentLootAmount == LootAmount.Lockbox)
+		{
+			return (long)Math.Round(variables.percentOfLockboxAsTreasure * totalCoins);
+		}
+		else if (currentLootAmount == LootAmount.Safe)
+		{
+			return (long)Math.Round(variables.percentOfSafeAsTreasure * totalCoins);
+		}
+		else if (currentLootAmount == LootAmount.Treasury)
+		{
+			return (long)Math.Round(variables.percentOfTreasuryAsTreasure * totalCoins);
+		}
+		else if (currentLootAmount == LootAmount.Horde)
+		{
+			return (long)Math.Round(variables.percentOfHordeAsTreasure * totalCoins);
+		}
+		else
+		{
+			Debug.LogWarning("Loot Amount not accounted for");
+			return 0;
+		}
+	}
+
+	public static string ConvertToLargestCoinage(long coppers)
+	{
+		decimal valueInElectrum = coppers / 1_000_000_000;
+		if (valueInElectrum >= 1) // If it's larger than 1 electrum, return as electrum
+			return valueInElectrum % 1 == 0 ? $"{valueInElectrum:F0} electrum" : $"{valueInElectrum:F2} electrum";
+
+		decimal valueInPlatinum = coppers / 1_000_000;
+		if (valueInPlatinum >= 1) // If it's larger than 1 platinum, return as platinum
+			return valueInPlatinum % 1 == 0 ? $"{valueInPlatinum:F0} platinum" : $"{valueInPlatinum:F2} platinum";
+
+		decimal valueInGold = coppers / 10_000;
+		if (valueInGold >= 1) // If it's larger than 1 gold, return as gold
+			return valueInGold % 1 == 0 ? $"{valueInGold:F0} gold" : $"{valueInGold:F2} gold";
+
+		decimal valueInSilver = coppers / 100;
+		if (valueInSilver >= 1) // If it's larger than 1 silver, return as silver
+			return valueInSilver % 1 == 0 ? $"{valueInSilver:F0} silver" : $"{valueInSilver:F2} silver";
+
+		return $"{coppers} copper";
 	}
 }

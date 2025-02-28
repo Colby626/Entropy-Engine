@@ -280,13 +280,11 @@ public class GenerateClassStats : MonoBehaviour
 	public void OnClassDropdownValueChanged(int index)
 	{
 		currentClass = (Class)index;
-		Debug.Log("Class changed to: " + currentClass);
 	}
 
 	public void OnRarityDropdownValueChanged(int index)
 	{
 		currentRarity = (Rarity)index;
-		Debug.Log("Rarity changed to: " + currentRarity);
 	}
 
 	public void Start()

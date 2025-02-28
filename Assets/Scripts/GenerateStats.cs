@@ -650,12 +650,10 @@ public class GenerateStats : MonoBehaviour
     public void OnRatingDropdownValueChanged(int index)
     {
         currentRating = (Rating)index;
-        Debug.Log("Rating changed to: " + currentRating);
     }
 
     public void OnTypeDropdownValueChanged(int index)
     {
         currentType = (Type)index;
-        Debug.Log("Type changed to: " + currentType);
     }
 }
