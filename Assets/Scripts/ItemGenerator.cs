@@ -42,7 +42,6 @@ public class ItemGenerator : MonoBehaviour
 		else
 			item = itemTier + " " + itemType;
 
-		Debug.Log(item);
 		itemText.text = item;
 	}
 

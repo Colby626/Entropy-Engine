@@ -34,7 +34,7 @@ public class LootGenerator : MonoBehaviour
 		100 copper = 1 silver
 		100 silver = 1 gold
 		100 gold = 1 platinum
-		1000 platinum = 1 electrum
+		100 platinum = 1 electrum
 		*/
 		long copper = 0;
 		if (currentLootAmount == LootAmount.Coinpurse) // 1 copper - 1 silver
@@ -77,13 +77,13 @@ public class LootGenerator : MonoBehaviour
 		{
 			int weightRoll = Random.Range(0, 101);
 			if (weightRoll < 50) // 50% chance
-				copper = (long)Random.Range(2000000, 2500000001); // 2 platinum = 2.5 electrum
+				copper = (long)Random.Range(2000000, 250000001); // 2 platinum = 2.5 electrum
 			else if (weightRoll < 80) // 30% chance
-				copper = (long)Random.Range(2500000000, 5000000001); // 2.5 electrum - 5 electrum
+				copper = (long)Random.Range(250000000, 500000001); // 2.5 electrum - 5 electrum
 			else if (weightRoll < 95) // 15% chance
-				copper = (long)Random.Range(5000000000, 7500000001); // 5 electrum - 7.5 electrum
+				copper = (long)Random.Range(500000000, 750000001); // 5 electrum - 7.5 electrum
 			else // 5% chance
-				copper = (long)Random.Range(7500000000, 10000000001); // 7.5 electrum - 10 electrum
+				copper = (long)Random.Range(750000000, 1000000001); // 7.5 electrum - 10 electrum
 		}
 
 		totalCoins = copper;
@@ -116,10 +116,10 @@ public class LootGenerator : MonoBehaviour
 
 	private void DisperseCoins(long copper)
 	{
-		// Calculate Electrum (1 electrum = 1 billion copper)
-		long maxElectrum = copper / 1000000000L; 
+		// Calculate Electrum (1 electrum = 100 million copper)
+		long maxElectrum = copper / 100000000L; 
 		int electrum = Random.Range(0, (int)maxElectrum); 
-		copper -= electrum * 1000000000L; 
+		copper -= electrum * 100000000L; 
 
 		// Calculate Platinum (1 platinum = 1 million copper)
 		long maxPlatinum = copper / 1000000L;
@@ -159,8 +159,8 @@ public class LootGenerator : MonoBehaviour
 	{
 		long copper = totalCoins;
 		// Calculate Electrum (1 electrum = 1 billion copper)
-		long maxElectrum = copper / 1000000000L;
-		copper -= maxElectrum * 1000000000L;
+		long maxElectrum = copper / 100000000L;
+		copper -= maxElectrum * 100000000L;
 
 		// Calculate Platinum (1 platinum = 1 million copper)
 		long maxPlatinum = copper / 1000000L;
@@ -309,7 +309,7 @@ public class LootGenerator : MonoBehaviour
 
 	public static string ConvertToLargestCoinage(long coppers)
 	{
-		decimal valueInElectrum = coppers / 1_000_000_000;
+		decimal valueInElectrum = coppers / 100_000_000;
 		if (valueInElectrum >= 1) // If it's larger than 1 electrum, return as electrum
 			return valueInElectrum % 1 == 0 ? $"{valueInElectrum:F0} electrum" : $"{valueInElectrum:F2} electrum";
 

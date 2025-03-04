@@ -184,8 +184,8 @@ public class GenerateStats : MonoBehaviour
 			Vitality = vitalityRating,
 			Fortitude = fortitudeRating,
 
-			MaxHealth = (ModFromRating(vitalityRating) * 5) + 10,
-			CurrentHealth = (ModFromRating(vitalityRating) * 5) + 10,
+			MaxHealth = ((int)vitalityRating * 50) == 0 ? 10 : (int)vitalityRating * 50, // This means if the vitalityRating * 50 equals 0, MaxHealth is set to 0
+			CurrentHealth = ((int)vitalityRating * 50) == 0 ? 10 : (int)vitalityRating * 50, // Otherwise, it is set to vitalityRating * 50
 			MaxMana = (ModFromRating(spiritRating) * 5) + 10,
 			CurrentMana = (ModFromRating(spiritRating) * 5) + 10,
 			PhysicalResistance = ModFromRating(fortitudeRating),
