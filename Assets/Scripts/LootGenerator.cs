@@ -201,75 +201,74 @@ public class LootGenerator : MonoBehaviour
 
 		string chosenTreasuresString = "";
 		Dictionary<string, int> chosenTreasures = new(); // <Name, Quantity>
-		List<KeyValuePair<string, int>> affordableTreasures = new (Variables.treasureList); // <Name, Value>
-		List<KeyValuePair<string, int>> topTreasures = new(); // <Name, Value>
+		Dictionary<string, Variables.Treasure> affordableTreasures = new(Variables.treasureDictionary); // <Name, Treasure>
 		long sumOfTreasureValue = 0;
 
 		while (treasureValue >= 25) // The cheapest treasure
 		{
-			List<KeyValuePair<string, int>> treasuresToRemove = new();
+			List<string> treasuresToRemove = new();
 
-			foreach (var treasure in affordableTreasures)
+			foreach (var kvp in affordableTreasures)
 			{
-				if (treasure.Value > treasureValue)
+				if (kvp.Value.value > treasureValue)
 				{
-					treasuresToRemove.Add(treasure);
+					treasuresToRemove.Add(kvp.Key);
 				}
 			}
 
-			foreach (var treasure in treasuresToRemove)
+			foreach (var treasureName in treasuresToRemove)
 			{
-				affordableTreasures.Remove(treasure);
+				affordableTreasures.Remove(treasureName);
 			}
 
-			if (affordableTreasures.Count() == 0)
+			if (affordableTreasures.Count == 0)
 			{
 				break;
 			}
 
-			topTreasures.Clear();
-			if (affordableTreasures.Count() < variables.treasureVariance)
+			List<Variables.Treasure> topTreasures = affordableTreasures.Values
+				.OrderByDescending(t => t.value)
+				.Take(variables.treasureVariance)
+				.ToList();
+
+			while (topTreasures.Count < variables.treasureVariance)
 			{
-				for (int i = 0; i < affordableTreasures.Count(); i++)
-				{
-					topTreasures.Add(affordableTreasures[i]);
-				}
-				for (int i = affordableTreasures.Count(); i < variables.treasureVariance; i++)
-				{
-					topTreasures.Add(new KeyValuePair<string, int>("Nothing", 0));
-				}
-			}
-			else
-			{
-				for (int i = 0; i < variables.treasureVariance; i++)
-				{
-					topTreasures.Add(affordableTreasures[i]);
-				}
+				topTreasures.Add(new Variables.Treasure("Nothing", 0));
 			}
 
 			int indexToPick = Random.Range(0, topTreasures.Count);
 			var selectedTreasure = topTreasures[indexToPick];
-			if (selectedTreasure.Value == 0)
+
+			if (selectedTreasure.value == 0)
 				break;
-			treasureValue -= selectedTreasure.Value;
-			sumOfTreasureValue += selectedTreasure.Value;
-			if (chosenTreasures.ContainsKey(selectedTreasure.Key))
+
+			treasureValue -= selectedTreasure.value;
+			sumOfTreasureValue += selectedTreasure.value;
+
+			if (chosenTreasures.ContainsKey(selectedTreasure.name))
 			{
-				chosenTreasures[selectedTreasure.Key]++;
+				chosenTreasures[selectedTreasure.name]++;
 			}
 			else
 			{
-				chosenTreasures.Add(selectedTreasure.Key, 1);
+				chosenTreasures[selectedTreasure.name] = 1;
+			}
+
+			if (Random.Range(0, 100) < variables.exitTreasureGenerationEarlyChance * 100)
+			{
+				break;
 			}
 		}
-		
+
 		foreach (var treasure in chosenTreasures)
 		{
 			string plural = treasure.Value > 1 ? "s" : "";
-			chosenTreasuresString += treasure.Value + " " + treasure.Key + plural + " " + ConvertToLargestCoinage(Variables.treasureList[treasure.Key]) + "\n";
+			chosenTreasuresString += $"{treasure.Value} {treasure.Key}{plural} {ConvertToLargestCoinage(Variables.treasureDictionary[treasure.Key].value)}\n";
 		}
+
 		chosenTreasuresString += "Sum: " + ConvertToLargestCoinage(sumOfTreasureValue);
 		treasureText.text = chosenTreasuresString;
+
 		totalCoins -= sumOfTreasureValue;
 		DisperseCoins(totalCoins);
 	}
@@ -309,21 +308,31 @@ public class LootGenerator : MonoBehaviour
 
 	public static string ConvertToLargestCoinage(long coppers)
 	{
-		decimal valueInElectrum = coppers / 100_000_000;
-		if (valueInElectrum >= 1) // If it's larger than 1 electrum, return as electrum
+		const decimal copperPerElectrum = 100_000_000; // 100 Platinum
+		const decimal copperPerPlatinum = 1_000_000;   // 100 Gold
+		const decimal copperPerGold = 10_000;          // 100 Silver
+		const decimal copperPerSilver = 100;           // 100 Copper
+
+		if (coppers >= copperPerElectrum) 
+		{
+			decimal valueInElectrum = coppers / copperPerElectrum;
 			return valueInElectrum % 1 == 0 ? $"{valueInElectrum:F0} electrum" : $"{valueInElectrum:F2} electrum";
-
-		decimal valueInPlatinum = coppers / 1_000_000;
-		if (valueInPlatinum >= 1) // If it's larger than 1 platinum, return as platinum
+		}
+		if (coppers >= copperPerPlatinum) 
+		{
+			decimal valueInPlatinum = coppers / copperPerPlatinum;
 			return valueInPlatinum % 1 == 0 ? $"{valueInPlatinum:F0} platinum" : $"{valueInPlatinum:F2} platinum";
-
-		decimal valueInGold = coppers / 10_000;
-		if (valueInGold >= 1) // If it's larger than 1 gold, return as gold
+		}
+		if (coppers >= copperPerGold) 
+		{
+			decimal valueInGold = coppers / copperPerGold;
 			return valueInGold % 1 == 0 ? $"{valueInGold:F0} gold" : $"{valueInGold:F2} gold";
-
-		decimal valueInSilver = coppers / 100;
-		if (valueInSilver >= 1) // If it's larger than 1 silver, return as silver
+		}
+		if (coppers >= copperPerSilver) 
+		{
+			decimal valueInSilver = coppers / copperPerSilver;
 			return valueInSilver % 1 == 0 ? $"{valueInSilver:F0} silver" : $"{valueInSilver:F2} silver";
+		}
 
 		return $"{coppers} copper";
 	}
