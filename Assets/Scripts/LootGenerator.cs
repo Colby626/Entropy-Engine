@@ -216,9 +216,9 @@ public class LootGenerator : MonoBehaviour
 				}
 			}
 
-			foreach (var treasureName in treasuresToRemove)
+			foreach (var treasure in treasuresToRemove)
 			{
-				affordableTreasures.Remove(treasureName);
+				affordableTreasures.Remove(treasure);
 			}
 
 			if (affordableTreasures.Count == 0)
@@ -245,13 +245,21 @@ public class LootGenerator : MonoBehaviour
 			treasureValue -= selectedTreasure.value;
 			sumOfTreasureValue += selectedTreasure.value;
 
-			if (chosenTreasures.ContainsKey(selectedTreasure.name))
+			string treasureName = selectedTreasure.name;
+
+			if (selectedTreasure.breakdown.Count() > 0)
 			{
-				chosenTreasures[selectedTreasure.name]++;
+				int breakdownIndex = Random.Range(0, selectedTreasure.breakdown.Count() - 1);
+				treasureName = selectedTreasure.breakdown[breakdownIndex];
+			}
+
+			if (chosenTreasures.ContainsKey(treasureName))
+			{
+				chosenTreasures[treasureName]++;
 			}
 			else
 			{
-				chosenTreasures[selectedTreasure.name] = 1;
+				chosenTreasures[treasureName] = 1;
 			}
 
 			if (Random.Range(0, 100) < variables.exitTreasureGenerationEarlyChance * 100)
@@ -263,7 +271,15 @@ public class LootGenerator : MonoBehaviour
 		foreach (var treasure in chosenTreasures)
 		{
 			string plural = treasure.Value > 1 ? "s" : "";
-			chosenTreasuresString += $"{treasure.Value} {treasure.Key}{plural} {ConvertToLargestCoinage(Variables.treasureDictionary[treasure.Key].value)}\n";
+
+			// Finds the treasure, even if treasure.Key is from the breakdown of the original treasure
+			Variables.Treasure originalTreasure = Variables.treasureDictionary.ContainsKey(treasure.Key)
+				? Variables.treasureDictionary[treasure.Key]
+				: Variables.treasureDictionary.Values.FirstOrDefault(t => t.breakdown.Contains(treasure.Key));
+
+			long treasureWorth = originalTreasure.name != null ? originalTreasure.value : 0;
+
+			chosenTreasuresString += $"{treasure.Value} {treasure.Key}{plural} {ConvertToLargestCoinage(treasureWorth)}\n";
 		}
 
 		chosenTreasuresString += "Sum: " + ConvertToLargestCoinage(sumOfTreasureValue);

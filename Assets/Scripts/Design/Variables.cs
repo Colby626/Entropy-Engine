@@ -149,7 +149,7 @@ public class Variables : MonoBehaviour
 		new Treasure ("Rare Enchanting Dust", 50_000),
 		new Treasure ("Rare Material", 20_000, new string[] 
 		{
-			"Dlaren",
+			"Dlaren Ingot",
 			"Shade Leather",
 			"Mana Silk"
 		}),
