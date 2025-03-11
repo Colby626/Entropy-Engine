@@ -26,6 +26,12 @@ public class RollAttack : MonoBehaviour
 		stringBuilder.Append("Other material: " + otherMaterial.name + "\n");
 		var enchantmentLevel = enchantmentLevelGroup.GetFirstActiveToggle();
 		stringBuilder.Append("Enchantment level: " + enchantmentLevel.name + "\n\n");
-		combatLog.text += stringBuilder.ToString();
+		combatLog.text = stringBuilder.ToString() + "\n" + combatLog.text;
+	}
+
+	// Called by button
+	public void Clear()
+	{
+		combatLog.text = "";
 	}
 }
