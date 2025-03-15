@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static GenerateStats;
 
 public class CharacterList : MonoBehaviour
 {
@@ -48,12 +49,12 @@ public class CharacterList : MonoBehaviour
         public int CurrentHealth;
         public int MaxMana;
         public int CurrentMana;
-        public int PhysicalResistance;
-        public int MagicResistance;
+        public int AC;
+        public int MC;
         public int PlusToHit;
-        public int PhysicalDamageBonus;
-        public int MagicDamageBonus;
-        public int AgilityBonus;
+        public string PhysicalDamageMultiplier;
+        public string MagicDamageMultiplier;
+        public int DodgeBonus;
         public int MovementSpeed;
 
         public int Initiative;
@@ -70,6 +71,7 @@ public class CharacterList : MonoBehaviour
     public TextMeshProUGUI lordshipListOfStats;
     public TextMeshProUGUI abilityDetailsText;
 	public TMP_InputField notes;
+    public NPC selectedCharacter;
 
     public void GenerateCharacter(Character character)
 	{
@@ -83,10 +85,293 @@ public class CharacterList : MonoBehaviour
 		Destroy(template.gameObject);
 	}
 
-    public void GenerateNPC(NPC npc)
+    public void GenerateNPC(NPC npc, GenerateStats.Rating npcRating)
     {
+        npc.AC = ACFromAbilities(npc.Abilities, npcRating);
+        npc.MC = MCFromAbilities(npc.Abilities, npcRating);
         npcs.Add(npc);
         AddNPCToScrollview(npc);
+    }
+
+    private int ACFromAbilities(string abilities, GenerateStats.Rating currentRating)
+    {
+        int workingBonus = 0;
+        string pattern = @"(Light Armor|Medium Armor|Heavy Armor): \d+";
+
+        Regex regex = new Regex(pattern);
+
+        Match match = regex.Match(abilities);
+
+        if (!match.Success)
+            return workingBonus;
+
+        string armorType = match.Value.Split(':')[0].Trim(); // e.g. "Light Armor"
+        string skillLevel = match.Value.Split(':')[1].Trim(); // e.g. "1"
+        if (int.Parse(skillLevel) >= 3)
+            workingBonus += 2;
+
+        // example match.Value == "Heavy Armor: 3"
+        if (currentRating == Rating.F || // Tier 1 armor
+            currentRating == Rating.E)
+        {
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 4;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 6;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 8;
+            }
+        }
+        if (currentRating == Rating.D || // Tier 2 armor
+            currentRating == Rating.C)
+        {
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 6;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 8;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 10;
+            }
+        }
+        if (currentRating == Rating.B || // Tier 3 armor
+            currentRating == Rating.A)
+        {
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 8;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 10;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 12;
+            }
+        }
+        if (currentRating == Rating.S || // Tier 4 armor
+            currentRating == Rating.SS)
+        {
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 10;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 12;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 14;
+            }
+        }
+        if (currentRating == Rating.SSS || // Tier 5 armor
+            currentRating == Rating.X)
+        {
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 12;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 14;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 16;
+            }
+        }
+        pattern = @"Shields: \d+";
+
+        regex = new Regex(pattern);
+
+        match = regex.Match(abilities);
+
+        if (!match.Success)
+            return workingBonus;
+
+        string shieldSkillLevel = match.Value.Split(':')[1].Trim(); // e.g. "1"
+        if (int.Parse(shieldSkillLevel) >= 3)
+            workingBonus += 2;
+
+        if (currentRating == Rating.F || // Tier 1 armor
+            currentRating == Rating.E)
+        {
+            workingBonus += 1;
+        }
+        if (currentRating == Rating.D || // Tier 2 armor
+            currentRating == Rating.C)
+        {
+            workingBonus += 2;
+        }
+        if (currentRating == Rating.B || // Tier 3 armor
+            currentRating == Rating.A)
+        {
+            workingBonus += 3;
+        }
+        if (currentRating == Rating.S || // Tier 4 armor
+            currentRating == Rating.SS)
+        {
+            workingBonus += 4;
+        }
+        if (currentRating == Rating.SSS || // Tier 5 armor
+            currentRating == Rating.X)
+        {
+            workingBonus += 5;
+        }
+
+        return workingBonus;
+    }
+
+    private int MCFromAbilities(string abilities, GenerateStats.Rating currentRating)
+    {
+        int workingBonus = 0;
+        string pattern = @"(Light Armor|Medium Armor|Heavy Armor): \d+";
+
+        Regex regex = new Regex(pattern);
+
+        Match match = regex.Match(abilities);
+
+        if (!match.Success)
+            return workingBonus;
+
+        string armorType = match.Value.Split(':')[0].Trim(); // e.g. "Light Armor"
+        string armorSkillLevel = match.Value.Split(':')[1].Trim(); // e.g. "1"
+        if (int.Parse(armorSkillLevel) >= 3)
+            workingBonus += 2;
+
+        // example match.Value == "Heavy Armor: 3"
+        if (currentRating == Rating.F || // Tier 1 armor
+            currentRating == Rating.E)
+        {
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 8;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 6;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 4;
+            }
+        }
+        if (currentRating == Rating.D || // Tier 2 armor
+            currentRating == Rating.C)
+        {
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 10;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 8;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 6;
+            }
+        }
+        if (currentRating == Rating.B || // Tier 3 armor
+            currentRating == Rating.A)
+        {
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 12;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 10;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 8;
+            }
+        }
+        if (currentRating == Rating.S || // Tier 4 armor
+            currentRating == Rating.SS)
+        {
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 14;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 12;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 10;
+            }
+        }
+        if (currentRating == Rating.SSS || // Tier 5 armor
+            currentRating == Rating.X)
+        {
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 16;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 14;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 12;
+            }
+        }
+
+        pattern = @"Shields: \d+";
+
+        regex = new Regex(pattern);
+
+        match = regex.Match(abilities);
+
+        if (!match.Success)
+            return workingBonus;
+
+        string shieldSkillLevel = match.Value.Split(':')[1].Trim(); // e.g. "1"
+        if (int.Parse(shieldSkillLevel) >= 3)
+            workingBonus += 2;
+
+        if (currentRating == Rating.F || // Tier 1 armor
+            currentRating == Rating.E)
+        {
+            workingBonus += 1;
+        }
+        if (currentRating == Rating.D || // Tier 2 armor
+            currentRating == Rating.C)
+        {
+            workingBonus += 2;
+        }
+        if (currentRating == Rating.B || // Tier 3 armor
+            currentRating == Rating.A)
+        {
+            workingBonus += 3;
+        }
+        if (currentRating == Rating.S || // Tier 4 armor
+            currentRating == Rating.SS)
+        {
+            workingBonus += 4;
+        }
+        if (currentRating == Rating.SSS || // Tier 5 armor
+            currentRating == Rating.X)
+        {
+            workingBonus += 5;
+        }
+
+        return workingBonus;
     }
 
     public void DeleteNPC(CharacterTemplate template)

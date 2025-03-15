@@ -11,10 +11,11 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 	private CharacterList.NPC npcData;
 	private TextMeshProUGUI abilityDetailsText;
 	private TMP_InputField notes;
+	private CharacterList characterList;
 
 	public void Start()
 	{
-		CharacterList characterList = GetComponent<CharacterTemplate>().characterList;
+		characterList = GetComponent<CharacterTemplate>().characterList;
 
         classListOfStats = characterList.classListOfStats;
 		lordshipListOfStats = characterList.lordshipListOfStats;
@@ -46,16 +47,17 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 		else
 		{ 
 			npcData = GetComponent<CharacterTemplate>().npcData;
+			characterList.selectedCharacter = npcData;
 
-			StringBuilder statsText = new ();
+            StringBuilder statsText = new ();
 			statsText.AppendLine($"<b><u>{npcData.Name}</u></b>"); // Underline and bold
-			statsText.AppendLine("Physical Resistance: " + npcData.PhysicalResistance);
-			statsText.AppendLine("Magical Resistance: " + npcData.MagicResistance);
-			statsText.AppendLine("Agility Bonus: " + npcData.AgilityBonus);
+            statsText.AppendLine("AC: " + npcData.AC);
+            statsText.AppendLine("MC: " + npcData.MC);
+            statsText.AppendLine("Dodge Bonus: " + npcData.DodgeBonus);
 			statsText.AppendLine("Plus To Hit: " + npcData.PlusToHit);
-			statsText.AppendLine("Physical Damage Bonus: " + npcData.PhysicalDamageBonus);
-			statsText.AppendLine("Magic Damage Bonus: " + npcData.MagicDamageBonus);
 			statsText.AppendLine("Movement Spaces: " + npcData.MovementSpeed);
+			statsText.AppendLine("Physical Damage Multiplier: " + npcData.PhysicalDamageMultiplier);
+			statsText.AppendLine("Magic Damage Multiplier: " + npcData.MagicDamageMultiplier);
 			statsText.AppendLine("Strength: " + npcData.Strength);
 			statsText.AppendLine("Dexterity: " + npcData.Dexterity);
 			statsText.AppendLine("Agility: " + npcData.Agility);

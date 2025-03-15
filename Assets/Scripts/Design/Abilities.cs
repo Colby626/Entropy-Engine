@@ -10,12 +10,12 @@ public static class Abilities
 		"Spears",
 		"Polearms",
 		"Maces",
-		"Colossal Weapons",
 		"Throwing Weapons",
 		"Archery",
-		"Light Shields",
-		"Heavy Shields",
-		"Staves",
+	};
+
+	public static string[] armorSkills =
+	{
 		"Heavy Armor",
 		"Medium Armor",
 		"Light Armor",
@@ -56,8 +56,9 @@ public static class Abilities
 		"Cooking",
 		"Herbalism",
 		"Basic Diplomacy",
-		"Trade"
-	};
+		"Trade",
+        "Shields",
+    };
 
 	public static string[] humanoidSoldierSkills =
 	{
@@ -66,8 +67,9 @@ public static class Abilities
 		"Maces",
 		"Spears",
 		"Shield Defense",
-		"Tactics"
-	};
+		"Tactics",
+        "Shields",
+    };
 
 	public static string[] humanoidChampionSkills =
 	{
@@ -75,8 +77,9 @@ public static class Abilities
 		"Shield Mastery",
 		"Battle Cry",
 		"Leadership",
-		"Tactical Strikes"
-	};
+		"Tactical Strikes",
+        "Shields",
+    };
 
 	public static string[] humanoidCommanderSkills =
 	{
@@ -84,8 +87,9 @@ public static class Abilities
 		"Leadership",
 		"Commanding Presence",
 		"Morale Boost",
-		"Strategic Planning"
-	};
+		"Strategic Planning",
+        "Shields",
+    };
 
 	public static string[] humanoidMageSkills =
 	{
@@ -93,8 +97,9 @@ public static class Abilities
 		"Ice Magic",
 		"Arcane Knowledge",
 		"Spellcasting",
-		"Enchanting"
-	};
+        "Enchanting",
+        "Staves",
+    };
 
 	public static string[] humanoidBattlemageSkills =
 	{
@@ -102,8 +107,9 @@ public static class Abilities
 		"Swordsmanship",
 		"Arcane Magic",
 		"Armor Use",
-		"Elemental Channeling"
-	};
+		"Elemental Channeling",
+        "Staves",
+    };
 
 	public static string[] undeadSkeletonSkills =
 	{

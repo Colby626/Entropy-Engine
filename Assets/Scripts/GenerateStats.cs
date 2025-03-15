@@ -188,21 +188,20 @@ public class GenerateStats : MonoBehaviour
 			CurrentHealth = ((int)vitalityRating * 50) == 0 ? 10 : (int)vitalityRating * 50, // Otherwise, it is set to vitalityRating * 50
 			MaxMana = (ModFromRating(spiritRating) * 5) + 10,
 			CurrentMana = (ModFromRating(spiritRating) * 5) + 10,
-			PhysicalResistance = ModFromRating(fortitudeRating),
-			MagicResistance = ModFromRating(fortitudeRating),
 			PlusToHit = (int)dexterityRating,
-			PhysicalDamageBonus = ModFromRating(strengthRating),
-			MagicDamageBonus = ModFromRating(intelligenceRating),
-			AgilityBonus = (int)agilityRating,
-			MovementSpeed = (int)agilityRating + 3,
+			PhysicalDamageMultiplier = MultiplierFromRating(strengthRating),
+            MagicDamageMultiplier = MultiplierFromRating(intelligenceRating),
+			DodgeBonus = ModFromRating(agilityRating),
+			MovementSpeed = (int)agilityRating * 2 + 3,
 
 			Initiative = 0,
 			Abilities = GenerateAbilities(upgradePoints, SkillsPoolFromType(), FeatsPoolFromType()),
-			Notes = ""
-		});
-	}
+			Notes = "",
+        },
+		currentRating);
+    }
 
-	private string GenerateAbilities(int upgradePoints, string[] skillsPool, string[] featsPool)
+    private string GenerateAbilities(int upgradePoints, string[] skillsPool, string[] featsPool)
 	{
 		string[] selectedSkills;
 		Dictionary<string, int> skillLevels = new ();
@@ -231,6 +230,36 @@ public class GenerateStats : MonoBehaviour
 			skillLevels[Abilities.arcaneSkills[index]] = 1;
 			numberOfStartingSkills--;
 		}
+
+		if (numberOfStartingSkills >= 1)
+		{
+            // Humanoids must have at least one armor skill
+            if (currentType == Type.Humanoid_Champion ||
+                currentType == Type.Humanoid_Civilian)
+            {
+                int index = Random.Range(0, Abilities.armorSkills.Length);
+                skillLevels[Abilities.armorSkills[index]] = 1;
+            }
+            else if (currentType == Type.Humanoid_Mage)
+            {
+                skillLevels["Light Armor"] = 1;
+            }
+			else if (currentType == Type.Humanoid_Soldier)
+			{
+                int index = Random.Range(0, 2);
+				if (index == 0)
+					skillLevels["Medium Armor"] = 1;
+				else
+					skillLevels["Heavy Armor"] = 1;
+            }
+			else if (currentType == Type.Humanoid_Commander ||
+					 currentType == Type.Humanoid_Battlemage)
+			{
+                skillLevels["Heavy Armor"] = 1;
+            }
+            numberOfStartingSkills--;
+        }
+
 		for (int i = 0; i < numberOfStartingSkills; i++)
 		{
 			if (availableSkills.Count == 0) break; // Safety check
@@ -511,6 +540,75 @@ public class GenerateStats : MonoBehaviour
 		Debug.Log("Bonus points awarded: " + bonusPoints);
 		pointsToDistribute += bonusPoints;
 
+		// Random Stat Groupings per level
+		for (int i = 0; i < (int)currentRating - 1; i++)
+		{
+            var index = Random.Range(0, 4);
+            if (index == 0) // Body
+            {
+                if (strengthRating == Rating.SS)
+					pointsToDistribute++;
+				else
+					strengthRating++;
+
+                if (agilityRating == Rating.SS)
+                    pointsToDistribute++;
+                else
+                    agilityRating++;
+            }
+            else if (index == 1) // Control
+            {
+                if (vitalityRating == Rating.SS)
+                    pointsToDistribute++;
+                else
+                    vitalityRating++;
+
+                if (dexterityRating == Rating.SS)
+                    pointsToDistribute++;
+                else
+                    dexterityRating++;
+            }
+            else if (index == 2) // Presence
+            {
+                if (intelligenceRating == Rating.SS)
+                    pointsToDistribute++;
+                else
+                    intelligenceRating++;
+
+                if (charismaRating == Rating.SS)
+                    pointsToDistribute++;
+                else
+                    charismaRating++;
+            }
+            else if (index == 3) // Willpower
+            {
+                if (spiritRating == Rating.SS)
+                    pointsToDistribute++;
+                else
+                    spiritRating++;
+
+                if (fortitudeRating == Rating.SS)
+                    pointsToDistribute++;
+                else
+                    fortitudeRating++;
+            }
+        }
+
+		if (pointsToDistribute >= (int)Rating.SS * 8) // The number of stats
+		{
+            strengthRating = Rating.SS;
+            dexterityRating = Rating.SS;
+            agilityRating = Rating.SS;
+            intelligenceRating = Rating.SS;
+            spiritRating = Rating.SS;
+            charismaRating = Rating.SS;
+            vitalityRating = Rating.SS;
+            fortitudeRating = Rating.SS;
+
+            Debug.LogWarning($"Too many points to distribute ({pointsToDistribute}), maxing out");
+			return;
+		}
+
 		for (int i = 0; i < pointsToDistribute; i++)
 		{
             float random = Random.Range(0f, 1f); // Calculate a random number between 0 and 1
@@ -623,6 +721,28 @@ public class GenerateStats : MonoBehaviour
 		else
 			return 0;
 	}
+
+	private string MultiplierFromRating(Rating rating)
+	{
+        if (rating == Rating.F)
+            return "1";
+        else if (rating == Rating.E)
+            return "1d2";
+        else if (rating == Rating.D)
+            return "1d4";
+        else if (rating == Rating.C)
+            return "1d6";
+        else if (rating == Rating.B)
+            return "1d8";
+        else if (rating == Rating.A)
+            return "2d4";
+        else if (rating == Rating.S)
+            return "2d6";
+        else if (rating == Rating.SS)
+            return "3d4";
+        else
+            return "0";
+    }
 
 	public void Start()
 	{
