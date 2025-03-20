@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Variables : MonoBehaviour
+public class Variables : ScriptableObject
 {
 	[Header("Leveling Up")]
 	public int startingStatPoints = 2;
