@@ -11,10 +11,15 @@ public class RollAttack : MonoBehaviour
     public ToggleGroup arrowMaterialGroup;
     public ToggleGroup enchantmentLevelGroup;
     public TextMeshProUGUI combatLog;
-    public CharacterList characterList;
+    private CharacterList characterList;
 
-    // Called by button 
-    public void AttackRoll()
+    public void Start()
+    {
+        characterList = FindAnyObjectByType<CharacterList>();
+	}
+
+	// Called by button 
+	public void AttackRoll()
     {
 		StringBuilder stringBuilder = new StringBuilder();
         var weaponType = weaponTypeGroup.GetFirstActiveToggle();

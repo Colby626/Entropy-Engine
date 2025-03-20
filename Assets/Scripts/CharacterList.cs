@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using static GenerateStats;
 
 public class CharacterList : MonoBehaviour
@@ -36,14 +35,14 @@ public class CharacterList : MonoBehaviour
 	{
 		public string Name;
 
-		public GenerateStats.Rating Strength;
-		public GenerateStats.Rating Dexterity;
-		public GenerateStats.Rating Agility;
-		public GenerateStats.Rating Intelligence;
-		public GenerateStats.Rating Spirit;
-		public GenerateStats.Rating Charisma;
-		public GenerateStats.Rating Vitality;
-		public GenerateStats.Rating Fortitude;
+		public Rating Strength;
+		public Rating Dexterity;
+		public Rating Agility;
+		public Rating Intelligence;
+		public Rating Spirit;
+		public Rating Charisma;
+		public Rating Vitality;
+		public Rating Fortitude;
 
         public int MaxHealth;
         public int CurrentHealth;
@@ -60,9 +59,51 @@ public class CharacterList : MonoBehaviour
         public int Initiative;
 		public string Abilities;
 		public string Notes;
+
+        public WeaponType WeaponType = WeaponType.Melee;
+		public WeaponSize WeaponSize = WeaponSize.Balanced;
+		public WeaponMaterial WeaponMaterial = WeaponMaterial.Iron;
+		public WeaponMaterial ArrowMaterial = WeaponMaterial.Primitive;
+        public WeaponEnchantment WeaponEnchantment = WeaponEnchantment.Unenchanted;
+	}
+
+    public enum WeaponType
+    {
+        Melee,
+        Ranged,
+        Magic
     }
 
-	private List<Character> characters = new();
+    public enum WeaponSize
+    {
+        Light,
+        Balanced,
+        Heavy,
+        Massive,
+        Colossal
+    }
+
+	public enum WeaponMaterial
+    {
+        Primitive,
+        Iron,
+        Steel,
+        Dlaren,
+        Draconic,
+        Divine_Demonic
+    }
+
+	public enum WeaponEnchantment
+    {
+        Unenchanted,
+        Common,
+        Uncommon,
+        Rare,
+        Epic,
+        Legendary
+    }
+
+    private List<Character> characters = new();
 	private List<NPC> npcs = new();
 	public GameObject characterTemplatePrefab;
 	public Transform classContentObjectInScrollview;
@@ -72,6 +113,7 @@ public class CharacterList : MonoBehaviour
     public TextMeshProUGUI abilityDetailsText;
 	public TMP_InputField notes;
     public NPC selectedCharacter;
+    public Transform combatTab;
 
     public void GenerateCharacter(Character character)
 	{
@@ -98,7 +140,7 @@ public class CharacterList : MonoBehaviour
         int workingBonus = 0;
         string pattern = @"(Light Armor|Medium Armor|Heavy Armor): \d+";
 
-        Regex regex = new Regex(pattern);
+        Regex regex = new(pattern);
 
         Match match = regex.Match(abilities);
 
@@ -238,7 +280,7 @@ public class CharacterList : MonoBehaviour
         int workingBonus = 0;
         string pattern = @"(Light Armor|Medium Armor|Heavy Armor): \d+";
 
-        Regex regex = new Regex(pattern);
+        Regex regex = new (pattern);
 
         Match match = regex.Match(abilities);
 

@@ -2,6 +2,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
@@ -12,6 +13,7 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 	private TextMeshProUGUI abilityDetailsText;
 	private TMP_InputField notes;
 	private CharacterList characterList;
+	private Transform combatTab;
 
 	public void Start()
 	{
@@ -21,6 +23,7 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 		lordshipListOfStats = characterList.lordshipListOfStats;
 		abilityDetailsText = characterList.abilityDetailsText;
 		notes = characterList.notes;
+		combatTab = characterList.combatTab;
     }
 
 	public void OnSelect(BaseEventData eventData)
@@ -74,6 +77,65 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 			notes.gameObject.SetActive(true);
 			notes.text = npcData.Notes;
 			notes.GetComponent<UpdateNotes>().npc = npcData;
+			SetTogglesToCharacterDefault();
+		}
+	}
+
+	private void SetTogglesToCharacterDefault()
+	{
+		Transform typeToggles = combatTab.GetChild(0);
+		string targetName = characterList.selectedCharacter.WeaponType.ToString();
+
+		foreach (Transform child in typeToggles)
+		{
+			if (child.TryGetComponent<Toggle>(out Toggle toggle))
+			{
+				toggle.isOn = (child.name == targetName);
+			}
+		}
+
+		Transform sizeToggles = combatTab.GetChild(1);
+		targetName = characterList.selectedCharacter.WeaponSize.ToString();
+
+		foreach (Transform child in sizeToggles)
+		{
+			if (child.TryGetComponent<Toggle>(out Toggle toggle))
+			{
+				toggle.isOn = (child.name == targetName);
+			}
+		}
+
+		Transform materialToggles = combatTab.GetChild(2);
+		targetName = characterList.selectedCharacter.WeaponMaterial.ToString();
+
+		foreach (Transform child in materialToggles)
+		{
+			if (child.TryGetComponent<Toggle>(out Toggle toggle))
+			{
+				toggle.isOn = (child.name == targetName);
+			}
+		}
+
+		Transform arrowMaterialToggles = combatTab.GetChild(3);
+		targetName = characterList.selectedCharacter.ArrowMaterial.ToString();
+
+		foreach (Transform child in arrowMaterialToggles)
+		{
+			if (child.TryGetComponent<Toggle>(out Toggle toggle))
+			{
+				toggle.isOn = (child.name == targetName);
+			}
+		}
+
+		Transform enchantmentToggles = combatTab.GetChild(4);
+		targetName = characterList.selectedCharacter.WeaponEnchantment.ToString();
+
+		foreach (Transform child in enchantmentToggles)
+		{
+			if (child.TryGetComponent<Toggle>(out Toggle toggle))
+			{
+				toggle.isOn = (child.name == targetName);
+			}
 		}
 	}
 
