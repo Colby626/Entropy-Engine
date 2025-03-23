@@ -21,13 +21,16 @@ public class RollAttack : MonoBehaviour
 	// Called by button 
 	public void AttackRoll()
     {
+        var selectedCharacter = characterList.selectedCharacter;
+        if (selectedCharacter == null)
+            return;
+
 		StringBuilder stringBuilder = new StringBuilder();
         var weaponType = weaponTypeGroup.GetFirstActiveToggle();
 		var weaponSize = weaponSizeGroup.GetFirstActiveToggle();
 		var weaponMaterial = weaponMaterialGroup.GetFirstActiveToggle();
 		var arrowMaterial = arrowMaterialGroup.GetFirstActiveToggle();
 		var enchantmentLevel = enchantmentLevelGroup.GetFirstActiveToggle();
-        var selectedCharacter = characterList.selectedCharacter;
 
         int physicalDamageRoll = 0;
         int magicalDamageRoll = 0;

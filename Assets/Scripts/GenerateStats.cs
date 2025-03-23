@@ -184,10 +184,10 @@ public class GenerateStats : MonoBehaviour
 			Vitality = vitalityRating,
 			Fortitude = fortitudeRating,
 
-			MaxHealth = ((int)vitalityRating * 50) == 0 ? 10 : (int)vitalityRating * 50, // This means if the vitalityRating * 50 equals 0, MaxHealth is set to 0
+			MaxHealth = ((int)vitalityRating * 50) == 0 ? 10 : (int)vitalityRating * 50, // This means if the vitalityRating * 50 equals 0, MaxHealth is set to 10
 			CurrentHealth = ((int)vitalityRating * 50) == 0 ? 10 : (int)vitalityRating * 50, // Otherwise, it is set to vitalityRating * 50
-			MaxMana = (ModFromRating(spiritRating) * 5) + 10,
-			CurrentMana = (ModFromRating(spiritRating) * 5) + 10,
+			MaxMana = (int)spiritRating * 50,
+			CurrentMana = (int)spiritRating * 50,
 			PlusToHit = (int)dexterityRating,
 			PhysicalDamageMultiplier = MultiplierFromRating(strengthRating),
             MagicDamageMultiplier = MultiplierFromRating(intelligenceRating),
@@ -290,7 +290,7 @@ public class GenerateStats : MonoBehaviour
 			if (choice == 0 && skillLevels.Count > 0)
 			{
 				// Upgrade an existing skill
-				List<string> upgradableSkills = new List<string>();
+				List<string> upgradableSkills = new ();
 				foreach (var skill in skillLevels)
 				{
 					if (skill.Value < 5 && upgradePoints >= skill.Value + 1) // Ensure enough points

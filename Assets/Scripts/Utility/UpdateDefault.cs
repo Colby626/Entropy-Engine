@@ -2,10 +2,9 @@ using UnityEngine;
 
 public class UpdateDefault : MonoBehaviour
 {
-	private CharacterList characterList;
     public void UpdateNPCDefault()
     {
-		var selectedCharacter = characterList.selectedCharacter;
+		var selectedCharacter = FindObjectOfType<CharacterList>().selectedCharacter;
 		switch (transform.parent.name)
 		{
 			case "Type":
@@ -78,10 +77,5 @@ public class UpdateDefault : MonoBehaviour
 			default:
 				break;
 		}
-	}
-
-	public void Start()
-	{
-		characterList = FindAnyObjectByType<CharacterList>();
 	}
 }
