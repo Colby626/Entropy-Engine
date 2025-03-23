@@ -9,7 +9,7 @@ public class ScrollableText : MonoBehaviour
 	private ScrollRect scrollRect;
 	public float maxTextHeight = 500f;
 
-	void Start()
+	void OnEnable()
 	{
 		text = GetComponent<TextMeshProUGUI>();
 		lastText = text.text;
@@ -18,14 +18,7 @@ public class ScrollableText : MonoBehaviour
 
 	private void Update()
 	{
-		if (text.preferredHeight > maxTextHeight)
-		{
-			scrollRect.vertical = true;
-		}
-		else
-		{
-			scrollRect.vertical = false;
-		}
+		scrollRect.verticalScrollbar.gameObject.SetActive(text.preferredHeight > maxTextHeight);
 
 		if (text.text != lastText)
 		{
