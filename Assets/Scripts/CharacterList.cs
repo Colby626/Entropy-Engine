@@ -6,31 +6,6 @@ using static GenerateStats;
 
 public class CharacterList : MonoBehaviour
 {
-	public class Character
-	{
-		public string Name;
-
-		public int Endurance;
-		public int Strength;
-		public int Dexterity;
-		public int Agility;
-		public int Intelligence;
-		public int Spirit;
-		
-		public int MaxHealth;
-		public int CurrentHealth;
-		public int MaxMana;
-		public int CurrentMana;
-		public int PhysicalResistance;
-		public int MagicResistance;
-		public int PlusToHit;
-		public int AgilityClass;
-		public int InitiativeBonus;
-		public int MovementSpeed;
-
-		public int Initiative;
-	}
-
 	public class NPC
 	{
 		public string Name;
@@ -103,29 +78,14 @@ public class CharacterList : MonoBehaviour
         Legendary
     }
 
-    private List<Character> characters = new();
 	private List<NPC> npcs = new();
 	public GameObject characterTemplatePrefab;
-	public Transform classContentObjectInScrollview;
-	public Transform classListOfStats;
     public Transform lordshipContentObjectInScrollview;
     public TextMeshProUGUI lordshipListOfStats;
     public TextMeshProUGUI abilityDetailsText;
 	public TMP_InputField notes;
     public NPC selectedCharacter;
     public Transform combatTab;
-
-    public void GenerateCharacter(Character character)
-	{
-		characters.Add(character);
-		AddCharacterToScrollview(character);
-	}
-
-	public void DeleteCharacter(CharacterTemplate template)
-	{
-		characters.Remove(template.characterData);
-		Destroy(template.gameObject);
-	}
 
     public void GenerateNPC(NPC npc, GenerateStats.Rating npcRating)
     {
@@ -443,34 +403,6 @@ public class CharacterList : MonoBehaviour
 		return Regex.Replace(input, "<.*?>", string.Empty);
 	}
 
-	// Called by the roll initiative button in the Class System tab
-	public void RollInitiative()
-	{
-		// Each character rolls a d20 and adds their initiative bonus
-		foreach (Character character in characters)
-		{
-			if (character.Initiative == 0)
-			{
-				character.Initiative = Random.Range(1, 21) + character.InitiativeBonus;
-			}
-		}
-
-		// The characters are sorted from greatest initative to lowest initative
-		characters.Sort((x, y) => y.Initiative.CompareTo(x.Initiative));
-
-		// The characters are sorted visually
-		for (int i = classContentObjectInScrollview.childCount - 1; i >= 0; i--)
-		{
-			Transform child = classContentObjectInScrollview.GetChild(i);
-			Destroy(child.gameObject);
-		}
-
-        foreach (Character character in characters)
-		{
-			AddCharacterToScrollview(character);
-		}
-	}
-
 	// Called by the roll initiative button in the Lordship tab
 	public void RollLordshipInitiative()
     {
@@ -498,20 +430,6 @@ public class CharacterList : MonoBehaviour
             AddNPCToScrollview(npc);
         }
     }
-
-    private void AddCharacterToScrollview(Character character)
-	{
-		GameObject template = Instantiate(characterTemplatePrefab);
-		template.transform.SetParent(classContentObjectInScrollview);
-		// For whatever reason, this is required for the children to scale properly within the scrollview
-		template.transform.localScale = new Vector3(0.9244992f, 0.9244992f, 0.9244992f);
-		if (character.Initiative != 0)
-			template.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = character.Initiative.ToString();
-
-		CharacterTemplate characterTemplate = template.GetComponent<CharacterTemplate>();
-		characterTemplate.characterList = this;
-		characterTemplate.characterData = character;
-	}
 
     private void AddNPCToScrollview(NPC npc)
     {
