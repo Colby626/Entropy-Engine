@@ -155,6 +155,7 @@ public class GenerateStats : MonoBehaviour
 	// Called by the Generate button
 	public void GenerateLordshipStatPoints()
 	{
+		variables = FindObjectOfType<OptionsMenu>().settings;
         strengthRating = Rating.F;
 		dexterityRating = Rating.F;
 		agilityRating = Rating.F;
@@ -746,8 +747,6 @@ public class GenerateStats : MonoBehaviour
 
 	public void Start()
 	{
-		variables = FindAnyObjectByType<Variables>();
-
 		// Sets the dropdown menus' to have the correct enum to choose from
 		lordshipRatingDropdown.options.Clear();
         foreach (string ratingName in Enum.GetNames(typeof(Rating)))

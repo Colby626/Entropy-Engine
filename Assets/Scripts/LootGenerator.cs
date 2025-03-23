@@ -30,6 +30,7 @@ public class LootGenerator : MonoBehaviour
 	// Called by the button
 	public void GenerateLoot()
     {
+		variables = FindObjectOfType<OptionsMenu>().settings;
 		/*
 		100 copper = 1 silver
 		100 silver = 1 gold
@@ -105,8 +106,6 @@ public class LootGenerator : MonoBehaviour
 
 		lootAmountDropdown.onValueChanged.AddListener(OnLootAmountDropdownChanged);
 		lootAmountDropdown.RefreshShownValue();
-
-		variables = FindObjectOfType<Variables>();
 	}
 
 	public void OnLootAmountDropdownChanged(int index)
@@ -192,6 +191,7 @@ public class LootGenerator : MonoBehaviour
 	// Called by the button
 	public void GenerateTreasure()
 	{
+		variables = FindObjectOfType<OptionsMenu>().settings;
 		long treasureValue = CalculateTreasureValue();
 
 		if (treasureValue == 0)

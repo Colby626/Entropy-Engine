@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "NewVariables", menuName = "Game Settings/Variables")]
 public class Variables : ScriptableObject
 {
 	[Header("Leveling Up")]
