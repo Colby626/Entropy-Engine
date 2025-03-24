@@ -5,6 +5,8 @@ public class UpdateDefault : MonoBehaviour
     public void UpdateNPCDefault()
     {
 		var selectedCharacter = FindObjectOfType<CharacterList>().selectedCharacter;
+		if (selectedCharacter == null)
+			return;
 		switch (transform.parent.name)
 		{
 			case "Type":
