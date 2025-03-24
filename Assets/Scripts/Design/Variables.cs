@@ -2,11 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewVariables", menuName = "Game Settings/Variables")]
-public class Variables : ScriptableObject
+public class Variables : MonoBehaviour
 {
-	public SaveData SaveData;
-
 	public static string[] adventurerAdjectives =
 	{
 		"Brash",
