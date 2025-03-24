@@ -533,7 +533,6 @@ public static class Abilities
 		"Barter: Gain better prices when trading.",
 		"Laborer: Increased endurance for physical tasks.",
 		"Streetwise: Navigate urban environments with ease.",
-		"Length Test: This is to test the length of the scroll view... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque dapibus id diam eget finibus. Sed ullamcorper, urna finibus pellentesque aliquam, enim nibh posuere justo, nec convallis dolor justo quis orci. Suspendisse nec erat convallis odio accumsan consequat eget eu libero. Proin dictum velit nec volutpat tempus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur eget erat nec libero tristique porttitor a a lorem. Morbi consectetur quam vitae nunc bibendum hendrerit. Integer ut tortor id erat molestie placerat. Nulla consectetur accumsan gravida. Pellentesque cursus sapien at dapibus congue. Donec eget enim vel elit blandit pretium vel sit amet tellus. Praesent ornare nunc vestibulum lectus dictum, ut semper tortor scelerisque. Etiam venenatis eu metus id varius."
 	};
 
 	public static string[] humanoidSoldierAbilities =
