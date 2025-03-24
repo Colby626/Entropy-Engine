@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
-using static GenerateStats;
+using static Variables;
 
 public class CharacterList : MonoBehaviour
 {
@@ -87,7 +87,7 @@ public class CharacterList : MonoBehaviour
     public NPC selectedCharacter;
     public Transform combatTab;
 
-    public void GenerateNPC(NPC npc, GenerateStats.Rating npcRating)
+    public void GenerateNPC(NPC npc, Rating npcRating)
     {
         npc.AC = ACFromAbilities(npc.Abilities, npcRating);
         npc.MC = MCFromAbilities(npc.Abilities, npcRating);
@@ -95,7 +95,7 @@ public class CharacterList : MonoBehaviour
         AddNPCToScrollview(npc);
     }
 
-    private int ACFromAbilities(string abilities, GenerateStats.Rating currentRating)
+    private int ACFromAbilities(string abilities, Rating currentRating)
     {
         int workingBonus = 0;
         string pattern = @"(Light Armor|Medium Armor|Heavy Armor): \d+";
@@ -235,7 +235,7 @@ public class CharacterList : MonoBehaviour
         return workingBonus;
     }
 
-    private int MCFromAbilities(string abilities, GenerateStats.Rating currentRating)
+    private int MCFromAbilities(string abilities, Rating currentRating)
     {
         int workingBonus = 0;
         string pattern = @"(Light Armor|Medium Armor|Heavy Armor): \d+";

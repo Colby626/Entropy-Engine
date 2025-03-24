@@ -2,6 +2,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static Variables;
 
 public class RollAttack : MonoBehaviour
 {
@@ -146,36 +147,36 @@ public class RollAttack : MonoBehaviour
 
             switch (selectedCharacter.Intelligence)
             {
-                case GenerateStats.Rating.F:
+                case Rating.F:
                     break;
 
-                case GenerateStats.Rating.E: // 1d2
+                case Rating.E: // 1d2
                     magicalDamageRoll *= RollDice(1, 2);
                     break;
 
-                case GenerateStats.Rating.D: // 1d4
+                case Rating.D: // 1d4
                     magicalDamageRoll *= RollDice(1, 4);
                     break;
 
-                case GenerateStats.Rating.C: // 1d6
+                case Rating.C: // 1d6
                     magicalDamageRoll *= RollDice(1, 6);
                     break;
 
-                case GenerateStats.Rating.B: // 1d8
+                case Rating.B: // 1d8
                     magicalDamageRoll *= RollDice(1, 8);
                     break;
 
-                case GenerateStats.Rating.A: // 2d4
+                case Rating.A: // 2d4
                     multiplier = RollDice(2, 4);
                     magicalDamageRoll *= multiplier;
                     break;
 
-                case GenerateStats.Rating.S: // 2d6
+                case Rating.S: // 2d6
                     multiplier = RollDice(2, 6);
                     magicalDamageRoll *= multiplier;
                     break;
 
-                case GenerateStats.Rating.SS: // 3d4
+                case Rating.SS: // 3d4
                     multiplier = RollDice(3, 4);
                     magicalDamageRoll *= multiplier;
                     break;
@@ -188,36 +189,36 @@ public class RollAttack : MonoBehaviour
             {
                 switch (selectedCharacter.Strength)
                 {
-                    case GenerateStats.Rating.F:
+                    case Rating.F:
                         break;
 
-                    case GenerateStats.Rating.E: // 1d2
+                    case Rating.E: // 1d2
                         physicalDamageRoll *= RollDice(1, 2);
                         break;
 
-                    case GenerateStats.Rating.D: // 1d4
+                    case Rating.D: // 1d4
                         physicalDamageRoll *= RollDice(1, 4);
                         break;
 
-                    case GenerateStats.Rating.C: // 1d6
+                    case Rating.C: // 1d6
                         physicalDamageRoll *= RollDice(1, 6);
                         break;
 
-                    case GenerateStats.Rating.B: // 1d8
+                    case Rating.B: // 1d8
                         physicalDamageRoll *= RollDice(1, 8);
                         break;
 
-                    case GenerateStats.Rating.A: // 2d4
+                    case Rating.A: // 2d4
                         multiplier = RollDice(2, 4);
                         physicalDamageRoll *= multiplier;
                         break;
 
-                    case GenerateStats.Rating.S: // 2d6
+                    case Rating.S: // 2d6
                         multiplier = RollDice(2, 6);
                         physicalDamageRoll *= multiplier;
                         break;
 
-                    case GenerateStats.Rating.SS: // 3d4
+                    case Rating.SS: // 3d4
                         multiplier = RollDice(3, 4);
                         physicalDamageRoll *= multiplier;
                         break;
@@ -264,36 +265,36 @@ public class RollAttack : MonoBehaviour
         {
             switch (selectedCharacter.Intelligence)
             {
-                case GenerateStats.Rating.F:
+                case Rating.F:
                     break;
 
-                case GenerateStats.Rating.E: // 1d2
+                case Rating.E: // 1d2
                     physicalDamageRoll *= RollDice(1, 2);
                     break;
 
-                case GenerateStats.Rating.D: // 1d4
+                case Rating.D: // 1d4
                     physicalDamageRoll *= RollDice(1, 4);
                     break;
 
-                case GenerateStats.Rating.C: // 1d6
+                case Rating.C: // 1d6
                     physicalDamageRoll *= RollDice(1, 6);
                     break;
 
-                case GenerateStats.Rating.B: // 1d8
+                case Rating.B: // 1d8
                     physicalDamageRoll *= RollDice(1, 8);
                     break;
 
-                case GenerateStats.Rating.A: // 2d4
+                case Rating.A: // 2d4
                     multiplier = RollDice(2, 4);
                     physicalDamageRoll *= multiplier;
                     break;
 
-                case GenerateStats.Rating.S: // 2d6
+                case Rating.S: // 2d6
                     multiplier = RollDice(2, 6);
                     physicalDamageRoll *= multiplier;
                     break;
 
-                case GenerateStats.Rating.SS: // 3d4
+                case Rating.SS: // 3d4
                     multiplier = RollDice(3, 4);
                     physicalDamageRoll *= multiplier;
                     break;
