@@ -7,9 +7,10 @@ public class ResizeImageToText : MonoBehaviour
 
 	public void Update()
 	{
-		Vector2 textSize = new Vector2(
-			transform.GetChild(0).GetComponent<TextMeshProUGUI>().preferredWidth,
-			transform.GetChild(0).GetComponent<TextMeshProUGUI>().preferredHeight
+		TextMeshProUGUI text = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+		Vector2 textSize = new (
+			text.renderedWidth,
+			text.renderedHeight
 		);
 
 		GetComponent<RectTransform>().sizeDelta = textSize + padding;

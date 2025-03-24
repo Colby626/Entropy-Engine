@@ -1,29 +1,43 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class HoverDisplayName : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-	public TextMeshProUGUI nameDisplayText;
+	public Image nameDisplayTextBackground;
+	public Color textColor = Color.white;
+	public bool textBackground;
+	public float xOffset;
+	public float yOffset;
+	[Range(0f, 1f)]
+	public float backgroundOpacity = 0f;
 	private string objectName;
 	private bool isHovering = false;
+	private TextMeshProUGUI text;
 
 	private void Start()
 	{
-		nameDisplayText.alpha = 0;
+		text = nameDisplayTextBackground.GetComponentInChildren<TextMeshProUGUI>();
+		text.alpha = 0;
 		objectName = gameObject.name;
 	}
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
-		nameDisplayText.text = objectName; 
-		nameDisplayText.alpha = 1; 
+		if (textBackground)
+			nameDisplayTextBackground.color = new Color(1, 1, 1, backgroundOpacity); 
+		text.text = objectName; 
+		text.alpha = 1; 
+		text.color = textColor;
 		isHovering = true; 
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
-		nameDisplayText.alpha = 0; 
+		if (textBackground)
+			nameDisplayTextBackground.color = new Color(1, 1, 1, 0);
+		text.alpha = 0; 
 		isHovering = false; 
 	}
 
@@ -31,7 +45,7 @@ public class HoverDisplayName : MonoBehaviour, IPointerEnterHandler, IPointerExi
 	{
 		if (isHovering)
 		{
-			nameDisplayText.transform.position = Input.mousePosition;
+			nameDisplayTextBackground.transform.position = Input.mousePosition + new Vector3(xOffset, yOffset, 0);
 		}
 	}
 }
