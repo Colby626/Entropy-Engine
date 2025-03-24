@@ -1,55 +1,32 @@
 # Entropy Engine 
-This is a project for generating stats for a character given its **Rarity** and **Class**
-- A character's **Rarity** determines the set of levels that a character will generate within  
-- The **Level** determines the amount of stat points that the character will have  
-- The chosen **Class** determines what distribution of stats that character will have
+This project was built for a custom Tabletop RPG called Lordship.
+It can generate characters, roll initiative, roll damage, and keep notes.
+As such, it is meant to help those running Lordship to quickly
+create fleshed out characters and run combat.
 
-The base classes are 
-- Warrior
-- Archer
-- Rogue
-- Mage
+![Screenshot 2025-03-24 155028](https://github.com/user-attachments/assets/b103af5f-41c9-4774-8398-8a36a17b537b)
 
-The base stats are 
-- Endurance
-- Strength
-- Dexterity
-- Agility
-- Intelligence
-- Spirit
+![Screenshot 2025-03-24 155104](https://github.com/user-attachments/assets/625d1012-bed8-426a-b11e-64679a0ad9b0)
 
-## Running the Project
-Download the entire folder WindowsBuild
-
-Run the executable found within
-
-## Adding a New Class
-1. Add your new class name under Assets/Scripts/GenerateStats.cs in the enum Class  
-2. Add your new class in the Dictionary classWeights in the same script with its weights  
-
-This is the Google Sheet I used to calculate weights: https://docs.google.com/spreadsheets/d/1ot3yGjghJdC6G9v0UOX8EPgTcdkwQWsX4zbnGdPo6mA/edit?usp=sharing  
-Green cells are inputs, blue cells are outputs  
-
-"Parts" of a class mean how much weight you give that class in generating a new class   
-1 part warrior, 0 parts every other class is the warrior class  
-1 part warrior, 1 part archer is half warrior, half archer  
-3 part mage, 3 part archer, 1 part warrior is mostly a magic archer, with some warrior class mixed in 
-
-![image](https://github.com/user-attachments/assets/b9615952-d66e-43fe-972c-4cf66ccfbe10)
-
-## Generators
 This project also has a tab for generating items and loot
 
-![image](https://github.com/user-attachments/assets/0158c5a1-2a12-459d-b57b-4b9c461b5da9)
+![Screenshot 2025-03-24 155122](https://github.com/user-attachments/assets/0e9f38c9-70ba-44d4-908f-de54abaecf36)
 
-Each item contains {Enchanted} {Quality} {Rarity} {Item Type}
-- Not all items can be enchanted
-- Quality determines how well made that particular item is. 
+Each item contains {Enchanted} {Rarity} {Item Type}
+- Not all items can be enchanted 
 - Rarity determines the material the item is made out of or how valuable it is.
 - There are a variety of different item types including weapons and armor.
 
 Additionally, there is a coin generator for different categories of loot
-- 1 Electrum = 1000 Platinum
+- 1 Electrum = 100 Platinum
 - 1 Platinum = 100 Gold
 - 1 Gold = 100 Silver
 - 1 Silver = 100 Copper
+
+Based on the amount of loot found (coinpurse, stash, lockbox, safe, treasury, or horde), a different range of coins will be generated.
+If the coins can be broken down into a smaller number of more valueable coins, a button will appear that will do that for you. 
+
+Treasure can also be generated, subtracting from the amount of coins generated
+Many aspects of the treasure can be edited from the options menu
+
+![Screenshot 2025-03-24 155130](https://github.com/user-attachments/assets/d4e675f3-bf38-4882-bae5-5aa450ba6c51)
