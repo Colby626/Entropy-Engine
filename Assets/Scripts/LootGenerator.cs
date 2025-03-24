@@ -13,7 +13,7 @@ public class LootGenerator : MonoBehaviour
 	public GameObject generateTreasureButton;
 	public TextMeshProUGUI treasureText;
 	private long totalCoins = 0;
-	private Variables variables;
+	private SaveData settings;
 
 	private enum LootAmount
 	{
@@ -30,7 +30,7 @@ public class LootGenerator : MonoBehaviour
 	// Called by the button
 	public void GenerateLoot()
     {
-		variables = FindObjectOfType<OptionsMenu>().settings;
+		settings = FindObjectOfType<OptionsMenu>().settings;
 		/*
 		100 copper = 1 silver
 		100 silver = 1 gold
@@ -191,7 +191,7 @@ public class LootGenerator : MonoBehaviour
 	// Called by the button
 	public void GenerateTreasure()
 	{
-		variables = FindObjectOfType<OptionsMenu>().settings;
+		settings = FindObjectOfType<OptionsMenu>().settings;
 		long treasureValue = CalculateTreasureValue();
 
 		if (treasureValue == 0)
@@ -228,10 +228,10 @@ public class LootGenerator : MonoBehaviour
 
 			List<Variables.Treasure> topTreasures = affordableTreasures.Values
 				.OrderByDescending(t => t.value)
-				.Take(variables.treasureVariance)
+				.Take(settings.treasureVariance)
 				.ToList();
 
-			while (topTreasures.Count < variables.treasureVariance)
+			while (topTreasures.Count < settings.treasureVariance)
 			{
 				topTreasures.Add(new Variables.Treasure("Nothing", 0));
 			}
@@ -262,7 +262,7 @@ public class LootGenerator : MonoBehaviour
 				chosenTreasures[treasureName] = 1;
 			}
 
-			if (Random.Range(0, 100) < variables.exitTreasureGenerationEarlyChance * 100)
+			if (Random.Range(0, 100) < settings.exitTreasureGenerationEarlyChance * 100)
 			{
 				break;
 			}
@@ -293,27 +293,27 @@ public class LootGenerator : MonoBehaviour
 	{
 		if (currentLootAmount == LootAmount.Coinpurse)
 		{
-			return (long)Math.Round(variables.percentOfCoinpurseAsTreasure * totalCoins);
+			return (long)Math.Round(settings.percentOfCoinpurseAsTreasure * totalCoins);
 		}
 		else if (currentLootAmount == LootAmount.Stash)
 		{
-			return (long)Math.Round(variables.percentOfStashAsTreasure * totalCoins);
+			return (long)Math.Round(settings.percentOfStashAsTreasure * totalCoins);
 		}
 		else if (currentLootAmount == LootAmount.Lockbox)
 		{
-			return (long)Math.Round(variables.percentOfLockboxAsTreasure * totalCoins);
+			return (long)Math.Round(settings.percentOfLockboxAsTreasure * totalCoins);
 		}
 		else if (currentLootAmount == LootAmount.Safe)
 		{
-			return (long)Math.Round(variables.percentOfSafeAsTreasure * totalCoins);
+			return (long)Math.Round(settings.percentOfSafeAsTreasure * totalCoins);
 		}
 		else if (currentLootAmount == LootAmount.Treasury)
 		{
-			return (long)Math.Round(variables.percentOfTreasuryAsTreasure * totalCoins);
+			return (long)Math.Round(settings.percentOfTreasuryAsTreasure * totalCoins);
 		}
 		else if (currentLootAmount == LootAmount.Horde)
 		{
-			return (long)Math.Round(variables.percentOfHordeAsTreasure * totalCoins);
+			return (long)Math.Round(settings.percentOfHordeAsTreasure * totalCoins);
 		}
 		else
 		{

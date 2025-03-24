@@ -3,12 +3,13 @@ using TMPro;
 
 public class OptionsMenu : MonoBehaviour
 {
-	public Variables settings;
+	public SaveData settings;
 
 	[Header("Leveling Up UI Elements")]
 	public TMP_InputField startingStatPointsField;
 	public TMP_InputField statPointsPerLevelField;
 	public TMP_InputField percentChanceBonusPointField;
+	public TMP_InputField increaseInBonusChancePerLevelField;
 	public TMP_InputField startingSkillsField;
 	public TMP_InputField upgradePointsPerLevelField;
 	public TMP_InputField maxSkillsField;
@@ -34,7 +35,7 @@ public class OptionsMenu : MonoBehaviour
 	public TMP_InputField treasureVarianceField;
 	public TMP_InputField exitTreasureChanceField;
 
-	private void Awake()
+	public void Awake()
 	{
 		LoadSettings();
 		AddListeners();
@@ -45,6 +46,7 @@ public class OptionsMenu : MonoBehaviour
 		startingStatPointsField.text = settings.startingStatPoints.ToString();
 		statPointsPerLevelField.text = settings.statPointsPerLevelUp.ToString();
 		percentChanceBonusPointField.text = settings.percentChanceOfBonusPointOnRatingUp.ToString();
+		increaseInBonusChancePerLevelField.text = settings.increaseInBonusChancePerLevel.ToString();
 		startingSkillsField.text = settings.numberOfStartingSkills.ToString();
 		upgradePointsPerLevelField.text = settings.upgradePointsPerLevel.ToString();
 		maxSkillsField.text = settings.maximumSkills.ToString();
@@ -83,62 +85,74 @@ public class OptionsMenu : MonoBehaviour
 
 	public void SaveSettings()
 	{
-		PlayerPrefs.SetInt("StartingStatPoints", settings.startingStatPoints);
-		PlayerPrefs.SetInt("StatPointsPerLevel", settings.statPointsPerLevelUp);
-		PlayerPrefs.SetFloat("BonusPointChance", settings.percentChanceOfBonusPointOnRatingUp);
-		PlayerPrefs.SetInt("StartingSkills", settings.numberOfStartingSkills);
-		PlayerPrefs.SetInt("UpgradePointsPerLevel", settings.upgradePointsPerLevel);
-		PlayerPrefs.SetInt("MaxSkills", settings.maximumSkills);
-		PlayerPrefs.SetInt("MaxFeats", settings.maximumFeats);
+		// Save each setting individually using PlayerPrefs
+		PlayerPrefs.SetInt("startingStatPoints", settings.startingStatPoints);
+		PlayerPrefs.SetInt("statPointsPerLevelUp", settings.statPointsPerLevelUp);
+		PlayerPrefs.SetInt("percentChanceOfBonusPointOnRatingUp", settings.percentChanceOfBonusPointOnRatingUp);
+		PlayerPrefs.SetInt("increaseInBonusChancePerLevel", settings.increaseInBonusChancePerLevel);
+		PlayerPrefs.SetInt("numberOfStartingSkills", settings.numberOfStartingSkills);
+		PlayerPrefs.SetInt("upgradePointsPerLevel", settings.upgradePointsPerLevel);
+		PlayerPrefs.SetInt("maximumSkills", settings.maximumSkills);
+		PlayerPrefs.SetInt("maximumFeats", settings.maximumFeats);
 
-		PlayerPrefs.SetInt("Modifier_F", settings.F);
-		PlayerPrefs.SetInt("Modifier_E", settings.E);
-		PlayerPrefs.SetInt("Modifier_D", settings.D);
-		PlayerPrefs.SetInt("Modifier_C", settings.C);
-		PlayerPrefs.SetInt("Modifier_B", settings.B);
-		PlayerPrefs.SetInt("Modifier_A", settings.A);
-		PlayerPrefs.SetInt("Modifier_S", settings.S);
-		PlayerPrefs.SetInt("Modifier_SS", settings.SS);
+		PlayerPrefs.SetInt("F", settings.F);
+		PlayerPrefs.SetInt("E", settings.E);
+		PlayerPrefs.SetInt("D", settings.D);
+		PlayerPrefs.SetInt("C", settings.C);
+		PlayerPrefs.SetInt("B", settings.B);
+		PlayerPrefs.SetInt("A", settings.A);
+		PlayerPrefs.SetInt("S", settings.S);
+		PlayerPrefs.SetInt("SS", settings.SS);
 
-		PlayerPrefs.SetFloat("PercentCoinpurse", settings.percentOfCoinpurseAsTreasure);
-		PlayerPrefs.SetFloat("PercentStash", settings.percentOfStashAsTreasure);
-		PlayerPrefs.SetFloat("PercentLockbox", settings.percentOfLockboxAsTreasure);
-		PlayerPrefs.SetFloat("PercentSafe", settings.percentOfSafeAsTreasure);
-		PlayerPrefs.SetFloat("PercentTreasury", settings.percentOfTreasuryAsTreasure);
-		PlayerPrefs.SetFloat("PercentHorde", settings.percentOfHordeAsTreasure);
-		PlayerPrefs.SetInt("TreasureVariance", settings.treasureVariance);
-		PlayerPrefs.SetFloat("ExitTreasureChance", settings.exitTreasureGenerationEarlyChance);
+		PlayerPrefs.SetFloat("percentOfCoinpurseAsTreasure", settings.percentOfCoinpurseAsTreasure);
+		PlayerPrefs.SetFloat("percentOfStashAsTreasure", settings.percentOfStashAsTreasure);
+		PlayerPrefs.SetFloat("percentOfLockboxAsTreasure", settings.percentOfLockboxAsTreasure);
+		PlayerPrefs.SetFloat("percentOfSafeAsTreasure", settings.percentOfSafeAsTreasure);
+		PlayerPrefs.SetFloat("percentOfTreasuryAsTreasure", settings.percentOfTreasuryAsTreasure);
+		PlayerPrefs.SetFloat("percentOfHordeAsTreasure", settings.percentOfHordeAsTreasure);
+		PlayerPrefs.SetInt("treasureVariance", settings.treasureVariance);
+		PlayerPrefs.SetFloat("exitTreasureGenerationEarlyChance", settings.exitTreasureGenerationEarlyChance);
 
+		// Make sure to save the changes immediately
 		PlayerPrefs.Save();
 	}
 
 	public void LoadSettings()
 	{
-		settings.startingStatPoints = PlayerPrefs.GetInt("StartingStatPoints", settings.startingStatPoints);
-		settings.statPointsPerLevelUp = PlayerPrefs.GetInt("StatPointsPerLevel", settings.statPointsPerLevelUp);
-		settings.percentChanceOfBonusPointOnRatingUp = PlayerPrefs.GetFloat("BonusPointChance", settings.percentChanceOfBonusPointOnRatingUp);
-		settings.numberOfStartingSkills = PlayerPrefs.GetInt("StartingSkills", settings.numberOfStartingSkills);
-		settings.upgradePointsPerLevel = PlayerPrefs.GetInt("UpgradePointsPerLevel", settings.upgradePointsPerLevel);
-		settings.maximumSkills = PlayerPrefs.GetInt("MaxSkills", settings.maximumSkills);
-		settings.maximumFeats = PlayerPrefs.GetInt("MaxFeats", settings.maximumFeats);
+		// Check if PlayerPrefs has saved values and load them
+		if (PlayerPrefs.HasKey("startingStatPoints"))
+		{
+			settings.startingStatPoints = PlayerPrefs.GetInt("startingStatPoints");
+			settings.statPointsPerLevelUp = PlayerPrefs.GetInt("statPointsPerLevelUp");
+			settings.percentChanceOfBonusPointOnRatingUp = PlayerPrefs.GetInt("percentChanceOfBonusPointOnRatingUp");
+			settings.increaseInBonusChancePerLevel = PlayerPrefs.GetInt("increaseInBonusChancePerLevel");
+			settings.numberOfStartingSkills = PlayerPrefs.GetInt("numberOfStartingSkills");
+			settings.upgradePointsPerLevel = PlayerPrefs.GetInt("upgradePointsPerLevel");
+			settings.maximumSkills = PlayerPrefs.GetInt("maximumSkills");
+			settings.maximumFeats = PlayerPrefs.GetInt("maximumFeats");
 
-		settings.F = PlayerPrefs.GetInt("Modifier_F", settings.F);
-		settings.E = PlayerPrefs.GetInt("Modifier_E", settings.E);
-		settings.D = PlayerPrefs.GetInt("Modifier_D", settings.D);
-		settings.C = PlayerPrefs.GetInt("Modifier_C", settings.C);
-		settings.B = PlayerPrefs.GetInt("Modifier_B", settings.B);
-		settings.A = PlayerPrefs.GetInt("Modifier_A", settings.A);
-		settings.S = PlayerPrefs.GetInt("Modifier_S", settings.S);
-		settings.SS = PlayerPrefs.GetInt("Modifier_SS", settings.SS);
+			settings.F = PlayerPrefs.GetInt("F");
+			settings.E = PlayerPrefs.GetInt("E");
+			settings.D = PlayerPrefs.GetInt("D");
+			settings.C = PlayerPrefs.GetInt("C");
+			settings.B = PlayerPrefs.GetInt("B");
+			settings.A = PlayerPrefs.GetInt("A");
+			settings.S = PlayerPrefs.GetInt("S");
+			settings.SS = PlayerPrefs.GetInt("SS");
 
-		settings.percentOfCoinpurseAsTreasure = PlayerPrefs.GetFloat("PercentCoinpurse", settings.percentOfCoinpurseAsTreasure);
-		settings.percentOfStashAsTreasure = PlayerPrefs.GetFloat("PercentStash", settings.percentOfStashAsTreasure);
-		settings.percentOfLockboxAsTreasure = PlayerPrefs.GetFloat("PercentLockbox", settings.percentOfLockboxAsTreasure);
-		settings.percentOfSafeAsTreasure = PlayerPrefs.GetFloat("PercentSafe", settings.percentOfSafeAsTreasure);
-		settings.percentOfTreasuryAsTreasure = PlayerPrefs.GetFloat("PercentTreasury", settings.percentOfTreasuryAsTreasure);
-		settings.percentOfHordeAsTreasure = PlayerPrefs.GetFloat("PercentHorde", settings.percentOfHordeAsTreasure);
-		settings.treasureVariance = PlayerPrefs.GetInt("TreasureVariance", settings.treasureVariance);
-		settings.exitTreasureGenerationEarlyChance = PlayerPrefs.GetFloat("ExitTreasureChance", settings.exitTreasureGenerationEarlyChance);
+			settings.percentOfCoinpurseAsTreasure = PlayerPrefs.GetFloat("percentOfCoinpurseAsTreasure");
+			settings.percentOfStashAsTreasure = PlayerPrefs.GetFloat("percentOfStashAsTreasure");
+			settings.percentOfLockboxAsTreasure = PlayerPrefs.GetFloat("percentOfLockboxAsTreasure");
+			settings.percentOfSafeAsTreasure = PlayerPrefs.GetFloat("percentOfSafeAsTreasure");
+			settings.percentOfTreasuryAsTreasure = PlayerPrefs.GetFloat("percentOfTreasuryAsTreasure");
+			settings.percentOfHordeAsTreasure = PlayerPrefs.GetFloat("percentOfHordeAsTreasure");
+			settings.treasureVariance = PlayerPrefs.GetInt("treasureVariance");
+			settings.exitTreasureGenerationEarlyChance = PlayerPrefs.GetFloat("exitTreasureGenerationEarlyChance");
+		}
+		else
+		{
+			settings = new SaveData();  // Initialize with default values
+		}
 
 		LoadSettingsIntoUI();
 	}
@@ -147,7 +161,8 @@ public class OptionsMenu : MonoBehaviour
 	{
 		startingStatPointsField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.startingStatPoints));
 		statPointsPerLevelField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.statPointsPerLevelUp));
-		percentChanceBonusPointField.onEndEdit.AddListener(value => OnFloatStatChanged(value, ref settings.percentChanceOfBonusPointOnRatingUp));
+		percentChanceBonusPointField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.percentChanceOfBonusPointOnRatingUp));
+		increaseInBonusChancePerLevelField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.increaseInBonusChancePerLevel));
 		startingSkillsField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.numberOfStartingSkills));
 		upgradePointsPerLevelField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.upgradePointsPerLevel));
 		maxSkillsField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.maximumSkills));

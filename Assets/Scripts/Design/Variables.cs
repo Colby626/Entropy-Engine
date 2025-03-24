@@ -1,39 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewVariables", menuName = "Game Settings/Variables")]
 public class Variables : ScriptableObject
 {
-	[Header("Leveling Up")]
-	public int startingStatPoints = 2;
-	public int statPointsPerLevelUp = 2;
-	public float percentChanceOfBonusPointOnRatingUp = 2f;
-	public int numberOfStartingSkills = 2;
-	public int upgradePointsPerLevel = 4;
-	public int maximumSkills = 5;
-	public int maximumFeats = 5;
-
-	[Header("Modifiers")]
-	public int F = 0;
-	public int E = 3;
-	public int D = 6;
-	public int C = 9;
-	public int B = 12;
-	public int A = 15;
-	public int S = 18;
-	public int SS = 21;
-
-	[Header("Miscellaneous")]
-	public float percentOfCoinpurseAsTreasure = 0f;
-	public float percentOfStashAsTreasure = .25f;
-	public float percentOfLockboxAsTreasure = .4f;
-	public float percentOfSafeAsTreasure = .6f;
-	public float percentOfTreasuryAsTreasure = .75f;
-	public float percentOfHordeAsTreasure = .8f;
-	[Tooltip("Lower values make treasure trend towards more expensive while higher values makes treasure more random.")]
-	public int treasureVariance = 3;
-	[Tooltip("Generate Treasure will always generate at least 1 item, and this is the chance that no more items will be generated after any given item is generated.")]
-	public float exitTreasureGenerationEarlyChance = .25f;
+	public SaveData SaveData;
 
 	public static string[] adventurerAdjectives =
 	{
@@ -295,4 +267,40 @@ public class Variables : ScriptableObject
 		}
 		throw new KeyNotFoundException($"Treasure '{name}' not found.");
 	}
+}
+
+[Serializable]
+public class SaveData
+{
+	[Header("Leveling Up")]
+	public int startingStatPoints = 2;
+	public int statPointsPerLevelUp = 2;
+	public int percentChanceOfBonusPointOnRatingUp = 2;
+	public int increaseInBonusChancePerLevel = 2;
+	public int numberOfStartingSkills = 2;
+	public int upgradePointsPerLevel = 4;
+	public int maximumSkills = 5;
+	public int maximumFeats = 5;
+
+	[Header("Modifiers")]
+	public int F = 0;
+	public int E = 3;
+	public int D = 6;
+	public int C = 9;
+	public int B = 12;
+	public int A = 15;
+	public int S = 18;
+	public int SS = 21;
+
+	[Header("Miscellaneous")]
+	public float percentOfCoinpurseAsTreasure = 0f;
+	public float percentOfStashAsTreasure = .25f;
+	public float percentOfLockboxAsTreasure = .4f;
+	public float percentOfSafeAsTreasure = .6f;
+	public float percentOfTreasuryAsTreasure = .75f;
+	public float percentOfHordeAsTreasure = .8f;
+	[Tooltip("Lower values make treasure trend towards more expensive while higher values makes treasure more random.")]
+	public int treasureVariance = 3;
+	[Tooltip("Generate Treasure will always generate at least 1 item, and this is the chance that no more items will be generated after any given item is generated.")]
+	public float exitTreasureGenerationEarlyChance = .25f;
 }

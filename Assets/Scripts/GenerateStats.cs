@@ -150,12 +150,12 @@ public class GenerateStats : MonoBehaviour
     private Rating fortitudeRating = Rating.F;
 
     public CharacterList characterList;
-	private Variables variables;
+	private SaveData settings;
 
 	// Called by the Generate button
 	public void GenerateLordshipStatPoints()
 	{
-		variables = FindObjectOfType<OptionsMenu>().settings;
+		settings = FindObjectOfType<OptionsMenu>().settings;
         strengthRating = Rating.F;
 		dexterityRating = Rating.F;
 		agilityRating = Rating.F;
@@ -167,7 +167,7 @@ public class GenerateStats : MonoBehaviour
 
 		DistributeRatingPoints();
 
-		int upgradePoints = variables.upgradePointsPerLevel * (int)currentRating;
+		int upgradePoints = settings.upgradePointsPerLevel * (int)currentRating;
 
         int randomIndex = Random.Range(0, Variables.adventurerAdjectives.Length);
         string randomAdjective = Variables.adventurerAdjectives[randomIndex];
@@ -208,10 +208,10 @@ public class GenerateStats : MonoBehaviour
 		Dictionary<string, int> skillLevels = new ();
 		Dictionary<string, int> featLevels = new ();
 
-		selectedSkills = new string[variables.numberOfStartingSkills];
+		selectedSkills = new string[settings.numberOfStartingSkills];
 		List<string> availableSkills = new (skillsPool);
 		List<string> availableFeats = new (featsPool);
-		int numberOfStartingSkills = variables.numberOfStartingSkills;
+		int numberOfStartingSkills = settings.numberOfStartingSkills;
 
 		// Pick unique starting skills
 		// Humanoids must have at least one martial skill or magic skill
@@ -326,7 +326,7 @@ public class GenerateStats : MonoBehaviour
 					validUpgradeFound = true;
 				}
 			}
-			else if (choice == 2 && availableSkills.Count > 0 && skillLevels.Count < variables.maximumSkills)
+			else if (choice == 2 && availableSkills.Count > 0 && skillLevels.Count < settings.maximumSkills)
 			{
 				// Pick a new skill
 				int index = Random.Range(0, availableSkills.Count);
@@ -336,7 +336,7 @@ public class GenerateStats : MonoBehaviour
 				upgradePoints -= 1;
 				validUpgradeFound = true;
 			}
-			else if (choice == 2 && availableFeats.Count > 0 && featLevels.Count < variables.maximumFeats && upgradePoints >= 2)
+			else if (choice == 2 && availableFeats.Count > 0 && featLevels.Count < settings.maximumFeats && upgradePoints >= 2)
 			{
 				// Pick a new feat
 				int index = Random.Range(0, availableFeats.Count);
@@ -526,16 +526,16 @@ public class GenerateStats : MonoBehaviour
 
 	private void DistributeRatingPoints()
 	{
-		int pointsToDistribute = ((int)currentRating * variables.statPointsPerLevelUp) + variables.startingStatPoints;
+		int pointsToDistribute = ((int)currentRating * settings.statPointsPerLevelUp) + settings.startingStatPoints;
 		int bonusPoints = 0;
-		float chanceOfBonus = variables.percentChanceOfBonusPointOnRatingUp;
+		float chanceOfBonus = settings.percentChanceOfBonusPointOnRatingUp;
 
 		for (int i = 0; i < pointsToDistribute / 2; i++)
 		{
 			int randomNumber = Random.Range(0, 100);
 			if (randomNumber < chanceOfBonus)
 				bonusPoints++;
-			chanceOfBonus += 2;
+			chanceOfBonus += settings.increaseInBonusChancePerLevel;
 		}
 
 		Debug.Log("Bonus points awarded: " + bonusPoints);
@@ -704,21 +704,21 @@ public class GenerateStats : MonoBehaviour
 	private int ModFromRating(Rating rating)
 	{
 		if (rating == Rating.F)
-			return variables.F;
+			return settings.F;
 		else if (rating == Rating.E)
-			return variables.E;
+			return settings.E;
 		else if (rating == Rating.D)
-			return variables.D;
+			return settings.D;
 		else if (rating == Rating.C)
-			return variables.C;
+			return settings.C;
 		else if (rating == Rating.B)
-			return variables.B;
+			return settings.B;
 		else if (rating == Rating.A)
-			return variables.A;
+			return settings.A;
 		else if (rating == Rating.S)
-			return variables.S;
+			return settings.S;
 		else if (rating == Rating.SS)
-			return variables.SS;
+			return settings.SS;
 		else
 			return 0;
 	}
