@@ -14,6 +14,8 @@ public class OptionsMenu : MonoBehaviour
 	public TMP_InputField upgradePointsPerLevelField;
 	public TMP_InputField maxSkillsField;
 	public TMP_InputField maxFeatsField;
+	public TMP_InputField maxSkillLevelField;
+	public TMP_InputField maxFeatLevelField;
 
 	[Header("Modifier UI Elements")]
 	public TMP_InputField fField;
@@ -51,6 +53,8 @@ public class OptionsMenu : MonoBehaviour
 		upgradePointsPerLevelField.text = settings.upgradePointsPerLevel.ToString();
 		maxSkillsField.text = settings.maximumSkills.ToString();
 		maxFeatsField.text = settings.maximumFeats.ToString();
+		maxSkillLevelField.text = settings.maximumSkillLevel.ToString();
+		maxFeatLevelField.text = settings.maximumFeatLevel.ToString();
 
 		fField.text = settings.F.ToString();
 		eField.text = settings.E.ToString();
@@ -94,6 +98,8 @@ public class OptionsMenu : MonoBehaviour
 		PlayerPrefs.SetInt("upgradePointsPerLevel", settings.upgradePointsPerLevel);
 		PlayerPrefs.SetInt("maximumSkills", settings.maximumSkills);
 		PlayerPrefs.SetInt("maximumFeats", settings.maximumFeats);
+		PlayerPrefs.SetInt("maximumSkillLevel", settings.maximumSkillLevel);
+		PlayerPrefs.SetInt("maximumFeatLevel", settings.maximumFeatLevel);
 
 		PlayerPrefs.SetInt("F", settings.F);
 		PlayerPrefs.SetInt("E", settings.E);
@@ -130,6 +136,8 @@ public class OptionsMenu : MonoBehaviour
 			settings.upgradePointsPerLevel = PlayerPrefs.GetInt("upgradePointsPerLevel");
 			settings.maximumSkills = PlayerPrefs.GetInt("maximumSkills");
 			settings.maximumFeats = PlayerPrefs.GetInt("maximumFeats");
+			settings.maximumSkillLevel = PlayerPrefs.GetInt("maximumSkillLevel");
+			settings.maximumFeatLevel = PlayerPrefs.GetInt("maximumFeatLevel");
 
 			settings.F = PlayerPrefs.GetInt("F");
 			settings.E = PlayerPrefs.GetInt("E");
@@ -167,6 +175,8 @@ public class OptionsMenu : MonoBehaviour
 		upgradePointsPerLevelField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.upgradePointsPerLevel));
 		maxSkillsField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.maximumSkills));
 		maxFeatsField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.maximumFeats));
+		maxSkillLevelField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.maximumSkillLevel));
+		maxFeatLevelField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.maximumFeatLevel));
 
 		fField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.F));
 		eField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.E));

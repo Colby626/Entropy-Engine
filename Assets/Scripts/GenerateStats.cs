@@ -64,7 +64,7 @@ public class GenerateStats : MonoBehaviour
 			CurrentHealth = ((int)vitalityRating * 50) == 0 ? 10 : (int)vitalityRating * 50, // Otherwise, it is set to vitalityRating * 50
 			MaxMana = (int)spiritRating * 50,
 			CurrentMana = (int)spiritRating * 50,
-			PlusToHit = (int)dexterityRating,
+			PlusToHit = (int)dexterityRating * 2,
 			PhysicalDamageMultiplier = MultiplierFromRating(strengthRating),
             MagicDamageMultiplier = MultiplierFromRating(intelligenceRating),
 			DodgeBonus = ModFromRating(agilityRating),
@@ -169,7 +169,7 @@ public class GenerateStats : MonoBehaviour
 				List<string> upgradableSkills = new ();
 				foreach (var skill in skillLevels)
 				{
-					if (skill.Value < 5 && upgradePoints >= skill.Value + 1) // Ensure enough points
+					if (skill.Value < settings.maximumSkillLevel && upgradePoints >= skill.Value + 1) // Ensure enough points
 						upgradableSkills.Add(skill.Key);
 				}
 
@@ -188,7 +188,7 @@ public class GenerateStats : MonoBehaviour
 				List<string> upgradableFeats = new ();
 				foreach (var feat in featLevels)
 				{
-					if (feat.Value < 3 && upgradePoints >= (feat.Value + 1) * 2) // Ensure enough points
+					if (feat.Value < settings.maximumFeatLevel && upgradePoints >= (feat.Value + 1) * 2) // Ensure enough points
 						upgradableFeats.Add(feat.Key);
 				}
 
@@ -417,7 +417,7 @@ public class GenerateStats : MonoBehaviour
 		pointsToDistribute += bonusPoints;
 
 		// Random Stat Groupings per level
-		for (int i = 0; i < (int)currentRating - 1; i++)
+		for (int i = 0; i < (int)currentRating + 1; i++)
 		{
             var index = Random.Range(0, 4);
             if (index == 0) // Body

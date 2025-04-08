@@ -405,6 +405,8 @@ public class SaveData
 	public int upgradePointsPerLevel = 4;
 	public int maximumSkills = 5;
 	public int maximumFeats = 5;
+	public int maximumSkillLevel = 3;
+	public int maximumFeatLevel = 3;
 
 	[Header("Modifiers")]
 	public int F = 0;
