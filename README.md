@@ -24,7 +24,7 @@ Additionally, there is a coin generator for different categories of loot
 - 1 Silver = 100 Copper
 
 Based on the amount of loot found (coinpurse, stash, lockbox, safe, treasury, or horde), a different range of coins will be generated.
-If the coins can be broken down into a smaller number of more valueable coins, a button will appear that will do that for you. 
+If the coins can be broken down into a smaller number of more valuable coins, a button will appear that will do that for you. 
 
 Treasure can also be generated, subtracting from the amount of coins generated
 Many aspects of the treasure can be edited from the options menu
