@@ -13,6 +13,7 @@ public class RollAttack : MonoBehaviour
     public ToggleGroup enchantmentLevelGroup;
     public TextMeshProUGUI combatLog;
     public Toggle sneakAttackToggle;
+    public CharacterSheet characterSheet;
     private CharacterList characterList;
 
     public void Start()
@@ -23,7 +24,7 @@ public class RollAttack : MonoBehaviour
 	// Called by button 
 	public void AttackRoll()
     {
-        var selectedCharacter = characterList.selectedCharacter;
+        var selectedCharacter = characterSheet != null && characterSheet.gameObject.activeSelf ? characterSheet.character : characterList.selectedCharacter;
         if (selectedCharacter == null)
             return;
 
