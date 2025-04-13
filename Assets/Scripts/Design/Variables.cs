@@ -407,6 +407,8 @@ public class SaveData
 	public int maximumFeats = 5;
 	public int maximumSkillLevel = 3;
 	public int maximumFeatLevel = 3;
+	[Tooltip("This is how far above a character's current rating their highest stat can be.")]
+	public int statCeilingAboveCurrentRating = 2;
 
 	[Header("Modifiers")]
 	public int F = 0;

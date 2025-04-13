@@ -16,6 +16,7 @@ public class OptionsMenu : MonoBehaviour
 	public TMP_InputField maxFeatsField;
 	public TMP_InputField maxSkillLevelField;
 	public TMP_InputField maxFeatLevelField;
+	public TMP_InputField statCeilingAboveCurrentRating;
 
 	[Header("Modifier UI Elements")]
 	public TMP_InputField fField;
@@ -55,6 +56,7 @@ public class OptionsMenu : MonoBehaviour
 		maxFeatsField.text = settings.maximumFeats.ToString();
 		maxSkillLevelField.text = settings.maximumSkillLevel.ToString();
 		maxFeatLevelField.text = settings.maximumFeatLevel.ToString();
+		statCeilingAboveCurrentRating.text = settings.statCeilingAboveCurrentRating.ToString();
 
 		fField.text = settings.F.ToString();
 		eField.text = settings.E.ToString();
@@ -100,6 +102,7 @@ public class OptionsMenu : MonoBehaviour
 		PlayerPrefs.SetInt("maximumFeats", settings.maximumFeats);
 		PlayerPrefs.SetInt("maximumSkillLevel", settings.maximumSkillLevel);
 		PlayerPrefs.SetInt("maximumFeatLevel", settings.maximumFeatLevel);
+		PlayerPrefs.SetInt("statCeilingAboveCurrentRating", settings.statCeilingAboveCurrentRating);
 
 		PlayerPrefs.SetInt("F", settings.F);
 		PlayerPrefs.SetInt("E", settings.E);
@@ -138,6 +141,7 @@ public class OptionsMenu : MonoBehaviour
 			settings.maximumFeats = PlayerPrefs.GetInt("maximumFeats");
 			settings.maximumSkillLevel = PlayerPrefs.GetInt("maximumSkillLevel");
 			settings.maximumFeatLevel = PlayerPrefs.GetInt("maximumFeatLevel");
+			settings.statCeilingAboveCurrentRating = PlayerPrefs.GetInt("statCeilingAboveCurrentRating");
 
 			settings.F = PlayerPrefs.GetInt("F");
 			settings.E = PlayerPrefs.GetInt("E");
@@ -177,6 +181,7 @@ public class OptionsMenu : MonoBehaviour
 		maxFeatsField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.maximumFeats));
 		maxSkillLevelField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.maximumSkillLevel));
 		maxFeatLevelField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.maximumFeatLevel));
+		statCeilingAboveCurrentRating.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.statCeilingAboveCurrentRating));
 
 		fField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.F));
 		eField.onEndEdit.AddListener(value => OnStatChanged(value, ref settings.E));

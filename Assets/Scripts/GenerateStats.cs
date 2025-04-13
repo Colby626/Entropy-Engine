@@ -506,7 +506,7 @@ public class GenerateStats : MonoBehaviour
                     switch (statWeight)
                     {
                         case 0:
-							if (strengthRating == Rating.SS)
+							if (strengthRating == Rating.SS || (int)strengthRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
 							{
 								i -= 1;
 								break;
@@ -514,7 +514,7 @@ public class GenerateStats : MonoBehaviour
 							strengthRating++;
 							break;
                         case 1:
-                            if (dexterityRating == Rating.SS)
+                            if (dexterityRating == Rating.SS || (int)dexterityRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
                             {
                                 i -= 1;
                                 break;
@@ -522,7 +522,7 @@ public class GenerateStats : MonoBehaviour
                             dexterityRating++; 
 							break;
                         case 2:
-                            if (agilityRating == Rating.SS)
+                            if (agilityRating == Rating.SS || (int)agilityRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
                             {
                                 i -= 1;
                                 break;
@@ -530,7 +530,7 @@ public class GenerateStats : MonoBehaviour
                             agilityRating++; 
 							break;
                         case 3:
-                            if (intelligenceRating == Rating.SS)
+                            if (intelligenceRating == Rating.SS || (int)intelligenceRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
                             {
                                 i -= 1;
                                 break;
@@ -538,7 +538,7 @@ public class GenerateStats : MonoBehaviour
                             intelligenceRating++; 
 							break;
                         case 4:
-                            if (spiritRating == Rating.SS)
+                            if (spiritRating == Rating.SS || (int)spiritRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
                             {
                                 i -= 1;
                                 break;
@@ -546,7 +546,7 @@ public class GenerateStats : MonoBehaviour
                             spiritRating++; 
 							break;
                         case 5:
-                            if (charismaRating == Rating.SS)
+                            if (charismaRating == Rating.SS || (int)charismaRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
                             {
                                 i -= 1;
                                 break;
@@ -554,7 +554,7 @@ public class GenerateStats : MonoBehaviour
                             charismaRating++; 
 							break;
                         case 6:
-                            if (vitalityRating == Rating.SS)
+                            if (vitalityRating == Rating.SS || (int)vitalityRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
                             {
                                 i -= 1;
                                 break;
@@ -562,7 +562,7 @@ public class GenerateStats : MonoBehaviour
                             vitalityRating++; 
 							break;
                         case 7:
-                            if (fortitudeRating == Rating.SS)
+                            if (fortitudeRating == Rating.SS || (int)fortitudeRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
                             {
                                 i -= 1;
                                 break;
