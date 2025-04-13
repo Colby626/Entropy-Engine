@@ -60,10 +60,10 @@ public class GenerateStats : MonoBehaviour
 			Vitality = vitalityRating,
 			Fortitude = fortitudeRating,
 
-			MaxHealth = ((int)vitalityRating * 50) == 0 ? 10 : (int)vitalityRating * 50, // This means if the vitalityRating * 50 equals 0, MaxHealth is set to 10
-			CurrentHealth = ((int)vitalityRating * 50) == 0 ? 10 : (int)vitalityRating * 50, // Otherwise, it is set to vitalityRating * 50
-			MaxMana = (int)spiritRating * 50,
-			CurrentMana = (int)spiritRating * 50,
+			MaxHealth = CalculateHealth(),
+			CurrentHealth = CalculateHealth(),
+			MaxMana = CalculateMana(),
+			CurrentMana = CalculateMana(),
 			PlusToHit = (int)dexterityRating * 2,
 			PhysicalDamageMultiplier = MultiplierFromRating(strengthRating),
             MagicDamageMultiplier = MultiplierFromRating(intelligenceRating),
@@ -77,7 +77,57 @@ public class GenerateStats : MonoBehaviour
 		currentRating);
     }
 
-    private string GenerateAbilities(int upgradePoints, string[] skillsPool, string[] featsPool)
+	private int CalculateHealth()
+	{
+		switch (vitalityRating)
+		{
+			case Rating.F:
+				return 10;
+			case Rating.E:
+				return 50;
+			case Rating.D:
+				return 100;
+			case Rating.C:
+				return 200;
+			case Rating.B:
+				return 300;
+			case Rating.A:
+				return 450;
+			case Rating.S:
+				return 600;
+			case Rating.SS:
+				return 800;
+			default:
+				return 0;
+		}
+	}
+
+	private int CalculateMana()
+	{
+		switch (spiritRating)
+		{
+			case Rating.F:
+				return 10;
+			case Rating.E:
+				return 50;
+			case Rating.D:
+				return 100;
+			case Rating.C:
+				return 200;
+			case Rating.B:
+				return 300;
+			case Rating.A:
+				return 450;
+			case Rating.S:
+				return 600;
+			case Rating.SS:
+				return 800;
+			default:
+				return 0;
+		}
+	}
+
+	private string GenerateAbilities(int upgradePoints, string[] skillsPool, string[] featsPool)
 	{
 		string[] selectedSkills;
 		Dictionary<string, int> skillLevels = new ();
