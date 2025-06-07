@@ -30,7 +30,7 @@ public class LootGenerator : MonoBehaviour
 	// Called by the button
 	public void GenerateLoot()
     {
-		settings = FindObjectOfType<OptionsMenu>().settings;
+		settings = FindFirstObjectByType<OptionsMenu>().settings;
 		/*
 		100 copper = 1 silver
 		100 silver = 1 gold
@@ -191,7 +191,7 @@ public class LootGenerator : MonoBehaviour
 	// Called by the button
 	public void GenerateTreasure()
 	{
-		settings = FindObjectOfType<OptionsMenu>().settings;
+		settings = FindFirstObjectByType<OptionsMenu>().settings;
 		long treasureValue = CalculateTreasureValue();
 
 		if (treasureValue == 0)

@@ -16,7 +16,7 @@ public class CharacterList : MonoBehaviour
 		public Rating Intelligence;
 		public Rating Spirit;
 		public Rating Charisma;
-		public Rating Vitality;
+		public Rating Recovery;
 		public Rating Fortitude;
 
         public int MaxHealth;

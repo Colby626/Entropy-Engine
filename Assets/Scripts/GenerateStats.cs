@@ -21,7 +21,7 @@ public class GenerateStats : MonoBehaviour
     private Rating intelligenceRating = Rating.F;
     private Rating spiritRating = Rating.F;
 	private Rating charismaRating = Rating.F;
-    private Rating vitalityRating = Rating.F;
+    private Rating recoveryRating = Rating.F;
     private Rating fortitudeRating = Rating.F;
 
     public CharacterList characterList;
@@ -30,14 +30,14 @@ public class GenerateStats : MonoBehaviour
 	// Called by the Generate button
 	public void GenerateLordshipStatPoints()
 	{
-		settings = FindObjectOfType<OptionsMenu>().settings;
+		settings = FindFirstObjectByType<OptionsMenu>().settings;
         strengthRating = Rating.F;
 		dexterityRating = Rating.F;
 		agilityRating = Rating.F;
 		intelligenceRating = Rating.F;
 		spiritRating = Rating.F;
 		charismaRating = Rating.F;
-		vitalityRating = Rating.F;
+		recoveryRating = Rating.F;
 		fortitudeRating = Rating.F;
 
 		DistributeRatingPoints();
@@ -57,14 +57,14 @@ public class GenerateStats : MonoBehaviour
 			Intelligence = intelligenceRating,
 			Spirit = spiritRating,
 			Charisma = charismaRating,
-			Vitality = vitalityRating,
+			Recovery = recoveryRating,
 			Fortitude = fortitudeRating,
 
-			MaxHealth = CalculateHealth(),
-			CurrentHealth = CalculateHealth(),
-			MaxMana = CalculateMana(),
-			CurrentMana = CalculateMana(),
-			PlusToHit = (int)dexterityRating * 2,
+			MaxHealth = ((int)currentRating * 100) == 0 ? 10 : (int)currentRating * 100,
+			CurrentHealth = ((int)currentRating * 100) == 0 ? 10 : (int)currentRating * 100, 
+			MaxMana = (int)spiritRating * 50,
+			CurrentMana = (int)spiritRating * 50,
+			PlusToHit = (int)dexterityRating,
 			PhysicalDamageMultiplier = MultiplierFromRating(strengthRating),
             MagicDamageMultiplier = MultiplierFromRating(intelligenceRating),
 			DodgeBonus = ModFromRating(agilityRating),
@@ -77,57 +77,7 @@ public class GenerateStats : MonoBehaviour
 		currentRating);
     }
 
-	private int CalculateHealth()
-	{
-		switch (vitalityRating)
-		{
-			case Rating.F:
-				return 10;
-			case Rating.E:
-				return 50;
-			case Rating.D:
-				return 100;
-			case Rating.C:
-				return 200;
-			case Rating.B:
-				return 300;
-			case Rating.A:
-				return 450;
-			case Rating.S:
-				return 600;
-			case Rating.SS:
-				return 800;
-			default:
-				return 0;
-		}
-	}
-
-	private int CalculateMana()
-	{
-		switch (spiritRating)
-		{
-			case Rating.F:
-				return 10;
-			case Rating.E:
-				return 50;
-			case Rating.D:
-				return 100;
-			case Rating.C:
-				return 200;
-			case Rating.B:
-				return 300;
-			case Rating.A:
-				return 450;
-			case Rating.S:
-				return 600;
-			case Rating.SS:
-				return 800;
-			default:
-				return 0;
-		}
-	}
-
-	private string GenerateAbilities(int upgradePoints, string[] skillsPool, string[] featsPool)
+    private string GenerateAbilities(int upgradePoints, string[] skillsPool, string[] featsPool)
 	{
 		string[] selectedSkills;
 		Dictionary<string, int> skillLevels = new ();
@@ -219,7 +169,7 @@ public class GenerateStats : MonoBehaviour
 				List<string> upgradableSkills = new ();
 				foreach (var skill in skillLevels)
 				{
-					if (skill.Value < settings.maximumSkillLevel && upgradePoints >= skill.Value + 1) // Ensure enough points
+					if (skill.Value < 5 && upgradePoints >= skill.Value + 1) // Ensure enough points
 						upgradableSkills.Add(skill.Key);
 				}
 
@@ -238,7 +188,7 @@ public class GenerateStats : MonoBehaviour
 				List<string> upgradableFeats = new ();
 				foreach (var feat in featLevels)
 				{
-					if (feat.Value < settings.maximumFeatLevel && upgradePoints >= (feat.Value + 1) * 2) // Ensure enough points
+					if (feat.Value < 3 && upgradePoints >= (feat.Value + 1) * 2) // Ensure enough points
 						upgradableFeats.Add(feat.Key);
 				}
 
@@ -484,10 +434,10 @@ public class GenerateStats : MonoBehaviour
             }
             else if (index == 1) // Control
             {
-                if (vitalityRating == Rating.SS)
+                if (recoveryRating == Rating.SS)
                     pointsToDistribute++;
                 else
-                    vitalityRating++;
+                    recoveryRating++;
 
                 if (dexterityRating == Rating.SS)
                     pointsToDistribute++;
@@ -528,7 +478,7 @@ public class GenerateStats : MonoBehaviour
             intelligenceRating = Rating.SS;
             spiritRating = Rating.SS;
             charismaRating = Rating.SS;
-            vitalityRating = Rating.SS;
+            recoveryRating = Rating.SS;
             fortitudeRating = Rating.SS;
 
             Debug.LogWarning($"Too many points to distribute ({pointsToDistribute}), maxing out");
@@ -556,7 +506,7 @@ public class GenerateStats : MonoBehaviour
                     switch (statWeight)
                     {
                         case 0:
-							if (strengthRating == Rating.SS || (int)strengthRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
+							if (strengthRating == Rating.SS)
 							{
 								i -= 1;
 								break;
@@ -564,7 +514,7 @@ public class GenerateStats : MonoBehaviour
 							strengthRating++;
 							break;
                         case 1:
-                            if (dexterityRating == Rating.SS || (int)dexterityRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
+                            if (dexterityRating == Rating.SS)
                             {
                                 i -= 1;
                                 break;
@@ -572,7 +522,7 @@ public class GenerateStats : MonoBehaviour
                             dexterityRating++; 
 							break;
                         case 2:
-                            if (agilityRating == Rating.SS || (int)agilityRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
+                            if (agilityRating == Rating.SS)
                             {
                                 i -= 1;
                                 break;
@@ -580,7 +530,7 @@ public class GenerateStats : MonoBehaviour
                             agilityRating++; 
 							break;
                         case 3:
-                            if (intelligenceRating == Rating.SS || (int)intelligenceRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
+                            if (intelligenceRating == Rating.SS)
                             {
                                 i -= 1;
                                 break;
@@ -588,7 +538,7 @@ public class GenerateStats : MonoBehaviour
                             intelligenceRating++; 
 							break;
                         case 4:
-                            if (spiritRating == Rating.SS || (int)spiritRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
+                            if (spiritRating == Rating.SS)
                             {
                                 i -= 1;
                                 break;
@@ -596,7 +546,7 @@ public class GenerateStats : MonoBehaviour
                             spiritRating++; 
 							break;
                         case 5:
-                            if (charismaRating == Rating.SS || (int)charismaRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
+                            if (charismaRating == Rating.SS)
                             {
                                 i -= 1;
                                 break;
@@ -604,15 +554,15 @@ public class GenerateStats : MonoBehaviour
                             charismaRating++; 
 							break;
                         case 6:
-                            if (vitalityRating == Rating.SS || (int)vitalityRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
+                            if (recoveryRating == Rating.SS)
                             {
                                 i -= 1;
                                 break;
                             }
-                            vitalityRating++; 
+                            recoveryRating++; 
 							break;
                         case 7:
-                            if (fortitudeRating == Rating.SS || (int)fortitudeRating >= (int)currentRating + settings.statCeilingAboveCurrentRating)
+                            if (fortitudeRating == Rating.SS)
                             {
                                 i -= 1;
                                 break;
