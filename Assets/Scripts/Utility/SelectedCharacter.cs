@@ -43,7 +43,7 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 		statsText.AppendLine("Intelligence: " + npcData.Intelligence);
 		statsText.AppendLine("Spirit: " + npcData.Spirit);
 		statsText.AppendLine("Charisma: " + npcData.Charisma);
-		statsText.AppendLine("Recovery: " + npcData.Recovery);
+		statsText.AppendLine("Vitality: " + npcData.Vitality);
 		statsText.AppendLine("Fortitude: " + npcData.Fortitude);
 		statsText.AppendLine("Max Health: " + npcData.MaxHealth);
 		statsText.AppendLine("Max Mana: " + npcData.MaxMana);

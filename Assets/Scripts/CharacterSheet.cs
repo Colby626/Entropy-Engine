@@ -9,7 +9,7 @@ public class CharacterSheet : MonoBehaviour
 	public TMP_Dropdown strengthDropdown;
 	public TMP_Dropdown agilityDropdown;
 	public TMP_Dropdown dexterityDropdown;
-	public TMP_Dropdown recoveryDropdown;
+	public TMP_Dropdown vitalityDropdown;
 	public TMP_Dropdown intelligenceDropdown;
 	public TMP_Dropdown charismaDropdown;
 	public TMP_Dropdown spiritDropdown;
@@ -20,7 +20,7 @@ public class CharacterSheet : MonoBehaviour
 		strengthDropdown.options.Clear();
 		agilityDropdown.options.Clear();
 		dexterityDropdown.options.Clear();
-		recoveryDropdown.options.Clear();
+		vitalityDropdown.options.Clear();
 		intelligenceDropdown.options.Clear();
 		charismaDropdown.options.Clear();
 		spiritDropdown.options.Clear();
@@ -33,7 +33,7 @@ public class CharacterSheet : MonoBehaviour
 			strengthDropdown.options.Add(new TMP_Dropdown.OptionData(ratingName));
 			agilityDropdown.options.Add(new TMP_Dropdown.OptionData(ratingName));
 			dexterityDropdown.options.Add(new TMP_Dropdown.OptionData(ratingName));
-			recoveryDropdown.options.Add(new TMP_Dropdown.OptionData(ratingName));
+			vitalityDropdown.options.Add(new TMP_Dropdown.OptionData(ratingName));
 			intelligenceDropdown.options.Add(new TMP_Dropdown.OptionData(ratingName));
 			charismaDropdown.options.Add(new TMP_Dropdown.OptionData(ratingName));
 			spiritDropdown.options.Add(new TMP_Dropdown.OptionData(ratingName));
@@ -43,7 +43,7 @@ public class CharacterSheet : MonoBehaviour
 		strengthDropdown.onValueChanged.AddListener(OnStrengthDropdownValueChanged);
 		agilityDropdown.onValueChanged.AddListener(OnAgilityDropdownValueChanged);
 		dexterityDropdown.onValueChanged.AddListener(OnDexterityDropdownValueChanged);
-		recoveryDropdown.onValueChanged.AddListener(OnRecoveryDropdownValueChanged);
+		vitalityDropdown.onValueChanged.AddListener(OnVitalityDropdownValueChanged);
 		intelligenceDropdown.onValueChanged.AddListener(OnIntelligenceDropdownValueChanged);
 		charismaDropdown.onValueChanged.AddListener(OnCharismaDropdownValueChanged);
 		spiritDropdown.onValueChanged.AddListener(OnSpiritDropdownValueChanged);
@@ -52,7 +52,7 @@ public class CharacterSheet : MonoBehaviour
 		strengthDropdown.RefreshShownValue();
 		agilityDropdown.RefreshShownValue();
 		dexterityDropdown.RefreshShownValue();
-		recoveryDropdown.RefreshShownValue();
+		vitalityDropdown.RefreshShownValue();
 		intelligenceDropdown.RefreshShownValue();
 		charismaDropdown.RefreshShownValue();
 		spiritDropdown.RefreshShownValue();
@@ -76,9 +76,9 @@ public class CharacterSheet : MonoBehaviour
 		character.Dexterity = (Rating)index;
 	}
 
-	public void OnRecoveryDropdownValueChanged(int index)
+	public void OnVitalityDropdownValueChanged(int index)
 	{
-		character.Recovery = (Rating)index;
+		character.Vitality = (Rating)index;
 	}
 
 	public void OnIntelligenceDropdownValueChanged(int index)

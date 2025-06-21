@@ -21,7 +21,7 @@ public class GenerateStats : MonoBehaviour
     private Rating intelligenceRating = Rating.F;
     private Rating spiritRating = Rating.F;
 	private Rating charismaRating = Rating.F;
-    private Rating recoveryRating = Rating.F;
+    private Rating vitalityRating = Rating.F;
     private Rating fortitudeRating = Rating.F;
 
     public CharacterList characterList;
@@ -37,7 +37,7 @@ public class GenerateStats : MonoBehaviour
 		intelligenceRating = Rating.F;
 		spiritRating = Rating.F;
 		charismaRating = Rating.F;
-		recoveryRating = Rating.F;
+		vitalityRating = Rating.F;
 		fortitudeRating = Rating.F;
 
 		DistributeRatingPoints();
@@ -57,12 +57,12 @@ public class GenerateStats : MonoBehaviour
 			Intelligence = intelligenceRating,
 			Spirit = spiritRating,
 			Charisma = charismaRating,
-			Recovery = recoveryRating,
+			Vitality = vitalityRating,
 			Fortitude = fortitudeRating,
 
-			MaxHealth = ((int)currentRating * 100) == 0 ? 10 : (int)currentRating * 100,
-			CurrentHealth = ((int)currentRating * 100) == 0 ? 10 : (int)currentRating * 100, 
-			MaxMana = (int)spiritRating * 50,
+			MaxHealth = ((int)currentRating * 100) + ((int)vitalityRating * 50) == 0 ? 10 : (int)currentRating * 100 + ((int)vitalityRating * 50),
+			CurrentHealth = ((int)currentRating * 100) + ((int)vitalityRating * 50) == 0 ? 10 : (int)currentRating * 100 + ((int)vitalityRating * 50),
+            MaxMana = (int)spiritRating * 50,
 			CurrentMana = (int)spiritRating * 50,
 			PlusToHit = (int)dexterityRating,
 			PhysicalDamageMultiplier = MultiplierFromRating(strengthRating),
@@ -434,10 +434,10 @@ public class GenerateStats : MonoBehaviour
             }
             else if (index == 1) // Control
             {
-                if (recoveryRating == Rating.SS)
+                if (vitalityRating == Rating.SS)
                     pointsToDistribute++;
                 else
-                    recoveryRating++;
+                    vitalityRating++;
 
                 if (dexterityRating == Rating.SS)
                     pointsToDistribute++;
@@ -478,7 +478,7 @@ public class GenerateStats : MonoBehaviour
             intelligenceRating = Rating.SS;
             spiritRating = Rating.SS;
             charismaRating = Rating.SS;
-            recoveryRating = Rating.SS;
+            vitalityRating = Rating.SS;
             fortitudeRating = Rating.SS;
 
             Debug.LogWarning($"Too many points to distribute ({pointsToDistribute}), maxing out");
@@ -554,12 +554,12 @@ public class GenerateStats : MonoBehaviour
                             charismaRating++; 
 							break;
                         case 6:
-                            if (recoveryRating == Rating.SS)
+                            if (vitalityRating == Rating.SS)
                             {
                                 i -= 1;
                                 break;
                             }
-                            recoveryRating++; 
+                            vitalityRating++; 
 							break;
                         case 7:
                             if (fortitudeRating == Rating.SS)
