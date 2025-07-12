@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
+
 using static Variables;
 
 public class CharacterList : MonoBehaviour
@@ -24,7 +25,8 @@ public class CharacterList : MonoBehaviour
         public int MaxMana;
         public int CurrentMana;
         public int AC;
-        public int MC;
+        public int DR;
+        public int MR;
         public int PlusToHit;
         public string PhysicalDamageMultiplier;
         public string MagicDamageMultiplier;
@@ -90,7 +92,8 @@ public class CharacterList : MonoBehaviour
     public void GenerateNPC(NPC npc, Rating npcRating)
     {
         npc.AC = ACFromAbilities(npc.Abilities, npcRating);
-        npc.MC = MCFromAbilities(npc.Abilities, npcRating);
+        npc.DR = (npc.Fortitude == 0 ? 0 : (5 * (int)Mathf.Pow(2, (int)npc.Fortitude - 1))) + DRFromAbilities(npc.Abilities, npcRating); 
+        npc.MR = (npc.Fortitude == 0 ? 0 : (5 * (int)Mathf.Pow(2, (int)npc.Fortitude - 1))) + MRFromAbilities(npc.Abilities, npcRating);
         npcs.Add(npc);
         AddNPCToScrollview(npc);
     }
@@ -235,12 +238,12 @@ public class CharacterList : MonoBehaviour
         return workingBonus;
     }
 
-    private int MCFromAbilities(string abilities, Rating currentRating)
+    private int DRFromAbilities(string abilities, Rating currentRating)
     {
         int workingBonus = 0;
         string pattern = @"(Light Armor|Medium Armor|Heavy Armor): \d+";
 
-        Regex regex = new (pattern);
+        Regex regex = new(pattern);
 
         Match match = regex.Match(abilities);
 
@@ -258,15 +261,15 @@ public class CharacterList : MonoBehaviour
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 8;
+                workingBonus += 3;
             }
             if (armorType == "Medium Armor")
             {
-                workingBonus += 6;
+                workingBonus += 4;
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 4;
+                workingBonus += 5;
             }
         }
         if (currentRating == Rating.D || // Tier 2 armor
@@ -274,7 +277,7 @@ public class CharacterList : MonoBehaviour
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 10;
+                workingBonus += 6;
             }
             if (armorType == "Medium Armor")
             {
@@ -282,7 +285,7 @@ public class CharacterList : MonoBehaviour
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 6;
+                workingBonus += 10;
             }
         }
         if (currentRating == Rating.B || // Tier 3 armor
@@ -294,11 +297,11 @@ public class CharacterList : MonoBehaviour
             }
             if (armorType == "Medium Armor")
             {
-                workingBonus += 10;
+                workingBonus += 16;
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 8;
+                workingBonus += 20;
             }
         }
         if (currentRating == Rating.S || // Tier 4 armor
@@ -306,15 +309,15 @@ public class CharacterList : MonoBehaviour
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 14;
+                workingBonus += 24;
             }
             if (armorType == "Medium Armor")
             {
-                workingBonus += 12;
+                workingBonus += 32;
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 10;
+                workingBonus += 40;
             }
         }
         if (currentRating == Rating.SSS || // Tier 5 armor
@@ -322,57 +325,118 @@ public class CharacterList : MonoBehaviour
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 16;
+                workingBonus += 48;
             }
             if (armorType == "Medium Armor")
             {
-                workingBonus += 14;
+                workingBonus += 64;
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 12;
+                workingBonus += 80;
             }
         }
+        return workingBonus;
+    }
 
-        pattern = @"Shields: \d+";
+    private int MRFromAbilities(string abilities, Rating currentRating)
+    {
+        int workingBonus = 0;
+        string pattern = @"(Light Armor|Medium Armor|Heavy Armor): \d+";
 
-        regex = new Regex(pattern);
+        Regex regex = new(pattern);
 
-        match = regex.Match(abilities);
+        Match match = regex.Match(abilities);
 
         if (!match.Success)
             return workingBonus;
 
-        string shieldSkillLevel = match.Value.Split(':')[1].Trim(); // e.g. "1"
-        if (int.Parse(shieldSkillLevel) >= 3)
+        string armorType = match.Value.Split(':')[0].Trim(); // e.g. "Light Armor"
+        string armorSkillLevel = match.Value.Split(':')[1].Trim(); // e.g. "1"
+        if (int.Parse(armorSkillLevel) >= 3)
             workingBonus += 2;
 
+        // example match.Value == "Heavy Armor: 3"
         if (currentRating == Rating.F || // Tier 1 armor
             currentRating == Rating.E)
         {
-            workingBonus += 1;
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 5;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 4;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 3;
+            }
         }
         if (currentRating == Rating.D || // Tier 2 armor
             currentRating == Rating.C)
         {
-            workingBonus += 2;
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 10;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 8;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 6;
+            }
         }
         if (currentRating == Rating.B || // Tier 3 armor
             currentRating == Rating.A)
         {
-            workingBonus += 3;
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 20;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 16;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 12;
+            }
         }
         if (currentRating == Rating.S || // Tier 4 armor
             currentRating == Rating.SS)
         {
-            workingBonus += 4;
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 40;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 32;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 24;
+            }
         }
         if (currentRating == Rating.SSS || // Tier 5 armor
             currentRating == Rating.X)
         {
-            workingBonus += 5;
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 80;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 64;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 48;
+            }
         }
-
         return workingBonus;
     }
 
