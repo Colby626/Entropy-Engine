@@ -92,8 +92,8 @@ public class CharacterList : MonoBehaviour
     public void GenerateNPC(NPC npc, Rating npcRating)
     {
         npc.AC = ACFromAbilities(npc.Abilities, npcRating);
-        npc.DR = (npc.Fortitude == 0 ? 0 : (5 * (int)Mathf.Pow(2, (int)npc.Fortitude - 1))) + DRFromAbilities(npc.Abilities, npcRating); 
-        npc.MR = (npc.Fortitude == 0 ? 0 : (5 * (int)Mathf.Pow(2, (int)npc.Fortitude - 1))) + MRFromAbilities(npc.Abilities, npcRating);
+        npc.DR = (npc.Fortitude == 0 ? 0 : ((int)Mathf.Pow(2, (int)npc.Fortitude))) + DRFromAbilities(npc.Abilities, npcRating); 
+        npc.MR = (npc.Fortitude == 0 ? 0 : ((int)Mathf.Pow(2, (int)npc.Fortitude))) + MRFromAbilities(npc.Abilities, npcRating);
         npcs.Add(npc);
         AddNPCToScrollview(npc);
     }
