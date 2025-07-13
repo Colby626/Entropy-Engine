@@ -32,7 +32,6 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 		statsText.AppendLine($"<b><u>{npcData.Name}</u></b>"); // Underline and bold
         statsText.AppendLine("AC: " + npcData.AC);
 		statsText.AppendLine("DR: " + npcData.DR);
-		statsText.AppendLine("MR: " + npcData.MR);
         statsText.AppendLine("Dodge Bonus: " + npcData.DodgeBonus);
 		statsText.AppendLine("Plus To Hit: " + npcData.PlusToHit);
 		statsText.AppendLine("Movement Spaces: " + npcData.MovementSpeed);
