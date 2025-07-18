@@ -10,34 +10,45 @@ public class ItemGenerator : MonoBehaviour
     {
 		string itemType = DetermineItemType();
 		int itemTierNumber = DetermineItemTier();
-		string itemEnchanted = "";
+		bool isItemEnchanted = false;
+		string enchantmentRarity = "";
 
 		if (itemEnchantable)
 		{
-			bool isItemEnchanted = DetermineItemEnchantment(itemTierNumber);
+			isItemEnchanted = DetermineItemEnchantment(itemTierNumber);
 
 			if (isItemEnchanted)
-				itemEnchanted = "Enchanted";
-			else
-				itemEnchanted = "Unenchanted";
+			{
+				int enchantmentRarityTier = DetermineItemTier();
+                if (enchantmentRarityTier == 1)
+                    enchantmentRarity = "Common";
+                else if (enchantmentRarityTier == 2)
+                    enchantmentRarity = "Uncommon";
+                else if (enchantmentRarityTier == 3)
+                    enchantmentRarity = "Rare";
+                else if (enchantmentRarityTier == 4)
+                    enchantmentRarity = "Epic";
+                else if (enchantmentRarityTier == 5)
+                    enchantmentRarity = "Legendary";
+            }
 		}
 
 		string itemTier = "";
 		if (itemTierNumber == 1)
-			itemTier = "Common";
+			itemTier = "Tier 1";
 		else if (itemTierNumber == 2)
-			itemTier = "Uncommon";
+			itemTier = "Tier 2";
 		else if (itemTierNumber == 3)
-			itemTier = "Rare";
+			itemTier = "Tier 3";
 		else if (itemTierNumber == 4)
-			itemTier = "Epic";
+			itemTier = "Tier 4";
 		else if (itemTierNumber == 5)
-			itemTier = "Legendary";
+			itemTier = "Tier 5";
 
 		string item;
-		if (itemEnchantable)
+		if (itemEnchantable && isItemEnchanted)
 		{
-			item = itemEnchanted + " " + itemTier + " " + itemType;
+			item = enchantmentRarity + " " + itemTier + " " + itemType;
 		}
 		else
 			item = itemTier + " " + itemType;
