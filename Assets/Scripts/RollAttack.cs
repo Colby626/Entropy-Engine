@@ -74,27 +74,44 @@ public class RollAttack : MonoBehaviour
 			materialBonus += 3;
 		switch (weaponMaterial.name)
         {
-            case "Primitive":
+            case "F":
+				materialBonus += 2;
                 break;
 
-            case "Iron":
-				materialBonus += 3;
+            case "E":
+				materialBonus += 4;
                 break;
 
-            case "Steel":
+            case "D":
 				materialBonus += 6;
                 break;
 
-            case "Dlaren":
-				materialBonus += 9;
+            case "C":
+				materialBonus += 8;
                 break;
 
-            case "Draconic":
-				materialBonus += 12;
+            case "B":
+				materialBonus += 10;
                 break;
 
-            case "Divine/Demonic":
-				materialBonus += 15;
+            case "A":
+                materialBonus += 12;
+                break;
+
+            case "S":
+                materialBonus += 14;
+                break;
+
+            case "SS":
+                materialBonus += 16;
+                break;
+
+            case "SSS":
+                materialBonus += 18;
+                break;
+
+            case "X":
+                materialBonus += 20;
                 break;
 
             default:
