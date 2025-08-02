@@ -1,9 +1,14 @@
 using TMPro;
+using System;
+using Random = UnityEngine.Random;
 using UnityEngine;
+using static Variables;
 
 public class ItemGenerator : MonoBehaviour
 {
 	public TextMeshProUGUI itemText;
+	public TMP_Dropdown chestTierDropdown;
+	private Rating chestTier = Variables.Rating.F;
 
 	private bool itemEnchantable = true;
     public void GenerateItem()
@@ -136,18 +141,64 @@ public class ItemGenerator : MonoBehaviour
 	{
 		float itemTierRoll = Random.Range(0, 100f);
 
-		if (itemTierRoll >= 0 && itemTierRoll < 50) // 50% will be a common tier item
-			return 1;
-		else if (itemTierRoll >= 50 && itemTierRoll < 80) // 30%
-			return 2;
-		else if (itemTierRoll >= 80 && itemTierRoll < 93) // 13%
-			return 3;
-		else if (itemTierRoll >= 93 && itemTierRoll < 99) // 6%
-			return 4;
-		else if (itemTierRoll >= 99 && itemTierRoll <= 100) // 1%
-			return 5;
-		else
-			return 0;
+		switch (chestTier)
+		{
+			case Rating.F:
+			case Rating.E:
+                return 1;
+                break;
+			case Rating.D:
+			case Rating.C:
+				if (itemTierRoll >= 0 && itemTierRoll < 70) // 70% will be a common tier item
+					return 1;
+				else if (itemTierRoll >= 70 && itemTierRoll <= 100) // 30% will be an uncommon tier item
+					return 2;
+				else
+					return 0;
+				break;
+			case Rating.B:
+			case Rating.A:
+                if (itemTierRoll >= 0 && itemTierRoll < 50) // 50% will be a common tier item
+                    return 1;
+                else if (itemTierRoll >= 50 && itemTierRoll < 80) // 30% will be an uncommon tier item
+                    return 2;
+                else if (itemTierRoll >= 80 && itemTierRoll <= 100) // 20% will be a rare tier item
+                    return 3;
+                else
+                    return 0;
+                break;
+			case Rating.S:
+			case Rating.SS:
+                if (itemTierRoll >= 0 && itemTierRoll < 40) // 40% will be a common tier item
+                    return 1;
+                else if (itemTierRoll >= 40 && itemTierRoll < 70) // 30% will be an uncommon tier item
+                    return 2;
+                else if (itemTierRoll >= 70 && itemTierRoll < 90) // 20% will be a rare tier item
+                    return 3;
+                else if (itemTierRoll >= 90 && itemTierRoll <= 100) // 10% will be an epic tier item
+                    return 4;
+                else
+                    return 0;
+                break;
+			case Rating.SSS:
+			case Rating.X:
+                if (itemTierRoll >= 0 && itemTierRoll < 35) // 35% will be a common tier item
+                    return 1;
+                else if (itemTierRoll >= 35 && itemTierRoll < 65) // 30% will be an uncommon tier item
+                    return 2;
+                else if (itemTierRoll >= 65 && itemTierRoll < 85) // 20% will be a rare tier item
+                    return 3;
+                else if (itemTierRoll >= 85 && itemTierRoll < 95) // 10% will be an epic tier item
+                    return 4;
+                else if (itemTierRoll >= 95 && itemTierRoll <= 100) // 5% will be a legendary tier item
+                    return 5;
+                else
+                    return 0;
+                break;
+
+			default:
+				return 0;
+        }
 	}
 
 	private bool DetermineItemEnchantment(int itemTierNumber)
@@ -165,4 +216,22 @@ public class ItemGenerator : MonoBehaviour
 		else
 			return false;
 	}
+
+    public void Start()
+    {
+        // Sets the dropdown menus' to have the correct enum to choose from
+        chestTierDropdown.options.Clear();
+        foreach (string ratingName in Enum.GetNames(typeof(Rating)))
+        {
+            chestTierDropdown.options.Add(new TMP_Dropdown.OptionData(ratingName));
+        }
+
+        chestTierDropdown.onValueChanged.AddListener(OnChestTierDropdownValueChanged);
+        chestTierDropdown.RefreshShownValue();
+    }
+
+	public void OnChestTierDropdownValueChanged(int index)
+	{
+        chestTier = (Rating)index;
+    }
 }
