@@ -109,18 +109,53 @@ public class GenerateStats : MonoBehaviour
 
 		if (numberOfStartingSkills >= 1)
 		{
-            // Humanoids must have at least one armor skill
+            // These must have at least one armor skill
             if (currentType == Type.Humanoid_Champion ||
                 currentType == Type.Humanoid_Civilian)
             {
                 int index = Random.Range(0, Abilities.armorSkills.Length);
                 skillLevels[Abilities.armorSkills[index]] = 1;
             }
-            else if (currentType == Type.Humanoid_Mage)
+            else if (currentType == Type.Humanoid_Mage ||
+                     currentType == Type.Undead_Lich ||
+                     currentType == Type.Undead_CorpseLord ||
+                     currentType == Type.Demonic_Azklat ||
+                     currentType == Type.Abyssal_EldritchHorror ||
+                     currentType == Type.Aethereal_Beholder ||
+                     currentType == Type.Natural_Druid ||
+                     currentType == Type.Natural_Nymph ||
+                     currentType == Type.Natural_CreepingVine ||
+                     currentType == Type.Natural_PoisonBulb ||
+                     currentType == Type.Heavenly_Scribe)
             {
                 skillLevels["Light Armor"] = 1;
             }
-			else if (currentType == Type.Humanoid_Soldier)
+            else if (currentType == Type.Undead_Vampire ||
+                     currentType == Type.Undead_Ghoul ||
+                     currentType == Type.Demonic_Devil ||
+                     currentType == Type.Demonic_Hellhound ||
+                     currentType == Type.Demonic_MurderCat ||
+                     currentType == Type.Abyssal_Remnant ||
+                     currentType == Type.Abyssal_Sludge ||
+                     currentType == Type.Abyssal_Aspect ||
+                     currentType == Type.Aethereal_ManaVampire ||
+                     currentType == Type.Aethereal_Catoblepas ||
+                     currentType == Type.Heavenly_Messenger ||
+                     currentType == Type.Heavenly_Watcher ||
+                     currentType == Type.Misc_Ogre ||
+                     currentType == Type.Misc_Goblin ||
+                     currentType == Type.Misc_Bunyip ||
+                     currentType == Type.Misc_Giant)
+            {
+                skillLevels["Medium Armor"] = 1;
+            }
+            else if (currentType == Type.Humanoid_Soldier ||
+                     currentType == Type.Undead_Skeleton ||
+                     currentType == Type.Demonic_Imp ||
+                     currentType == Type.Demonic_Sin ||
+                     currentType == Type.Natural_Dryad ||
+                     currentType == Type.Heavenly_Soldier ||
+                     currentType == Type.Heavenly_Virtue)
 			{
                 int index = Random.Range(0, 2);
 				if (index == 0)
@@ -129,7 +164,18 @@ public class GenerateStats : MonoBehaviour
 					skillLevels["Heavy Armor"] = 1;
             }
 			else if (currentType == Type.Humanoid_Commander ||
-					 currentType == Type.Humanoid_Battlemage)
+					 currentType == Type.Humanoid_Battlemage ||
+                     currentType == Type.Undead_Wight ||
+                     currentType == Type.Undead_DeathKnight ||
+                     currentType == Type.Demonic_Demon ||
+                     currentType == Type.Abyssal_Mimic ||
+                     currentType == Type.Abyssal_WakingNightmare ||
+                     currentType == Type.Aethereal_Golem ||
+                     currentType == Type.Natural_Treant ||
+                     currentType == Type.Natural_VenusPersonTrap ||
+                     currentType == Type.Heavenly_Angel ||
+                     currentType == Type.Misc_Dragon ||
+                     currentType == Type.Misc_Wyvern)
 			{
                 skillLevels["Heavy Armor"] = 1;
             }
@@ -303,7 +349,7 @@ public class GenerateStats : MonoBehaviour
 
 			// Heavenly
 			Type.Heavenly_Messenger => Abilities.heavenlyMessengerSkills,
-			Type.Heavenly_Solider => Abilities.heavenlySoldierSkills,
+			Type.Heavenly_Soldier => Abilities.heavenlySoldierSkills,
 			Type.Heavenly_Scribe => Abilities.heavenlyScribeSkills,
 			Type.Heavenly_Angel => Abilities.heavenlyAngelSkills,
 			Type.Heavenly_Watcher => Abilities.heavenlyWatcherSkills,
@@ -380,7 +426,7 @@ public class GenerateStats : MonoBehaviour
 
 			// Heavenly
 			Type.Heavenly_Messenger => Abilities.heavenlyMessengerAbilities,
-			Type.Heavenly_Solider => Abilities.heavenlySoldierAbilities,
+			Type.Heavenly_Soldier => Abilities.heavenlySoldierAbilities,
 			Type.Heavenly_Scribe => Abilities.heavenlyScribeAbilities,
 			Type.Heavenly_Angel => Abilities.heavenlyAngelAbilities,
 			Type.Heavenly_Watcher => Abilities.heavenlyWatcherAbilities,
