@@ -128,8 +128,7 @@ public class CharacterList : MonoBehaviour
             workingBonus += 2;
 
         // example match.Value == "Heavy Armor: 3"
-        if (currentRating == Rating.F || // Tier 1 armor
-            currentRating == Rating.E)
+        if (currentRating == Rating.F)
         {
             if (armorType == "Light Armor")
             {
@@ -144,8 +143,22 @@ public class CharacterList : MonoBehaviour
                 workingBonus += 5;
             }
         }
-        if (currentRating == Rating.D || // Tier 2 armor
-            currentRating == Rating.C)
+        if (currentRating == Rating.E)
+        {
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 4;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 5;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 10;
+            }
+        }
+        if (currentRating == Rating.D)
         {
             if (armorType == "Light Armor")
             {
@@ -153,59 +166,116 @@ public class CharacterList : MonoBehaviour
             }
             if (armorType == "Medium Armor")
             {
-                workingBonus += 8;
+                workingBonus += 10;
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 10;
+                workingBonus += 15;
             }
         }
-        if (currentRating == Rating.B || // Tier 3 armor
-            currentRating == Rating.A)
+        if (currentRating == Rating.C)
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 12;
+                workingBonus += 10;
             }
             if (armorType == "Medium Armor")
             {
-                workingBonus += 16;
+                workingBonus += 15;
             }
             if (armorType == "Heavy Armor")
             {
                 workingBonus += 20;
             }
         }
-        if (currentRating == Rating.S || // Tier 4 armor
-            currentRating == Rating.SS)
+        if (currentRating == Rating.B)
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 24;
+                workingBonus += 15;
             }
             if (armorType == "Medium Armor")
             {
-                workingBonus += 32;
+                workingBonus += 20;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 30;
+            }
+        }
+        if (currentRating == Rating.A)
+        {
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 20;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 30;
             }
             if (armorType == "Heavy Armor")
             {
                 workingBonus += 40;
             }
         }
-        if (currentRating == Rating.SSS || // Tier 5 armor
-            currentRating == Rating.X)
+        if (currentRating == Rating.S)
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 48;
+                workingBonus += 30;
             }
             if (armorType == "Medium Armor")
             {
-                workingBonus += 64;
+                workingBonus += 45;
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 80;
+                workingBonus += 60;
+            }
+        }
+        if (currentRating == Rating.SS)
+        {
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 45;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 70;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 90;
+            }
+        }
+        if (currentRating == Rating.SSS)
+        {
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 70;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 105;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 135;
+            }
+        }
+        if (currentRating == Rating.X)
+        {
+            if (armorType == "Light Armor")
+            {
+                workingBonus += 105;
+            }
+            if (armorType == "Medium Armor")
+            {
+                workingBonus += 160;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 200;
             }
         }
         return workingBonus;
