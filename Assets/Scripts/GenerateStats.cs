@@ -9,73 +9,322 @@ using Type = Variables.Type;
 
 public class GenerateStats : MonoBehaviour
 {
-	public TMP_Dropdown lordshipRatingDropdown;
-	public TMP_Dropdown lordshipTypeDropdown;
+    public TMP_Dropdown rarityDropdown;
+    public TMP_Dropdown classDropdown;
 
-	private Rating currentRating;
-	private Type currentType;
+    private Rarity currentRarity;
+    private Class currentClass;
 
-    private Rating strengthRating = Rating.F;
-    private Rating dexterityRating = Rating.F;
-    private Rating agilityRating = Rating.F;
-    private Rating intelligenceRating = Rating.F;
-    private Rating spiritRating = Rating.F;
-	private Rating charismaRating = Rating.F;
-    private Rating vitalityRating = Rating.F;
-    private Rating fortitudeRating = Rating.F;
+    private int enduranceStat = 1;
+    private int strengthStat = 0;
+    private int dexterityStat = 0;
+    private int agilityStat = 0;
+    private int intelligenceStat = 0;
+    private int spiritStat = 0;
 
     public CharacterList characterList;
-	private SaveData settings;
 
-	// Called by the Generate button
-	public void GenerateLordshipStatPoints()
-	{
-		settings = FindFirstObjectByType<OptionsMenu>().settings;
-        strengthRating = Rating.F;
-		dexterityRating = Rating.F;
-		agilityRating = Rating.F;
-		intelligenceRating = Rating.F;
-		spiritRating = Rating.F;
-		charismaRating = Rating.F;
-		vitalityRating = Rating.F;
-		fortitudeRating = Rating.F;
+    // Called by the Generate button
+    public void GenerateStatPoints()
+    {
+        int level = CalculateLevelBasedOnRarity(currentRarity);
+        Debug.Log("Level calculated: " + level);
+        int statPoints = CalculateStatPointsBasedOnLevel(level);
+        Debug.Log("Total stat points: " + statPoints);
 
-		DistributeRatingPoints();
+        enduranceStat = 1;
+        strengthStat = 0;
+        dexterityStat = 0;
+        agilityStat = 0;
+        intelligenceStat = 0;
+        spiritStat = 0;
+        DistributeStatPoints(statPoints - 1); // Minus 1 for the forced 1 endurance
 
-		int upgradePoints = settings.upgradePointsPerLevel * (int)currentRating;
+        int randomIndex = Random.Range(0, adventurerAdjectives.Length);
+        string randomAdjective = adventurerAdjectives[randomIndex];
 
-        int randomIndex = Random.Range(0, Variables.adventurerAdjectives.Length);
-        string randomAdjective = Variables.adventurerAdjectives[randomIndex];
+        characterList.GenerateCharacter(new CharacterList.Character()
+        {
+            Name = randomAdjective + " " + currentClass.ToString(),
 
-        characterList.GenerateNPC(new CharacterList.NPC()
-		{
-			Name = randomAdjective + " " + currentType.ToString(),
+            Endurance = enduranceStat,
+            Strength = strengthStat,
+            Dexterity = dexterityStat,
+            Agility = agilityStat,
+            Intelligence = intelligenceStat,
+            Spirit = spiritStat,
 
-			Strength = strengthRating,
-			Dexterity = dexterityRating,
-			Agility = agilityRating,
-			Intelligence = intelligenceRating,
-			Spirit = spiritRating,
-			Charisma = charismaRating,
-			Vitality = vitalityRating,
-			Fortitude = fortitudeRating,
+            MaxHealth = CalculateHealth(),
+            CurrentHealth = CalculateHealth(),
+            MaxMana = CalculateMana(),
+            CurrentMana = CalculateMana(),
+            PhysicalResistance = enduranceStat / 5,
+            PlusToHit = dexterityStat / 5,
+            CriticalBonus = CalculateCriticalBonus(),
+            AgilityClass = 8 + agilityStat / 5,
+            InitiativeBonus = CalculateInitiativeBonus(),
+            MovementSpeed = 3 + (agilityStat / 10),
 
-			MaxHealth = ((int)currentRating * 50) + ((int)vitalityRating * 25) == 0 ? 10 : (int)currentRating * 50 + ((int)vitalityRating * 25),
-			CurrentHealth = ((int)currentRating * 50) + ((int)vitalityRating * 25) == 0 ? 10 : (int)currentRating * 50 + ((int)vitalityRating * 25),
-            MaxMana = (int)spiritRating == 0 ? 10 : (int)spiritRating * 100,
-			CurrentMana = (int)spiritRating == 0 ? 10 : (int)spiritRating * 100,
-			PlusToHit = (int)dexterityRating,
-			PhysicalDamageMultiplier = MultiplierFromRating(strengthRating),
-            MagicDamageMultiplier = MultiplierFromRating(intelligenceRating),
-			DodgeBonus = ModFromRating(agilityRating),
-			MovementSpeed = (int)agilityRating * 2 + 3,
-
-			Initiative = 0,
-			Abilities = GenerateAbilities(upgradePoints, SkillsPoolFromType(), FeatsPoolFromType()),
-			Notes = "",
-        },
-		currentRating);
+            Initiative = 0
+        });
     }
+
+    private int CalculateHealth()
+    {
+        switch (currentRarity)
+        {
+            case Rarity.Low_Common:
+            case Rarity.Mid_Common:
+            case Rarity.High_Common:
+                return enduranceStat;
+            case Rarity.Low_Uncommon:
+            case Rarity.Mid_Uncommon:
+            case Rarity.High_Uncommon:
+                return enduranceStat * 2;
+            case Rarity.Low_Rare:
+            case Rarity.Mid_Rare:
+            case Rarity.High_Rare:
+                return enduranceStat * 3;
+            case Rarity.Low_Epic:
+            case Rarity.Mid_Epic:
+            case Rarity.High_Epic:
+                return enduranceStat * 4;
+            case Rarity.Low_Legendary:
+            case Rarity.Mid_Legendary:
+            case Rarity.High_Legendary:
+                return enduranceStat * 5;
+            case Rarity.Low_Cataclysmic:
+            case Rarity.Mid_Cataclysmic:
+            case Rarity.High_Cataclysmic:
+                return enduranceStat * 6;
+            default:
+                return 0;
+        }
+    }
+
+    private int CalculateMana()
+    {
+        switch (currentRarity)
+        {
+            case Rarity.Low_Common:
+            case Rarity.Mid_Common:
+            case Rarity.High_Common:
+                return spiritStat;
+            case Rarity.Low_Uncommon:
+            case Rarity.Mid_Uncommon:
+            case Rarity.High_Uncommon:
+                return spiritStat * 2;
+            case Rarity.Low_Rare:
+            case Rarity.Mid_Rare:
+            case Rarity.High_Rare:
+                return spiritStat * 3;
+            case Rarity.Low_Epic:
+            case Rarity.Mid_Epic:
+            case Rarity.High_Epic:
+                return spiritStat * 4;
+            case Rarity.Low_Legendary:
+            case Rarity.Mid_Legendary:
+            case Rarity.High_Legendary:
+                return spiritStat * 5;
+            case Rarity.Low_Cataclysmic:
+            case Rarity.Mid_Cataclysmic:
+            case Rarity.High_Cataclysmic:
+                return spiritStat * 6;
+            default:
+                return 0;
+        }
+    }
+
+    private int CalculateCriticalBonus()
+    {
+        switch (currentRarity)
+        {
+            case Rarity.Low_Common:
+            case Rarity.Mid_Common:
+            case Rarity.High_Common:
+                return dexterityStat / 6;
+            case Rarity.Low_Uncommon:
+            case Rarity.Mid_Uncommon:
+            case Rarity.High_Uncommon:
+                return dexterityStat / 5;
+            case Rarity.Low_Rare:
+            case Rarity.Mid_Rare:
+            case Rarity.High_Rare:
+                return dexterityStat / 4;
+            case Rarity.Low_Epic:
+            case Rarity.Mid_Epic:
+            case Rarity.High_Epic:
+                return dexterityStat / 3;
+            case Rarity.Low_Legendary:
+            case Rarity.Mid_Legendary:
+            case Rarity.High_Legendary:
+                return dexterityStat / 2;
+            case Rarity.Low_Cataclysmic:
+            case Rarity.Mid_Cataclysmic:
+            case Rarity.High_Cataclysmic:
+                return dexterityStat;
+            default:
+                return 0;
+        }
+    }
+
+    private int CalculateInitiativeBonus()
+    {
+        switch (currentRarity)
+        {
+            case Rarity.Low_Common:
+            case Rarity.Mid_Common:
+            case Rarity.High_Common:
+                return agilityStat / 10;
+            case Rarity.Low_Uncommon:
+            case Rarity.Mid_Uncommon:
+            case Rarity.High_Uncommon:
+                return (agilityStat / 10) * 2;
+            case Rarity.Low_Rare:
+            case Rarity.Mid_Rare:
+            case Rarity.High_Rare:
+                return (agilityStat / 10) * 3;
+            case Rarity.Low_Epic:
+            case Rarity.Mid_Epic:
+            case Rarity.High_Epic:
+                return (agilityStat / 10) * 4;
+            case Rarity.Low_Legendary:
+            case Rarity.Mid_Legendary:
+            case Rarity.High_Legendary:
+                return (agilityStat / 10) * 5;
+            case Rarity.Low_Cataclysmic:
+            case Rarity.Mid_Cataclysmic:
+            case Rarity.High_Cataclysmic:
+                return (agilityStat / 10) * 6;
+            default:
+                return 0;
+        }
+    }
+
+    private void DistributeStatPoints(int statPoints)
+    {
+        for (int i = 0; i < statPoints; i++) // For every stat point to distribute
+        {
+            float random = Random.Range(0f, 1f); // Calculate a random number between 0 and 1
+            float cumulativeWeight = 0f;
+
+            // Go through each stat and check which range the random number falls into
+            for (int statWeight = 0; statWeight < 6; statWeight++)
+            {
+                // Increase the cumulative weight by the amount specified in the current classes' weight map
+                cumulativeWeight += classWeights[currentClass][statWeight];
+
+                if (random < cumulativeWeight)
+                {
+                    // Increment the corresponding stat based on the random number falling within this weight range
+                    switch (statWeight)
+                    {
+                        case 0: enduranceStat++; break;
+                        case 1: strengthStat++; break;
+                        case 2: dexterityStat++; break;
+                        case 3: agilityStat++; break;
+                        case 4: intelligenceStat++; break;
+                        case 5: spiritStat++; break;
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    private int CalculateLevelBasedOnRarity(Rarity rarity)
+    {
+        return rarity switch
+        {
+            Rarity.Low_Common => Random.Range(1, 10),
+            Rarity.Mid_Common => Random.Range(11, 20),
+            Rarity.High_Common => Random.Range(21, 30),
+            Rarity.Low_Uncommon => Random.Range(31, 40),
+            Rarity.Mid_Uncommon => Random.Range(41, 50),
+            Rarity.High_Uncommon => Random.Range(51, 60),
+            Rarity.Low_Rare => Random.Range(61, 70),
+            Rarity.Mid_Rare => Random.Range(71, 80),
+            Rarity.High_Rare => Random.Range(81, 90),
+            Rarity.Low_Epic => Random.Range(91, 100),
+            Rarity.Mid_Epic => Random.Range(101, 110),
+            Rarity.High_Epic => Random.Range(111, 120),
+            Rarity.Low_Legendary => Random.Range(121, 130),
+            Rarity.Mid_Legendary => Random.Range(131, 140),
+            Rarity.High_Legendary => Random.Range(141, 150),
+            Rarity.Low_Cataclysmic => Random.Range(151, 160),
+            Rarity.Mid_Cataclysmic => Random.Range(161, 170),
+            Rarity.High_Cataclysmic => Random.Range(171, 180),
+            _ => 0,
+        };
+    }
+
+    private int CalculateStatPointsBasedOnLevel(int level)
+    {
+        int sum = 0;
+        for (int i = 0; i < level; i++)
+        {
+            if (i <= 30) // For commons, they get 2 stat points per level
+            {
+                sum += 2;
+            }
+            else if (i <= 60) // Uncommons get 4 stat points per level
+            {
+                sum += 4;
+            }
+            else if (i <= 90)
+            {
+                sum += 6;
+            }
+            else if (i <= 120)
+            {
+                sum += 8;
+            }
+            else if (i <= 150)
+            {
+                sum += 10;
+            }
+            else if (i <= 180)
+            {
+                sum += 12;
+            }
+        }
+        return sum;
+    }
+
+    public void Start()
+    {
+        // Sets the dropdown menus' to have the correct enum to choose from
+        rarityDropdown.options.Clear();
+        foreach (string rarityName in Enum.GetNames(typeof(Rarity)))
+        {
+            rarityDropdown.options.Add(new TMP_Dropdown.OptionData(rarityName));
+        }
+        classDropdown.options.Clear();
+        foreach (string className in Enum.GetNames(typeof(Class)))
+        {
+            classDropdown.options.Add(new TMP_Dropdown.OptionData(className));
+        }
+
+        rarityDropdown.onValueChanged.AddListener(OnRarityDropdownValueChanged);
+        classDropdown.onValueChanged.AddListener(OnClassDropdownValueChanged);
+
+        rarityDropdown.RefreshShownValue();
+        classDropdown.RefreshShownValue();
+    }
+
+    public void OnRarityDropdownValueChanged(int index)
+    {
+        currentRarity = (Rarity)index;
+        Debug.Log("Rarity changed to: " + currentRarity);
+    }
+
+    public void OnClassDropdownValueChanged(int index)
+    {
+        currentClass = (Class)index;
+        Debug.Log("Class changed to: " + currentClass);
+    }
+
+	private SaveData settings;
 
     private string GenerateAbilities(int upgradePoints, string[] skillsPool, string[] featsPool)
 	{
@@ -368,325 +617,6 @@ public class GenerateStats : MonoBehaviour
 		};
 	}
 
-	private string[] FeatsPoolFromType()
-	{
-		return currentType switch
-		{
-			// Humanoids
-			Type.Humanoid_Civilian => Abilities.humanoidCivilianAbilities,
-			Type.Humanoid_Soldier => Abilities.humanoidSoldierAbilities,
-			Type.Humanoid_Champion => Abilities.humanoidChampionAbilities,
-			Type.Humanoid_Commander => Abilities.humanoidCommanderAbilities,
-			Type.Humanoid_Mage => Abilities.humanoidMageAbilities,
-			Type.Humanoid_Battlemage => Abilities.humanoidBattlemageAbilities,
-
-			// Undead
-			Type.Undead_Skeleton => Abilities.undeadSkeletonAbilities,
-			Type.Undead_Lich => Abilities.undeadLichAbilities,
-			Type.Undead_Wight => Abilities.undeadWightAbilities,
-			Type.Undead_Zombie => Abilities.undeadZombieAbilities,
-			Type.Undead_CorpseLord => Abilities.undeadCorpseLordAbilities,
-			Type.Undead_Vampire => Abilities.undeadVampireAbilities,
-			Type.Undead_Ghoul => Abilities.undeadGhoulAbilities,
-			Type.Undead_DeathKnight => Abilities.undeadDeathKnightAbilities,
-
-			// Demonic
-			Type.Demonic_Devil => Abilities.demonicDevilAbilities,
-			Type.Demonic_Imp => Abilities.demonicImpAbilities,
-			Type.Demonic_Demon => Abilities.demonicDemonAbilities,
-			Type.Demonic_Azklat => Abilities.demonicAzklatAbilities,
-			Type.Demonic_Hellhound => Abilities.demonicHellhoundAbilities,
-			Type.Demonic_MurderCat => Abilities.demonicMurderCatAbilities,
-			Type.Demonic_Sin => Abilities.demonicSinAbilities,
-
-			// Abyssal
-			Type.Abyssal_Mimic => Abilities.abyssalMimicAbilities,
-			Type.Abyssal_Remnant => Abilities.abyssalRemnantAbilities,
-			Type.Abyssal_EldritchHorror => Abilities.abyssalEldritchHorrorAbilities,
-			Type.Abyssal_Sludge => Abilities.abyssalSludgeAbilities,
-			Type.Abyssal_WakingNightmare => Abilities.abyssalWakingNightmareAbilities,
-			Type.Abyssal_Aspect => Abilities.abyssalAspectAbilities,
-
-			// Aethereal
-			Type.Aethereal_Golem => Abilities.aetherealGolemAbilities,
-			Type.Aethereal_Ghost => Abilities.aetherealGhostAbilities,
-			Type.Aethereal_Wisp => Abilities.aetherealWispAbilities,
-			Type.Aethereal_ManaVampire => Abilities.aetherealManaVampireAbilities,
-			Type.Aethereal_Catoblepas => Abilities.aetherealCatoblepasAbilities,
-			Type.Aethereal_Beholder => Abilities.aetherealBeholderAbilities,
-
-			// Natural
-			Type.Natural_Treant => Abilities.naturalTreantAbilities,
-			Type.Natural_Druid => Abilities.naturalDruidAbilities,
-			Type.Natural_Dryad => Abilities.naturalDryadAbilities,
-			Type.Natural_Nymph => Abilities.naturalNymphAbilities,
-			Type.Natural_CreepingVine => Abilities.naturalCreepingVineAbilities,
-			Type.Natural_PoisonBulb => Abilities.naturalPoisonBulbAbilities,
-			Type.Natural_VenusPersonTrap => Abilities.naturalVenusPersonTrapAbilities,
-
-			// Heavenly
-			Type.Heavenly_Messenger => Abilities.heavenlyMessengerAbilities,
-			Type.Heavenly_Soldier => Abilities.heavenlySoldierAbilities,
-			Type.Heavenly_Scribe => Abilities.heavenlyScribeAbilities,
-			Type.Heavenly_Angel => Abilities.heavenlyAngelAbilities,
-			Type.Heavenly_Watcher => Abilities.heavenlyWatcherAbilities,
-			Type.Heavenly_Virtue => Abilities.heavenlyVirtueAbilities,
-
-			// Miscellaneous
-			Type.Misc_Dragon => Abilities.miscDragonAbilities,
-			Type.Misc_Wyvern => Abilities.miscWyvernAbilities,
-			Type.Misc_Ogre => Abilities.miscOgreAbilities,
-			Type.Misc_Goblin => Abilities.miscGoblinAbilities,
-			Type.Misc_Bunyip => Abilities.miscBunyipAbilities,
-			Type.Misc_Giant => Abilities.miscGiantAbilities,
-
-			// Default Case (Failsafe)
-			_ => new string[] { "Don't know any abilities for this type: " + currentType }
-		};
-	}
-
-	private void DistributeRatingPoints()
-	{
-		int pointsToDistribute = ((int)currentRating * settings.statPointsPerLevelUp) + settings.startingStatPoints;
-		int bonusPoints = 0;
-		float chanceOfBonus = settings.percentChanceOfBonusPointOnRatingUp;
-
-		for (int i = 0; i < pointsToDistribute / 2; i++)
-		{
-			int randomNumber = Random.Range(0, 100);
-			if (randomNumber < chanceOfBonus)
-				bonusPoints++;
-			chanceOfBonus += settings.increaseInBonusChancePerLevel;
-		}
-
-		Debug.Log("Bonus points awarded: " + bonusPoints);
-		pointsToDistribute += bonusPoints;
-
-		// Random Stat Groupings per level
-		for (int i = 0; i < (int)currentRating + 1; i++)
-		{
-            var index = Random.Range(0, 4);
-            if (index == 0) // Body
-            {
-                if (strengthRating == Rating.SS)
-					pointsToDistribute++;
-				else
-					strengthRating++;
-
-                if (agilityRating == Rating.SS)
-                    pointsToDistribute++;
-                else
-                    agilityRating++;
-            }
-            else if (index == 1) // Control
-            {
-                if (vitalityRating == Rating.SS)
-                    pointsToDistribute++;
-                else
-                    vitalityRating++;
-
-                if (dexterityRating == Rating.SS)
-                    pointsToDistribute++;
-                else
-                    dexterityRating++;
-            }
-            else if (index == 2) // Presence
-            {
-                if (intelligenceRating == Rating.SS)
-                    pointsToDistribute++;
-                else
-                    intelligenceRating++;
-
-                if (charismaRating == Rating.SS)
-                    pointsToDistribute++;
-                else
-                    charismaRating++;
-            }
-            else if (index == 3) // Willpower
-            {
-                if (spiritRating == Rating.SS)
-                    pointsToDistribute++;
-                else
-                    spiritRating++;
-
-                if (fortitudeRating == Rating.SS)
-                    pointsToDistribute++;
-                else
-                    fortitudeRating++;
-            }
-        }
-
-		if (pointsToDistribute >= (int)Rating.SS * 8) // The number of stats
-		{
-            strengthRating = Rating.SS;
-            dexterityRating = Rating.SS;
-            agilityRating = Rating.SS;
-            intelligenceRating = Rating.SS;
-            spiritRating = Rating.SS;
-            charismaRating = Rating.SS;
-            vitalityRating = Rating.SS;
-            fortitudeRating = Rating.SS;
-
-            Debug.LogWarning($"Too many points to distribute ({pointsToDistribute}), maxing out");
-			return;
-		}
-
-		for (int i = 0; i < pointsToDistribute; i++)
-		{
-            float random = Random.Range(0f, 1f); // Calculate a random number between 0 and 1
-            float cumulativeWeight = 0f;
-
-            // Go through each stat rating and check which range the random number falls into
-            for (int statWeight = 0; statWeight < 8; statWeight++)
-            {
-				// Increase the cumulative weight by the amount specified in the current classes' weight map
-				// Bonus points are randomly distributed
-				if (i < bonusPoints)
-					cumulativeWeight += .125f;
-				else
-					cumulativeWeight += typeWeights[currentType][statWeight];
-
-                if (random < cumulativeWeight)
-                {
-                    // Increment the corresponding stat based on the random number falling within this weight range
-                    switch (statWeight)
-                    {
-                        case 0:
-							if (strengthRating == Rating.SS)
-							{
-								i -= 1;
-								break;
-							}
-							strengthRating++;
-							break;
-                        case 1:
-                            if (dexterityRating == Rating.SS)
-                            {
-                                i -= 1;
-                                break;
-                            }
-                            dexterityRating++; 
-							break;
-                        case 2:
-                            if (agilityRating == Rating.SS)
-                            {
-                                i -= 1;
-                                break;
-                            }
-                            agilityRating++; 
-							break;
-                        case 3:
-                            if (intelligenceRating == Rating.SS)
-                            {
-                                i -= 1;
-                                break;
-                            }
-                            intelligenceRating++; 
-							break;
-                        case 4:
-                            if (spiritRating == Rating.SS)
-                            {
-                                i -= 1;
-                                break;
-                            }
-                            spiritRating++; 
-							break;
-                        case 5:
-                            if (charismaRating == Rating.SS)
-                            {
-                                i -= 1;
-                                break;
-                            }
-                            charismaRating++; 
-							break;
-                        case 6:
-                            if (vitalityRating == Rating.SS)
-                            {
-                                i -= 1;
-                                break;
-                            }
-                            vitalityRating++; 
-							break;
-                        case 7:
-                            if (fortitudeRating == Rating.SS)
-                            {
-                                i -= 1;
-                                break;
-                            }
-                            fortitudeRating++; 
-							break;
-                    }
-                    break;
-                }
-            }
-        }
-	}
-
-	private int ModFromRating(Rating rating)
-	{
-		if (rating == Rating.F)
-			return settings.F;
-		else if (rating == Rating.E)
-			return settings.E;
-		else if (rating == Rating.D)
-			return settings.D;
-		else if (rating == Rating.C)
-			return settings.C;
-		else if (rating == Rating.B)
-			return settings.B;
-		else if (rating == Rating.A)
-			return settings.A;
-		else if (rating == Rating.S)
-			return settings.S;
-		else if (rating == Rating.SS)
-			return settings.SS;
-		else
-			return 0;
-	}
-
-	private string MultiplierFromRating(Rating rating)
-	{
-        if (rating == Rating.F)
-            return "1";
-        else if (rating == Rating.E)
-            return "1d2";
-        else if (rating == Rating.D)
-            return "1d4";
-        else if (rating == Rating.C)
-            return "1d6";
-        else if (rating == Rating.B)
-            return "1d8";
-        else if (rating == Rating.A)
-            return "2d4";
-        else if (rating == Rating.S)
-            return "2d6";
-        else if (rating == Rating.SS)
-            return "3d4";
-        else
-            return "0";
-    }
-
-	public void Start()
-	{
-		// Sets the dropdown menus' to have the correct enum to choose from
-		lordshipRatingDropdown.options.Clear();
-        foreach (string ratingName in Enum.GetNames(typeof(Rating)))
-        {
-            lordshipRatingDropdown.options.Add(new TMP_Dropdown.OptionData(ratingName));
-        }
-        lordshipTypeDropdown.options.Clear();
-        foreach (string typeName in Enum.GetNames(typeof(Type)))
-        {
-            lordshipTypeDropdown.options.Add(new TMP_Dropdown.OptionData(typeName));
-        }
-
-        lordshipRatingDropdown.onValueChanged.AddListener(OnRatingDropdownValueChanged);
-        lordshipTypeDropdown.onValueChanged.AddListener(OnTypeDropdownValueChanged);
-
-        lordshipRatingDropdown.RefreshShownValue();
-        lordshipTypeDropdown.RefreshShownValue();
-	}
-
     public void OnRatingDropdownValueChanged(int index)
     {
         currentRating = (Rating)index;
@@ -696,4 +626,4 @@ public class GenerateStats : MonoBehaviour
     {
         currentType = (Type)index;
     }
-}
+} 
