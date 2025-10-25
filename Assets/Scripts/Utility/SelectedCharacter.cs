@@ -32,19 +32,16 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 		statsText.AppendLine($"<b><u>{npcData.Name}</u></b>"); // Underline and bold
         statsText.AppendLine("AC: " + npcData.AC);
 		statsText.AppendLine("DR: " + npcData.DR);
-        statsText.AppendLine("Dodge Bonus: " + npcData.DodgeBonus);
-		statsText.AppendLine("Plus To Hit: " + npcData.PlusToHit);
+		statsText.AppendLine("Str Dmg Bonus: " + npcData.StrengthDamageBonus);
+        statsText.AppendLine("Dex Dmg Bonus: " + npcData.DexterityDamageBonus);
+        statsText.AppendLine("Spt Dmg Bonus: " + npcData.SpiritDamageBonus);
+        statsText.AppendLine("Plus To Hit: " + npcData.PlusToHit);
 		statsText.AppendLine("Movement Spaces: " + npcData.MovementSpeed);
-		statsText.AppendLine("Physical Damage Multiplier: " + npcData.PhysicalDamageMultiplier);
-		statsText.AppendLine("Magic Damage Multiplier: " + npcData.MagicDamageMultiplier);
 		statsText.AppendLine("Strength: " + npcData.Strength);
 		statsText.AppendLine("Dexterity: " + npcData.Dexterity);
 		statsText.AppendLine("Agility: " + npcData.Agility);
-		statsText.AppendLine("Intelligence: " + npcData.Intelligence);
 		statsText.AppendLine("Spirit: " + npcData.Spirit);
-		statsText.AppendLine("Charisma: " + npcData.Charisma);
-		statsText.AppendLine("Vitality: " + npcData.Vitality);
-		statsText.AppendLine("Fortitude: " + npcData.Fortitude);
+		statsText.AppendLine("Endurance: " + npcData.Endurance);
 		statsText.AppendLine("Max Health: " + npcData.MaxHealth);
 		statsText.AppendLine("Max Mana: " + npcData.MaxMana);
 

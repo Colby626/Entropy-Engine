@@ -8,7 +8,7 @@ public class ItemGenerator : MonoBehaviour
 {
 	public TextMeshProUGUI itemText;
 	public TMP_Dropdown chestTierDropdown;
-	private Rating chestTier = Variables.Rating.F;
+	private CharacterList.Material chestTier = CharacterList.Material.Iron;
 
 	private bool itemEnchantable = true;
     public void GenerateItem()
@@ -35,6 +35,8 @@ public class ItemGenerator : MonoBehaviour
                     enchantmentRarity = "Epic";
                 else if (enchantmentRarityTier == 5)
                     enchantmentRarity = "Legendary";
+                else if (enchantmentRarityTier == 6)
+                    enchantmentRarity = "Cataclysmic";
             }
 		}
 
@@ -49,8 +51,10 @@ public class ItemGenerator : MonoBehaviour
 			itemTier = "Tier 4";
 		else if (itemTierNumber == 5)
 			itemTier = "Tier 5";
+        else if (itemTierNumber == 6)
+            itemTier = "Tier 6";
 
-		string item;
+        string item;
 		if (itemEnchantable && isItemEnchanted)
 		{
 			item = enchantmentRarity + " " + itemTier + " " + itemType;
@@ -143,60 +147,63 @@ public class ItemGenerator : MonoBehaviour
 
 		switch (chestTier)
 		{
-			case Rating.F:
-			case Rating.E:
+			case CharacterList.Material.Iron:
                 return 1;
-                break;
-			case Rating.D:
-			case Rating.C:
+			case CharacterList.Material.Steel:
 				if (itemTierRoll >= 0 && itemTierRoll < 70) // 70% will be a common tier item
 					return 1;
 				else if (itemTierRoll >= 70 && itemTierRoll <= 100) // 30% will be an uncommon tier item
 					return 2;
 				else
 					return 0;
-				break;
-			case Rating.B:
-			case Rating.A:
-                if (itemTierRoll >= 0 && itemTierRoll < 50) // 50% will be a common tier item
+			case CharacterList.Material.Dlaren:
+                if (itemTierRoll >= 0 && itemTierRoll < 30) // 30% will be a common tier item
                     return 1;
-                else if (itemTierRoll >= 50 && itemTierRoll < 80) // 30% will be an uncommon tier item
+                else if (itemTierRoll >= 30 && itemTierRoll < 80) // 50% will be an uncommon tier item
                     return 2;
                 else if (itemTierRoll >= 80 && itemTierRoll <= 100) // 20% will be a rare tier item
                     return 3;
                 else
                     return 0;
-                break;
-			case Rating.S:
-			case Rating.SS:
-                if (itemTierRoll >= 0 && itemTierRoll < 40) // 40% will be a common tier item
+			case CharacterList.Material.Valkyrian:
+                if (itemTierRoll >= 0 && itemTierRoll < 15) // 15% will be a common tier item
                     return 1;
-                else if (itemTierRoll >= 40 && itemTierRoll < 70) // 30% will be an uncommon tier item
+                else if (itemTierRoll >= 15 && itemTierRoll < 55) // 40% will be an uncommon tier item
                     return 2;
-                else if (itemTierRoll >= 70 && itemTierRoll < 90) // 20% will be a rare tier item
+                else if (itemTierRoll >= 55 && itemTierRoll < 85) // 30% will be a rare tier item
                     return 3;
-                else if (itemTierRoll >= 90 && itemTierRoll <= 100) // 10% will be an epic tier item
+                else if (itemTierRoll >= 85 && itemTierRoll <= 100) // 15% will be an epic tier item
                     return 4;
                 else
                     return 0;
-                break;
-			case Rating.SSS:
-			case Rating.X:
-                if (itemTierRoll >= 0 && itemTierRoll < 35) // 35% will be a common tier item
+			case CharacterList.Material.Draconic:
+                if (itemTierRoll >= 0 && itemTierRoll < 10) // 10% will be a common tier item
                     return 1;
-                else if (itemTierRoll >= 35 && itemTierRoll < 65) // 30% will be an uncommon tier item
+                else if (itemTierRoll >= 10 && itemTierRoll < 30) // 20% will be an uncommon tier item
                     return 2;
-                else if (itemTierRoll >= 65 && itemTierRoll < 85) // 20% will be a rare tier item
+                else if (itemTierRoll >= 30 && itemTierRoll < 60) // 30% will be a rare tier item
                     return 3;
-                else if (itemTierRoll >= 85 && itemTierRoll < 95) // 10% will be an epic tier item
+                else if (itemTierRoll >= 60 && itemTierRoll < 85) // 25% will be an epic tier item
                     return 4;
-                else if (itemTierRoll >= 95 && itemTierRoll <= 100) // 5% will be a legendary tier item
+                else if (itemTierRoll >= 85 && itemTierRoll <= 100) // 15% will be a legendary tier item
                     return 5;
                 else
                     return 0;
-                break;
+            case CharacterList.Material.Divine_Demonic:
+                if (itemTierRoll >= 0 && itemTierRoll < 10) // 10% will be an uncommon tier item
+                    return 2;
+                else if (itemTierRoll >= 10 && itemTierRoll < 25) // 15% will be a rare tier item
+                    return 3;
+                else if (itemTierRoll >= 25 && itemTierRoll < 65) // 40% will be an epic tier item
+                    return 4;
+                else if (itemTierRoll >= 65 && itemTierRoll <= 85) // 20% will be a legendary tier item
+                    return 5;
+                else if (itemTierRoll >= 85 && itemTierRoll <= 100) // 15% will be a cataclysmic tier item
+                    return 5;
+                else
+                    return 0;
 
-			default:
+            default:
 				return 0;
         }
 	}
@@ -221,9 +228,9 @@ public class ItemGenerator : MonoBehaviour
     {
         // Sets the dropdown menus' to have the correct enum to choose from
         chestTierDropdown.options.Clear();
-        foreach (string ratingName in Enum.GetNames(typeof(Rating)))
+        foreach (string materialName in Enum.GetNames(typeof(CharacterList.Material)))
         {
-            chestTierDropdown.options.Add(new TMP_Dropdown.OptionData(ratingName));
+            chestTierDropdown.options.Add(new TMP_Dropdown.OptionData(materialName));
         }
 
         chestTierDropdown.onValueChanged.AddListener(OnChestTierDropdownValueChanged);
@@ -232,6 +239,6 @@ public class ItemGenerator : MonoBehaviour
 
 	public void OnChestTierDropdownValueChanged(int index)
 	{
-        chestTier = (Rating)index;
+        chestTier = (CharacterList.Material)index;
     }
 }

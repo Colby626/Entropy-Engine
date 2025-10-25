@@ -11,14 +11,11 @@ public class CharacterList : MonoBehaviour
 	{
 		public string Name;
 
-		public Rating Strength;
-		public Rating Dexterity;
-		public Rating Agility;
-		public Rating Intelligence;
-		public Rating Spirit;
-		public Rating Charisma;
-		public Rating Vitality;
-		public Rating Fortitude;
+		public int Strength;
+		public int Dexterity;
+		public int Agility;
+		public int Spirit;
+		public int Endurance;
 
         public int MaxHealth;
         public int CurrentHealth;
@@ -27,10 +24,13 @@ public class CharacterList : MonoBehaviour
         public int AC;
         public int DR;
         public int PlusToHit;
-        public string PhysicalDamageMultiplier;
-        public string MagicDamageMultiplier;
-        public int DodgeBonus;
+        public int CriticalBonus;
         public int MovementSpeed;
+        public int InitiativeBonus;
+
+        public int StrengthDamageBonus;
+        public int DexterityDamageBonus;
+        public int SpiritDamageBonus;
 
         public int Initiative;
 		public string Abilities;
@@ -38,8 +38,8 @@ public class CharacterList : MonoBehaviour
 
         public WeaponType WeaponType = WeaponType.Melee;
 		public WeaponSize WeaponSize = WeaponSize.Balanced;
-		public WeaponMaterial WeaponMaterial = WeaponMaterial.Iron;
-		public WeaponMaterial ArrowMaterial = WeaponMaterial.Primitive;
+		public Material WeaponMaterial = Material.Iron;
+		public Material ArrowMaterial = Material.Iron;
         public WeaponEnchantment WeaponEnchantment = WeaponEnchantment.Unenchanted;
 	}
 
@@ -59,12 +59,12 @@ public class CharacterList : MonoBehaviour
         Colossal
     }
 
-	public enum WeaponMaterial
+	public enum Material
     {
-        Primitive,
         Iron,
         Steel,
         Dlaren,
+        Valkyrian,
         Draconic,
         Divine_Demonic
     }
@@ -88,10 +88,10 @@ public class CharacterList : MonoBehaviour
     public NPC selectedCharacter;
     public Transform combatTab;
 
-    public void GenerateNPC(NPC npc, Rating npcRating)
+    public void GenerateNPC(NPC npc, GenerateStats.Rarity npcRarity)
     {
-        npc.AC = 10 + (int)npc.Agility * 2 + ACReducedFromHeavyArmor(npc.Abilities);
-        npc.DR = (npc.Fortitude == 0 ? 0 : ((int)Mathf.Pow(2, (int)npc.Fortitude))) + DRFromAbilities(npc.Abilities, npcRating); 
+        npc.AC = ((int)npc.Agility / 5 >= 8 ? 8 : (int)npc.Agility / 5) + 8 + ACReducedFromHeavyArmor(npc.Abilities);
+        npc.DR = (int)npc.Endurance / 5 + DRFromAbilities(npc.Abilities, npcRarity); 
         npcs.Add(npc);
         AddNPCToScrollview(npc);
     }
@@ -110,9 +110,10 @@ public class CharacterList : MonoBehaviour
             return -4;
     }
 
-    private int DRFromAbilities(string abilities, Rating currentRating)
+    private int DRFromAbilities(string abilities, GenerateStats.Rarity currentRarity)
     {
         int workingBonus = 0;
+        int rarityValue = ((int)currentRarity + 1) / 3;
         string pattern = @"(Light Armor|Medium Armor|Heavy Armor): \d+";
 
         Regex regex = new(pattern);
@@ -123,31 +124,13 @@ public class CharacterList : MonoBehaviour
             return workingBonus;
 
         string armorType = match.Value.Split(':')[0].Trim(); // e.g. "Light Armor"
-        string armorSkillLevel = match.Value.Split(':')[1].Trim(); // e.g. "1"
-        if (int.Parse(armorSkillLevel) >= 3)
-            workingBonus += 2;
 
         // example match.Value == "Heavy Armor: 3"
-        if (currentRating == Rating.F)
+        if (rarityValue == (int)Material.Iron)
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 3;
-            }
-            if (armorType == "Medium Armor")
-            {
-                workingBonus += 4;
-            }
-            if (armorType == "Heavy Armor")
-            {
-                workingBonus += 5;
-            }
-        }
-        if (currentRating == Rating.E)
-        {
-            if (armorType == "Light Armor")
-            {
-                workingBonus += 4;
+                workingBonus += 0;
             }
             if (armorType == "Medium Armor")
             {
@@ -158,11 +141,11 @@ public class CharacterList : MonoBehaviour
                 workingBonus += 10;
             }
         }
-        if (currentRating == Rating.D)
+        if (rarityValue == (int)Material.Steel)
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 6;
+                workingBonus += 5;
             }
             if (armorType == "Medium Armor")
             {
@@ -170,10 +153,10 @@ public class CharacterList : MonoBehaviour
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 15;
+                workingBonus += 25;
             }
         }
-        if (currentRating == Rating.C)
+        if (rarityValue == (int)Material.Dlaren)
         {
             if (armorType == "Light Armor")
             {
@@ -181,101 +164,56 @@ public class CharacterList : MonoBehaviour
             }
             if (armorType == "Medium Armor")
             {
-                workingBonus += 15;
+                workingBonus += 25;
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 20;
+                workingBonus += 50;
             }
         }
-        if (currentRating == Rating.B)
+        if (rarityValue == (int)Material.Valkyrian)
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 15;
+                workingBonus += 25;
             }
             if (armorType == "Medium Armor")
             {
-                workingBonus += 20;
+                workingBonus += 50;
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 30;
+                workingBonus += 100;
             }
         }
-        if (currentRating == Rating.A)
+        if (rarityValue == (int)Material.Draconic)
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 20;
+                workingBonus += 50;
             }
             if (armorType == "Medium Armor")
             {
-                workingBonus += 30;
+                workingBonus += 100;
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 40;
+                workingBonus += 150;
             }
         }
-        if (currentRating == Rating.S)
+        if (rarityValue == (int)Material.Divine_Demonic)
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 30;
+                workingBonus += 150;
             }
             if (armorType == "Medium Armor")
-            {
-                workingBonus += 45;
-            }
-            if (armorType == "Heavy Armor")
-            {
-                workingBonus += 60;
-            }
-        }
-        if (currentRating == Rating.SS)
-        {
-            if (armorType == "Light Armor")
-            {
-                workingBonus += 45;
-            }
-            if (armorType == "Medium Armor")
-            {
-                workingBonus += 70;
-            }
-            if (armorType == "Heavy Armor")
-            {
-                workingBonus += 90;
-            }
-        }
-        if (currentRating == Rating.SSS)
-        {
-            if (armorType == "Light Armor")
-            {
-                workingBonus += 70;
-            }
-            if (armorType == "Medium Armor")
-            {
-                workingBonus += 105;
-            }
-            if (armorType == "Heavy Armor")
-            {
-                workingBonus += 135;
-            }
-        }
-        if (currentRating == Rating.X)
-        {
-            if (armorType == "Light Armor")
-            {
-                workingBonus += 105;
-            }
-            if (armorType == "Medium Armor")
-            {
-                workingBonus += 160;
-            }
-            if (armorType == "Heavy Armor")
             {
                 workingBonus += 200;
+            }
+            if (armorType == "Heavy Armor")
+            {
+                workingBonus += 250;
             }
         }
         return workingBonus;
@@ -317,6 +255,7 @@ public class CharacterList : MonoBehaviour
             if (npc.Initiative == 0)
             {
                 npc.Initiative = Random.Range(1, 21);
+                npc.Initiative += npc.InitiativeBonus;
             }
         }
 

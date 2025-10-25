@@ -31,34 +31,34 @@ public class UpdateDefault : MonoBehaviour
 					selectedCharacter.WeaponSize = CharacterList.WeaponSize.Colossal;
 				break;
 
-			case "Material":
-				if (name == "Primitive")
-					selectedCharacter.WeaponMaterial = CharacterList.WeaponMaterial.Primitive;
-				else if (name == "Iron")
-					selectedCharacter.WeaponMaterial = CharacterList.WeaponMaterial.Iron;
+			case "WeaponMaterial":
+				if (name == "Iron")
+					selectedCharacter.WeaponMaterial = CharacterList.Material.Iron;
 				else if (name == "Steel")
-					selectedCharacter.WeaponMaterial = CharacterList.WeaponMaterial.Steel;
+					selectedCharacter.WeaponMaterial = CharacterList.Material.Steel;
 				else if (name == "Dlaren")
-					selectedCharacter.WeaponMaterial = CharacterList.WeaponMaterial.Dlaren;
+					selectedCharacter.WeaponMaterial = CharacterList.Material.Dlaren;
+				else if (name == "Valkyrian")
+					selectedCharacter.WeaponMaterial = CharacterList.Material.Valkyrian;
 				else if (name == "Draconic")
-					selectedCharacter.WeaponMaterial = CharacterList.WeaponMaterial.Draconic;
+					selectedCharacter.WeaponMaterial = CharacterList.Material.Draconic;
 				else if (name == "Divine/Demonic")
-					selectedCharacter.WeaponMaterial = CharacterList.WeaponMaterial.Divine_Demonic;
+					selectedCharacter.WeaponMaterial = CharacterList.Material.Divine_Demonic;
 				break;
 
 			case "ArrowMaterial":
-				if (name == "Primitive")
-					selectedCharacter.ArrowMaterial = CharacterList.WeaponMaterial.Primitive;
-				else if (name == "Iron")
-					selectedCharacter.ArrowMaterial = CharacterList.WeaponMaterial.Iron;
+				if (name == "Iron")
+					selectedCharacter.ArrowMaterial = CharacterList.Material.Iron;
 				else if (name == "Steel")
-					selectedCharacter.ArrowMaterial = CharacterList.WeaponMaterial.Steel;
+					selectedCharacter.ArrowMaterial = CharacterList.Material.Steel;
 				else if (name == "Dlaren")
-					selectedCharacter.ArrowMaterial = CharacterList.WeaponMaterial.Dlaren;
+					selectedCharacter.ArrowMaterial = CharacterList.Material.Dlaren;
+				else if (name == "Valkyrian")
+					selectedCharacter.ArrowMaterial = CharacterList.Material.Valkyrian;
 				else if (name == "Draconic")
-					selectedCharacter.ArrowMaterial = CharacterList.WeaponMaterial.Draconic;
+					selectedCharacter.ArrowMaterial = CharacterList.Material.Draconic;
 				else if (name == "Divine/Demonic")
-					selectedCharacter.ArrowMaterial = CharacterList.WeaponMaterial.Divine_Demonic;
+					selectedCharacter.ArrowMaterial = CharacterList.Material.Divine_Demonic;
 				break;
 
 			case "Enchantment":

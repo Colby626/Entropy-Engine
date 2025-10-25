@@ -24,7 +24,7 @@ public class RollAttack : MonoBehaviour
 	// Called by button 
 	public void AttackRoll()
     {
-        var selectedCharacter = characterSheet != null && characterSheet.gameObject.activeSelf ? characterSheet.character : characterList.selectedCharacter;
+        /*var selectedCharacter = characterSheet != null && characterSheet.gameObject.activeSelf ? characterSheet.character : characterList.selectedCharacter;
         if (selectedCharacter == null)
             return;
 
@@ -37,9 +37,7 @@ public class RollAttack : MonoBehaviour
 
         int diceRoll = 0;
         int materialBonus = 0;
-        int damageMultiplier = 1;
         int enchantmentDamageRoll = 0;
-        int enchantmentMultiplier = 1;
         int sneakAttackBonus = sneakAttackToggle.isOn ? 1 : 0;
 		int physicalDamage = 0;
 		int magicalDamage = 0;
@@ -47,23 +45,23 @@ public class RollAttack : MonoBehaviour
 		switch (weaponSize.name)
         {
             case "Light": //1d6
-				diceRoll = RollExplodingDice(1, 6);
+				diceRoll = RollDice(1, 6);
                 break;
 
             case "Balanced": //1d8
-				diceRoll = RollExplodingDice(1, 8);
+				diceRoll = RollDice(1, 8);
                 break;
 
             case "Heavy": //2d6
-				diceRoll = RollExplodingDice(2, 6);
+				diceRoll = RollDice(2, 6);
                 break;
 
             case "Massive": //2d8
-				diceRoll = RollExplodingDice(2, 8);
+				diceRoll = RollDice(2, 8);
                 break;
 
             case "Colossal": //4d12
-				diceRoll = RollExplodingDice(4, 12);
+				diceRoll = RollDice(4, 12);
                 break;
 
             default:
@@ -159,7 +157,7 @@ public class RollAttack : MonoBehaviour
                     break;
             }
 
-            switch (selectedCharacter.Intelligence)
+            switch (selectedCharacter.Spirit)
             {
                 case Rating.F:
 					enchantmentMultiplier = 1 + sneakAttackBonus;
@@ -327,7 +325,7 @@ public class RollAttack : MonoBehaviour
         stringBuilder.Append("Damage Multiplier: " + damageMultiplier + "\n");
         stringBuilder.Append("Material Bonus: " + materialBonus + "\n");
         stringBuilder.Append("Dice roll: " + diceRoll + "\n");
-        combatLog.text = stringBuilder.ToString() + "\n" + combatLog.text;
+        combatLog.text = stringBuilder.ToString() + "\n" + combatLog.text;*/
 	}
 
     private int RollDice(int numDice, int maxRoll)

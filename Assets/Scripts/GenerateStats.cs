@@ -9,6 +9,128 @@ using Type = Variables.Type;
 
 public class GenerateStats : MonoBehaviour
 {
+    public enum Rarity
+    {
+        Low_Common,
+        Mid_Common,
+        High_Common,
+        Low_Uncommon,
+        Mid_Uncommon,
+        High_Uncommon,
+        Low_Rare,
+        Mid_Rare,
+        High_Rare,
+        Low_Epic,
+        Mid_Epic,
+        High_Epic,
+        Low_Legendary,
+        Mid_Legendary,
+        High_Legendary,
+        Low_Cataclysmic,
+        Mid_Cataclysmic,
+        High_Cataclysmic
+    }
+
+    public enum Class
+    {
+        Warrior,
+        Archer,
+        Rogue,
+        Mage,
+        All_Rounder,
+        Warrior_Archer,
+        Warrior_Rogue,
+        Warrior_Mage,
+        Archer_Warrior,
+        Archer_Rogue,
+        Archer_Mage,
+        Rogue_Warrior,
+        Rogue_Archer,
+        Rogue_Mage,
+        Mage_Warrior,
+        Mage_Archer,
+        Mage_Rogue,
+        Warrior_Archer_Rogue,
+        Warrior_Archer_Mage,
+        Warrior_Rogue_Archer,
+        Warrior_Rogue_Mage,
+        Warrior_Mage_Archer,
+        Warrior_Mage_Rogue,
+        Archer_Warrior_Rogue,
+        Archer_Warrior_Mage,
+        Archer_Rogue_Warrior,
+        Archer_Rogue_Mage,
+        Archer_Mage_Warrior,
+        Archer_Mage_Rogue,
+        Rogue_Warrior_Archer,
+        Rogue_Warrior_Mage,
+        Rogue_Archer_Warrior,
+        Rogue_Archer_Mage,
+        Rogue_Mage_Warrior,
+        Rogue_Mage_Archer,
+        Mage_Warrior_Archer,
+        Mage_Warrior_Rogue,
+        Mage_Archer_Warrior,
+        Mage_Archer_Rogue,
+        Mage_Rogue_Warrior,
+        Mage_Rogue_Archer
+    }
+
+    private static readonly Dictionary<Class, float[]> classWeights = new Dictionary<Class, float[]>
+    {
+        // endurance strength dexterity agility spirit
+        { Class.Warrior, new float[] { 0.35f, 0.3f, 0.2f, 0.1f, 0.05f} },
+        { Class.Archer, new float[] { 0.2f, 0.2f, 0.35f, 0.2f, 0.05f} },
+        { Class.Rogue, new float[] { 0.2f, 0.2f, 0.2f, 0.35f, 0.05f} },
+        { Class.Mage, new float[] { 0.1f, 0.1f, 0.2f, 0.2f, 0.4f} },
+
+        { Class.All_Rounder, new float[] { 0.2375f, 0.175f, 0.2f, 0.2125f, 0.0875f} },
+
+        { Class.Warrior_Archer, new float[] { 0.3333333333f, 0.2666666667f, 0.2666666667f, 0.1333333333f, 0.0f} },
+        { Class.Warrior_Rogue, new float[] { 0.3333333333f, 0.2666666667f, 0.2f, 0.2f, 0.0f} },
+        { Class.Warrior_Mage, new float[] { 0.3166666667f, 0.2f, 0.1333333333f, 0.1166666667f, 0.1166666667f} },
+
+        { Class.Archer_Warrior, new float[] { 0.2666666667f, 0.2333333333f, 0.3333333333f, 0.1666666667f, 0.0f} },
+        { Class.Archer_Rogue, new float[] { 0.2f, 0.2f, 0.3333333333f, 0.2666666667f, 0.0f} },
+        { Class.Archer_Mage, new float[] { 0.1833333333f, 0.1333333333f, 0.2666666667f, 0.1833333333f, 0.1166666667f} },
+
+        { Class.Rogue_Warrior, new float[] { 0.2666666667f, 0.2333333333f, 0.2f, 0.3f, 0.0f} },
+        { Class.Rogue_Archer, new float[] { 0.2f, 0.2f, 0.2666666667f, 0.3333333333f, 0.0f} },
+        { Class.Rogue_Mage, new float[] { 0.1833333333f, 0.1333333333f, 0.1333333333f, 0.3166666667f, 0.1166666667f} },
+
+        { Class.Mage_Warrior, new float[] { 0.2333333333f, 0.1f, 0.06666666667f, 0.1333333333f, 0.2333333333f} },
+        { Class.Mage_Archer, new float[] { 0.1666666667f, 0.06666666667f, 0.1333333333f, 0.1666666667f, 0.2333333333f} },
+        { Class.Mage_Rogue, new float[] { 0.1666666667f, 0.06666666667f, 0.06666666667f, 0.2333333333f, 0.2333333333f} },
+
+        { Class.Warrior_Archer_Rogue, new float[] { 0.3f, 0.25f, 0.2666666667f, 0.1833333333f, 0.0f} },
+        { Class.Warrior_Archer_Mage, new float[] { 0.2916666667f, 0.2166666667f, 0.2333333333f, 0.1416666667f, 0.05833333333f} },
+        { Class.Warrior_Rogue_Archer, new float[] { 0.3f, 0.25f, 0.2333333333f, 0.2166666667f, 0.0f} },
+        { Class.Warrior_Rogue_Mage, new float[] { 0.2916666667f, 0.2166666667f, 0.1666666667f, 0.2083333333f, 0.05833333333f} },
+        { Class.Warrior_Mage_Archer, new float[] { 0.2833333333f, 0.1833333333f, 0.1666666667f, 0.1333333333f, 0.1166666667f} },
+        { Class.Warrior_Mage_Rogue, new float[] { 0.2833333333f, 0.1833333333f, 0.1333333333f, 0.1666666667f, 0.1166666667f} },
+
+        { Class.Archer_Warrior_Rogue, new float[] { 0.2666666667f, 0.2333333333f, 0.3f, 0.2f, 0.0f} },
+        { Class.Archer_Warrior_Mage, new float[] { 0.2583333333f, 0.2f, 0.2666666667f, 0.1583333333f, 0.05833333333f} },
+        { Class.Archer_Rogue_Warrior, new float[] { 0.2333333333f, 0.2166666667f, 0.3f, 0.25f, 0.0f} },
+        { Class.Archer_Rogue_Mage, new float[] { 0.1916666667f, 0.1666666667f, 0.2666666667f, 0.2583333333f, 0.05833333333f} },
+        { Class.Archer_Mage_Warrior, new float[] { 0.2166666667f, 0.15f, 0.2333333333f, 0.1666666667f, 0.1166666667f} },
+        { Class.Archer_Mage_Rogue, new float[] { 0.1833333333f, 0.1333333333f, 0.2333333333f, 0.2166666667f, 0.1166666667f} },
+
+        { Class.Rogue_Warrior_Archer, new float[] { 0.2666666667f, 0.2333333333f, 0.2333333333f, 0.2666666667f, 0.0f} },
+        { Class.Rogue_Warrior_Mage, new float[] { 0.2583333333f, 0.2f, 0.1666666667f, 0.2583333333f, 0.05833333333f} },
+        { Class.Rogue_Archer_Warrior, new float[] { 0.2333333333f, 0.2166666667f, 0.2666666667f, 0.2833333333f, 0.0f} },
+        { Class.Rogue_Archer_Mage, new float[] { 0.1916666667f, 0.1666666667f, 0.2333333333f, 0.2916666667f, 0.05833333333f} },
+        { Class.Rogue_Mage_Warrior, new float[] { 0.2166666667f, 0.15f, 0.1333333333f, 0.2666666667f, 0.1166666667f} },
+        { Class.Rogue_Mage_Archer, new float[] { 0.1833333333f, 0.1333333333f, 0.1666666667f, 0.2833333333f, 0.1166666667f} },
+
+        { Class.Mage_Warrior_Archer, new float[] { 0.2416666667f, 0.1333333333f, 0.1333333333f, 0.1416666667f, 0.175f} },
+        { Class.Mage_Warrior_Rogue, new float[] { 0.2416666667f, 0.1333333333f, 0.1f, 0.175f, 0.175f} },
+        { Class.Mage_Archer_Warrior, new float[] { 0.2083333333f, 0.1166666667f, 0.1666666667f, 0.1583333333f, 0.175f} },
+        { Class.Mage_Archer_Rogue, new float[] { 0.175f, 0.1f, 0.1666666667f, 0.2083333333f, 0.175f} },
+        { Class.Mage_Rogue_Warrior, new float[] { 0.2083333333f, 0.1166666667f, 0.1f, 0.225f, 0.175f} },
+        { Class.Mage_Rogue_Archer, new float[] { 0.175f, 0.1f, 0.1333333333f, 0.2416666667f, 0.175f} }
+    };
+
     public TMP_Dropdown rarityDropdown;
     public TMP_Dropdown classDropdown;
 
@@ -19,7 +141,6 @@ public class GenerateStats : MonoBehaviour
     private int strengthStat = 0;
     private int dexterityStat = 0;
     private int agilityStat = 0;
-    private int intelligenceStat = 0;
     private int spiritStat = 0;
 
     public CharacterList characterList;
@@ -36,14 +157,13 @@ public class GenerateStats : MonoBehaviour
         strengthStat = 0;
         dexterityStat = 0;
         agilityStat = 0;
-        intelligenceStat = 0;
         spiritStat = 0;
         DistributeStatPoints(statPoints - 1); // Minus 1 for the forced 1 endurance
 
         int randomIndex = Random.Range(0, adventurerAdjectives.Length);
         string randomAdjective = adventurerAdjectives[randomIndex];
 
-        characterList.GenerateCharacter(new CharacterList.Character()
+        characterList.GenerateNPC(new CharacterList.NPC()
         {
             Name = randomAdjective + " " + currentClass.ToString(),
 
@@ -51,22 +171,25 @@ public class GenerateStats : MonoBehaviour
             Strength = strengthStat,
             Dexterity = dexterityStat,
             Agility = agilityStat,
-            Intelligence = intelligenceStat,
             Spirit = spiritStat,
 
             MaxHealth = CalculateHealth(),
             CurrentHealth = CalculateHealth(),
             MaxMana = CalculateMana(),
             CurrentMana = CalculateMana(),
-            PhysicalResistance = enduranceStat / 5,
+            DR = enduranceStat / 5,
             PlusToHit = dexterityStat / 5,
-            CriticalBonus = CalculateCriticalBonus(),
-            AgilityClass = 8 + agilityStat / 5,
             InitiativeBonus = CalculateInitiativeBonus(),
             MovementSpeed = 3 + (agilityStat / 10),
+            StrengthDamageBonus = CalculateStatBonus(strengthStat),
+            DexterityDamageBonus = CalculateStatBonus(dexterityStat),
+            SpiritDamageBonus = CalculateStatBonus(spiritStat),
+
+            Abilities = GenerateAbilities(),
 
             Initiative = 0
-        });
+        }, 
+        currentRarity);
     }
 
     private int CalculateHealth()
@@ -135,7 +258,7 @@ public class GenerateStats : MonoBehaviour
         }
     }
 
-    private int CalculateCriticalBonus()
+    /*private int CalculateCriticalBonus()
     {
         switch (currentRarity)
         {
@@ -163,6 +286,39 @@ public class GenerateStats : MonoBehaviour
             case Rarity.Mid_Cataclysmic:
             case Rarity.High_Cataclysmic:
                 return dexterityStat;
+            default:
+                return 0;
+        }
+    }*/
+
+    private int CalculateStatBonus(int stat)
+    {
+        switch (currentRarity)
+        {
+            case Rarity.Low_Common:
+            case Rarity.Mid_Common:
+            case Rarity.High_Common:
+                return stat / 6;
+            case Rarity.Low_Uncommon:
+            case Rarity.Mid_Uncommon:
+            case Rarity.High_Uncommon:
+                return stat / 5;
+            case Rarity.Low_Rare:
+            case Rarity.Mid_Rare:
+            case Rarity.High_Rare:
+                return stat / 4;
+            case Rarity.Low_Epic:
+            case Rarity.Mid_Epic:
+            case Rarity.High_Epic:
+                return stat / 3;
+            case Rarity.Low_Legendary:
+            case Rarity.Mid_Legendary:
+            case Rarity.High_Legendary:
+                return stat / 2;
+            case Rarity.Low_Cataclysmic:
+            case Rarity.Mid_Cataclysmic:
+            case Rarity.High_Cataclysmic:
+                return stat;
             default:
                 return 0;
         }
@@ -209,7 +365,7 @@ public class GenerateStats : MonoBehaviour
             float cumulativeWeight = 0f;
 
             // Go through each stat and check which range the random number falls into
-            for (int statWeight = 0; statWeight < 6; statWeight++)
+            for (int statWeight = 0; statWeight < 5; statWeight++)
             {
                 // Increase the cumulative weight by the amount specified in the current classes' weight map
                 cumulativeWeight += classWeights[currentClass][statWeight];
@@ -223,8 +379,7 @@ public class GenerateStats : MonoBehaviour
                         case 1: strengthStat++; break;
                         case 2: dexterityStat++; break;
                         case 3: agilityStat++; break;
-                        case 4: intelligenceStat++; break;
-                        case 5: spiritStat++; break;
+                        case 4: spiritStat++; break;
                     }
                     break;
                 }
@@ -326,7 +481,7 @@ public class GenerateStats : MonoBehaviour
 
 	private SaveData settings;
 
-    private string GenerateAbilities(int upgradePoints, string[] skillsPool, string[] featsPool)
+    /*private string GenerateAbilities(int upgradePoints, string[] skillsPool, string[] featsPool)
 	{
 		string[] selectedSkills;
 		Dictionary<string, int> skillLevels = new ();
@@ -538,9 +693,39 @@ public class GenerateStats : MonoBehaviour
 		}
 
 		return result.ToString();
-	}
+	}*/
 
-	private string[] SkillsPoolFromType()
+    private string GenerateAbilities()
+    {
+        // This version is just for armor 
+        // Assign armor type based on class pattern
+        Dictionary<string, int> skillLevels = new();
+        string className = currentClass.ToString();
+
+        if (className.StartsWith("Warrior") || currentClass == Class.All_Rounder)
+        {
+            skillLevels["Heavy Armor"] = 1;
+        }
+        else if (className.StartsWith("Archer") || className.StartsWith("Rogue"))
+        {
+            skillLevels["Medium Armor"] = 1;
+        }
+        else if (className.StartsWith("Mage"))
+        {
+            skillLevels["Light Armor"] = 1;
+        }
+
+        StringBuilder result = new();
+
+        foreach (var skill in skillLevels)
+        {
+            result.AppendLine($"{skill.Key}: {skill.Value}");
+        }
+
+        return result.ToString();
+    }
+
+	/*private string[] SkillsPoolFromType()
 	{
 		return currentType switch
 		{
@@ -615,9 +800,8 @@ public class GenerateStats : MonoBehaviour
 			// Default Case (Failsafe)
 			_ => new string[] { "Don't know any skills for this type: " + currentType }
 		};
-	}
-
-    public void OnRatingDropdownValueChanged(int index)
+	}*/
+    /*public void OnRatingDropdownValueChanged(int index)
     {
         currentRating = (Rating)index;
     }
@@ -625,5 +809,5 @@ public class GenerateStats : MonoBehaviour
     public void OnTypeDropdownValueChanged(int index)
     {
         currentType = (Type)index;
-    }
+    }*/
 } 
