@@ -33,9 +33,9 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
         statsText.AppendLine("AC: " + npcData.AC);
 		statsText.AppendLine("DR: " + npcData.DR);
 		statsText.AppendLine("Str Dmg Bonus: " + npcData.StrengthDamageBonus);
-        statsText.AppendLine("Dex Dmg Bonus: " + npcData.DexterityDamageBonus);
         statsText.AppendLine("Spt Dmg Bonus: " + npcData.SpiritDamageBonus);
         statsText.AppendLine("Plus To Hit: " + npcData.PlusToHit);
+		statsText.AppendLine("Critical Bonus: " + npcData.CriticalBonus);
 		statsText.AppendLine("Movement Spaces: " + npcData.MovementSpeed);
 		statsText.AppendLine("Strength: " + npcData.Strength);
 		statsText.AppendLine("Dexterity: " + npcData.Dexterity);

@@ -3118,7 +3118,7 @@ GameObject:
   - component: {fileID: 131691906}
   - component: {fileID: 131691905}
   m_Layer: 0
-  m_Name: LordshipRatingDropdown
+  m_Name: LordshipRarityDropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27080,11 +27080,8 @@ MonoBehaviour:
   strengthDropdown: {fileID: 561043136}
   agilityDropdown: {fileID: 1109763638}
   dexterityDropdown: {fileID: 953310594}
-  vitalityDropdown: {fileID: 0}
-  intelligenceDropdown: {fileID: 1400396318}
-  charismaDropdown: {fileID: 683215219}
+  enduranceDropdown: {fileID: 0}
   spiritDropdown: {fileID: 229148085}
-  fortitudeDropdown: {fileID: 922429116}
 --- !u!1 &872391130
 GameObject:
   m_ObjectHideFlags: 0
@@ -64220,7 +64217,7 @@ GameObject:
   - component: {fileID: 1898932953}
   - component: {fileID: 1898932952}
   m_Layer: 0
-  m_Name: RatingText
+  m_Name: RarityText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64265,7 +64262,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rating
+  m_text: Rarity
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 83eb6a0b9c5c83b4ab642a1862a21960, type: 2}
   m_sharedMaterial: {fileID: -7277767068074507439, guid: 83eb6a0b9c5c83b4ab642a1862a21960, type: 2}
@@ -68750,8 +68747,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74be10b26575ee94eaf0b9b3476dc2ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lordshipRatingDropdown: {fileID: 131691905}
-  lordshipTypeDropdown: {fileID: 1489725097}
+  rarityDropdown: {fileID: 0}
+  classDropdown: {fileID: 0}
   characterList: {fileID: 150201057}
 --- !u!114 &2015741475
 MonoBehaviour:

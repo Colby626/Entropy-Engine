@@ -90,13 +90,13 @@ public class CharacterList : MonoBehaviour
 
     public void GenerateNPC(NPC npc, GenerateStats.Rarity npcRarity)
     {
-        npc.AC = ((int)npc.Agility / 5 >= 8 ? 8 : (int)npc.Agility / 5) + 8 + ACReducedFromHeavyArmor(npc.Abilities);
+        npc.AC = ((int)npc.Agility / 10 >= 15 ? 15 : (int)npc.Agility / 10) + 8;
         npc.DR = (int)npc.Endurance / 5 + DRFromAbilities(npc.Abilities, npcRarity); 
         npcs.Add(npc);
         AddNPCToScrollview(npc);
     }
 
-    private int ACReducedFromHeavyArmor(string abilities)
+    /*private int ACReducedFromHeavyArmor(string abilities)
     {
         string pattern = @"Heavy Armor";
 
@@ -108,7 +108,7 @@ public class CharacterList : MonoBehaviour
             return 0;
         else
             return -4;
-    }
+    }*/
 
     private int DRFromAbilities(string abilities, GenerateStats.Rarity currentRarity)
     {

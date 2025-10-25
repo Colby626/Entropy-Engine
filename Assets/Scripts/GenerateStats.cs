@@ -79,10 +79,10 @@ public class GenerateStats : MonoBehaviour
     private static readonly Dictionary<Class, float[]> classWeights = new Dictionary<Class, float[]>
     {
         // endurance strength dexterity agility spirit
-        { Class.Warrior, new float[] { 0.35f, 0.3f, 0.2f, 0.1f, 0.05f} },
-        { Class.Archer, new float[] { 0.2f, 0.2f, 0.35f, 0.2f, 0.05f} },
-        { Class.Rogue, new float[] { 0.2f, 0.2f, 0.2f, 0.35f, 0.05f} },
-        { Class.Mage, new float[] { 0.1f, 0.1f, 0.2f, 0.2f, 0.4f} },
+        { Class.Warrior, new float[] { 0.45f, 0.4f, 0.0f, 0.1f, 0.05f} },
+        { Class.Archer, new float[] { 0.3f, 0.0f, 0.4f, 0.25f, 0.05f} },
+        { Class.Rogue, new float[] { 0.3f, 0.0f, 0.3f, 0.35f, 0.05f} },
+        { Class.Mage, new float[] { 0.2f, 0.1f, 0.0f, 0.2f, 0.5f} },
 
         { Class.All_Rounder, new float[] { 0.2375f, 0.175f, 0.2f, 0.2125f, 0.0875f} },
 
@@ -178,8 +178,9 @@ public class GenerateStats : MonoBehaviour
             MaxMana = CalculateMana(),
             CurrentMana = CalculateMana(),
             DR = enduranceStat / 5,
-            PlusToHit = dexterityStat / 5,
+            PlusToHit = dexterityStat / 10 >= 15 ? 15 : dexterityStat / 10,
             InitiativeBonus = CalculateInitiativeBonus(),
+            CriticalBonus = CalculateCriticalBonus(),
             MovementSpeed = 3 + (agilityStat / 10),
             StrengthDamageBonus = CalculateStatBonus(strengthStat),
             DexterityDamageBonus = CalculateStatBonus(dexterityStat),
@@ -258,7 +259,7 @@ public class GenerateStats : MonoBehaviour
         }
     }
 
-    /*private int CalculateCriticalBonus()
+    private int CalculateCriticalBonus()
     {
         switch (currentRarity)
         {
@@ -289,7 +290,7 @@ public class GenerateStats : MonoBehaviour
             default:
                 return 0;
         }
-    }*/
+    }
 
     private int CalculateStatBonus(int stat)
     {
