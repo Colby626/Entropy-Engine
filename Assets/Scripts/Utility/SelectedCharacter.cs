@@ -30,7 +30,8 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 
         StringBuilder statsText = new ();
 		statsText.AppendLine($"<b><u>{npcData.Name}</u></b>"); // Underline and bold
-        statsText.AppendLine("AC: " + npcData.AC);
+		statsText.AppendLine("Element: " + npcData.Element);
+		statsText.AppendLine("AC: " + npcData.AC);
 		statsText.AppendLine("DR: " + npcData.DR);
 		statsText.AppendLine("Str Dmg Bonus: " + npcData.StrengthDamageBonus);
         statsText.AppendLine("Spt Dmg Bonus: " + npcData.SpiritDamageBonus);

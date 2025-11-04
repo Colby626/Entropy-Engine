@@ -5,7 +5,6 @@ using Random = UnityEngine.Random;
 using System.Collections.Generic;
 using System.Text;
 using static Variables;
-using Type = Variables.Type;
 
 public class GenerateStats : MonoBehaviour
 {
@@ -131,11 +130,50 @@ public class GenerateStats : MonoBehaviour
         { Class.Mage_Rogue_Archer, new float[] { 0.175f, 0.1f, 0.1333333333f, 0.2416666667f, 0.175f} }
     };
 
-    public TMP_Dropdown rarityDropdown;
+    public enum ElementTier
+    {
+        Single, 
+        Double,
+        Triple
+    }
+
+    private static readonly string[] singleElementsList =
+    {
+        "Fire",
+        "Water",
+        "Earth",
+        "Air",
+        "Light",
+        "Dark"
+    };
+
+	private static readonly string[] dualElementsList =
+	{
+		"Blaze",
+		"Flood",
+		"Stone",
+		"Gust",
+        "Life",
+        "Death"
+	};
+
+	private static readonly string[] triElementsList =
+	{
+		"Inferno",
+		"Tsunami",
+		"Gaia",
+		"Hurricane",
+        "Creation",
+        "Void"
+	};
+
+	public TMP_Dropdown rarityDropdown;
     public TMP_Dropdown classDropdown;
+    public TMP_Dropdown elementTierDropdown;
 
     private Rarity currentRarity;
     private Class currentClass;
+    private ElementTier currentElementTier;
 
     private int enduranceStat = 1;
     private int strengthStat = 0;
@@ -186,6 +224,7 @@ public class GenerateStats : MonoBehaviour
             DexterityDamageBonus = CalculateStatBonus(dexterityStat),
             SpiritDamageBonus = CalculateStatBonus(spiritStat),
 
+            Element = ChooseElement(),
             Abilities = GenerateAbilities(),
 
             Initiative = 0
@@ -460,13 +499,20 @@ public class GenerateStats : MonoBehaviour
         {
             classDropdown.options.Add(new TMP_Dropdown.OptionData(className));
         }
+		elementTierDropdown.options.Clear();
+		foreach (string elementTier in Enum.GetNames(typeof(ElementTier)))
+		{
+			elementTierDropdown.options.Add(new TMP_Dropdown.OptionData(elementTier));
+		}
 
-        rarityDropdown.onValueChanged.AddListener(OnRarityDropdownValueChanged);
+		rarityDropdown.onValueChanged.AddListener(OnRarityDropdownValueChanged);
         classDropdown.onValueChanged.AddListener(OnClassDropdownValueChanged);
+		elementTierDropdown.onValueChanged.AddListener(OnElementTierDropdownValueChanged);
 
-        rarityDropdown.RefreshShownValue();
+		rarityDropdown.RefreshShownValue();
         classDropdown.RefreshShownValue();
-    }
+		elementTierDropdown.RefreshShownValue();
+	}
 
     public void OnRarityDropdownValueChanged(int index)
     {
@@ -479,6 +525,12 @@ public class GenerateStats : MonoBehaviour
         currentClass = (Class)index;
         Debug.Log("Class changed to: " + currentClass);
     }
+
+	public void OnElementTierDropdownValueChanged(int index)
+	{
+		currentElementTier = (ElementTier)index;
+		Debug.Log("Element Tier changed to: " + currentElementTier);
+	}
 
 	private SaveData settings;
 
@@ -724,6 +776,26 @@ public class GenerateStats : MonoBehaviour
         }
 
         return result.ToString();
+    }
+
+    private string ChooseElement()
+    {
+        string chosenElement = "";
+        switch (currentElementTier)
+        {
+            case ElementTier.Single:
+				chosenElement = singleElementsList[Random.Range(0, singleElementsList.Length - 1)];
+				break;
+            case ElementTier.Double:
+				chosenElement = dualElementsList[Random.Range(0, dualElementsList.Length - 1)];
+				break;
+            case ElementTier.Triple:
+				chosenElement = triElementsList[Random.Range(0, triElementsList.Length - 1)];
+				break;
+            default:
+                break;
+        }
+        return chosenElement;
     }
 
 	/*private string[] SkillsPoolFromType()

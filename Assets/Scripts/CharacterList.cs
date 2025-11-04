@@ -33,6 +33,7 @@ public class CharacterList : MonoBehaviour
         public int SpiritDamageBonus;
 
         public int Initiative;
+        public string Element;
 		public string Abilities;
 		public string Notes;
 
