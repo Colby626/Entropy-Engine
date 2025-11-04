@@ -89,7 +89,7 @@ public class CharacterList : MonoBehaviour
     public NPC selectedCharacter;
     public Transform combatTab;
 
-    public void GenerateNPC(NPC npc, GenerateStats.Rarity npcRarity)
+    public void GenerateNPC(NPC npc, Rarity npcRarity)
     {
         npc.AC = ((int)npc.Agility / 10 >= 15 ? 15 : (int)npc.Agility / 10) + 8;
         npc.DR = (int)npc.Endurance / 5 + DRFromAbilities(npc.Abilities, npcRarity); 
@@ -111,7 +111,7 @@ public class CharacterList : MonoBehaviour
             return -4;
     }*/
 
-    private int DRFromAbilities(string abilities, GenerateStats.Rarity currentRarity)
+    private int DRFromAbilities(string abilities, Rarity currentRarity)
     {
         int workingBonus = 0;
         int rarityValue = ((int)currentRarity + 1) / 3;

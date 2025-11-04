@@ -4,6 +4,165 @@ using UnityEngine;
 
 public class Variables : MonoBehaviour
 {
+	public enum Rarity
+	{
+		Low_Common,
+		Mid_Common,
+		High_Common,
+		Low_Uncommon,
+		Mid_Uncommon,
+		High_Uncommon,
+		Low_Rare,
+		Mid_Rare,
+		High_Rare,
+		Low_Epic,
+		Mid_Epic,
+		High_Epic,
+		Low_Legendary,
+		Mid_Legendary,
+		High_Legendary,
+		Low_Cataclysmic,
+		Mid_Cataclysmic,
+		High_Cataclysmic
+	}
+
+	public enum Class
+	{
+		Warrior,
+		Archer,
+		Rogue,
+		Mage,
+		All_Rounder,
+		Warrior_Archer,
+		Warrior_Rogue,
+		Warrior_Mage,
+		Archer_Warrior,
+		Archer_Rogue,
+		Archer_Mage,
+		Rogue_Warrior,
+		Rogue_Archer,
+		Rogue_Mage,
+		Mage_Warrior,
+		Mage_Archer,
+		Mage_Rogue,
+		Warrior_Archer_Rogue,
+		Warrior_Archer_Mage,
+		Warrior_Rogue_Archer,
+		Warrior_Rogue_Mage,
+		Warrior_Mage_Archer,
+		Warrior_Mage_Rogue,
+		Archer_Warrior_Rogue,
+		Archer_Warrior_Mage,
+		Archer_Rogue_Warrior,
+		Archer_Rogue_Mage,
+		Archer_Mage_Warrior,
+		Archer_Mage_Rogue,
+		Rogue_Warrior_Archer,
+		Rogue_Warrior_Mage,
+		Rogue_Archer_Warrior,
+		Rogue_Archer_Mage,
+		Rogue_Mage_Warrior,
+		Rogue_Mage_Archer,
+		Mage_Warrior_Archer,
+		Mage_Warrior_Rogue,
+		Mage_Archer_Warrior,
+		Mage_Archer_Rogue,
+		Mage_Rogue_Warrior,
+		Mage_Rogue_Archer
+	}
+
+	public static readonly Dictionary<Class, float[]> classWeights = new Dictionary<Class, float[]>
+	{
+        // endurance strength dexterity agility spirit
+        { Class.Warrior, new float[] { 0.35f, 0.3f, 0.2f, 0.1f, 0.05f} },
+		{ Class.Archer, new float[] { 0.3f, 0.05f, 0.35f, 0.25f, 0.05f} },
+		{ Class.Rogue, new float[] { 0.2f, 0.1f, 0.3f, 0.35f, 0.05f} },
+		{ Class.Mage, new float[] { 0.2f, 0.0f, 0.2f, 0.1f, 0.5f} },
+
+		{ Class.All_Rounder, new float[] { 0.2375f, 0.175f, 0.2f, 0.2125f, 0.0875f} },
+
+		{ Class.Warrior_Archer, new float[] { 0.3333333333f, 0.2666666667f, 0.2666666667f, 0.1333333333f, 0.0f} },
+		{ Class.Warrior_Rogue, new float[] { 0.3333333333f, 0.2666666667f, 0.2f, 0.2f, 0.0f} },
+		{ Class.Warrior_Mage, new float[] { 0.3166666667f, 0.2f, 0.1333333333f, 0.1166666667f, 0.1166666667f} },
+
+		{ Class.Archer_Warrior, new float[] { 0.2666666667f, 0.2333333333f, 0.3333333333f, 0.1666666667f, 0.0f} },
+		{ Class.Archer_Rogue, new float[] { 0.2f, 0.2f, 0.3333333333f, 0.2666666667f, 0.0f} },
+		{ Class.Archer_Mage, new float[] { 0.1833333333f, 0.1333333333f, 0.2666666667f, 0.1833333333f, 0.1166666667f} },
+
+		{ Class.Rogue_Warrior, new float[] { 0.2666666667f, 0.2333333333f, 0.2f, 0.3f, 0.0f} },
+		{ Class.Rogue_Archer, new float[] { 0.2f, 0.2f, 0.2666666667f, 0.3333333333f, 0.0f} },
+		{ Class.Rogue_Mage, new float[] { 0.1833333333f, 0.1333333333f, 0.1333333333f, 0.3166666667f, 0.1166666667f} },
+
+		{ Class.Mage_Warrior, new float[] { 0.2333333333f, 0.1f, 0.06666666667f, 0.1333333333f, 0.2333333333f} },
+		{ Class.Mage_Archer, new float[] { 0.1666666667f, 0.06666666667f, 0.1333333333f, 0.1666666667f, 0.2333333333f} },
+		{ Class.Mage_Rogue, new float[] { 0.1666666667f, 0.06666666667f, 0.06666666667f, 0.2333333333f, 0.2333333333f} },
+
+		{ Class.Warrior_Archer_Rogue, new float[] { 0.3f, 0.25f, 0.2666666667f, 0.1833333333f, 0.0f} },
+		{ Class.Warrior_Archer_Mage, new float[] { 0.2916666667f, 0.2166666667f, 0.2333333333f, 0.1416666667f, 0.05833333333f} },
+		{ Class.Warrior_Rogue_Archer, new float[] { 0.3f, 0.25f, 0.2333333333f, 0.2166666667f, 0.0f} },
+		{ Class.Warrior_Rogue_Mage, new float[] { 0.2916666667f, 0.2166666667f, 0.1666666667f, 0.2083333333f, 0.05833333333f} },
+		{ Class.Warrior_Mage_Archer, new float[] { 0.2833333333f, 0.1833333333f, 0.1666666667f, 0.1333333333f, 0.1166666667f} },
+		{ Class.Warrior_Mage_Rogue, new float[] { 0.2833333333f, 0.1833333333f, 0.1333333333f, 0.1666666667f, 0.1166666667f} },
+
+		{ Class.Archer_Warrior_Rogue, new float[] { 0.2666666667f, 0.2333333333f, 0.3f, 0.2f, 0.0f} },
+		{ Class.Archer_Warrior_Mage, new float[] { 0.2583333333f, 0.2f, 0.2666666667f, 0.1583333333f, 0.05833333333f} },
+		{ Class.Archer_Rogue_Warrior, new float[] { 0.2333333333f, 0.2166666667f, 0.3f, 0.25f, 0.0f} },
+		{ Class.Archer_Rogue_Mage, new float[] { 0.1916666667f, 0.1666666667f, 0.2666666667f, 0.2583333333f, 0.05833333333f} },
+		{ Class.Archer_Mage_Warrior, new float[] { 0.2166666667f, 0.15f, 0.2333333333f, 0.1666666667f, 0.1166666667f} },
+		{ Class.Archer_Mage_Rogue, new float[] { 0.1833333333f, 0.1333333333f, 0.2333333333f, 0.2166666667f, 0.1166666667f} },
+
+		{ Class.Rogue_Warrior_Archer, new float[] { 0.2666666667f, 0.2333333333f, 0.2333333333f, 0.2666666667f, 0.0f} },
+		{ Class.Rogue_Warrior_Mage, new float[] { 0.2583333333f, 0.2f, 0.1666666667f, 0.2583333333f, 0.05833333333f} },
+		{ Class.Rogue_Archer_Warrior, new float[] { 0.2333333333f, 0.2166666667f, 0.2666666667f, 0.2833333333f, 0.0f} },
+		{ Class.Rogue_Archer_Mage, new float[] { 0.1916666667f, 0.1666666667f, 0.2333333333f, 0.2916666667f, 0.05833333333f} },
+		{ Class.Rogue_Mage_Warrior, new float[] { 0.2166666667f, 0.15f, 0.1333333333f, 0.2666666667f, 0.1166666667f} },
+		{ Class.Rogue_Mage_Archer, new float[] { 0.1833333333f, 0.1333333333f, 0.1666666667f, 0.2833333333f, 0.1166666667f} },
+
+		{ Class.Mage_Warrior_Archer, new float[] { 0.2416666667f, 0.1333333333f, 0.1333333333f, 0.1416666667f, 0.175f} },
+		{ Class.Mage_Warrior_Rogue, new float[] { 0.2416666667f, 0.1333333333f, 0.1f, 0.175f, 0.175f} },
+		{ Class.Mage_Archer_Warrior, new float[] { 0.2083333333f, 0.1166666667f, 0.1666666667f, 0.1583333333f, 0.175f} },
+		{ Class.Mage_Archer_Rogue, new float[] { 0.175f, 0.1f, 0.1666666667f, 0.2083333333f, 0.175f} },
+		{ Class.Mage_Rogue_Warrior, new float[] { 0.2083333333f, 0.1166666667f, 0.1f, 0.225f, 0.175f} },
+		{ Class.Mage_Rogue_Archer, new float[] { 0.175f, 0.1f, 0.1333333333f, 0.2416666667f, 0.175f} }
+	};
+
+	public enum ElementTier
+	{
+		Single,
+		Double,
+		Triple
+	}
+
+	public static readonly Dictionary<string, string[]> singleElementsList = new Dictionary<string, string[]>
+	{
+		{ "Fire",   new[] { "Flame Burst", "Ignite", "Ember Shield", "Scorch", "Phoenix Dive", "Cinder Storm" } },
+		{ "Water",  new[] { "Aqua Jet", "Tidal Pull", "Bubble Shield", "Purify", "Ice Shard", "Maelstrom" } },
+		{ "Earth",  new[] { "Rock Spikes", "Iron Hide", "Quake", "Stone Bind", "Thorn Skin", "Crystal Wall" } },
+		{ "Air",    new[] { "Gale Slash", "Wind Step", "Air Shield", "Lightning Arc", "Whirlwind", "Tempest" } },
+		{ "Light",  new[] { "Radiance", "Heal Beam", "Smite", "Blinding Flash", "Sanctify", "Judgment" } },
+		{ "Dark",   new[] { "Shadow Bolt", "Drain Life", "Fear", "Night Cloak", "Curse", "Abyssal Grasp" } },
+	};
+
+	public static readonly Dictionary<string, string[]> dualElementsList = new Dictionary<string, string[]>
+	{
+		{ "Blaze",  new[] { "Firestorm", "Searing Wave", "Burning Focus", "Magma Spear", "Wildfire Step", "Combustion Field" } },
+		{ "Flood",  new[] { "Deluge", "Water Prison", "Steam Veil", "Rushing Current", "Raincall", "Pressure Crush" } },
+		{ "Stone",  new[] { "Mudslide", "Earthen Grasp", "Petrify", "Sandstorm Armor", "Tremor Pulse", "Obsidian Shards" } },
+		{ "Gust",   new[] { "Shockwave", "Thunderstep", "Cyclone Guard", "Arc Bolt", "Static Shield", "Sky Hammer" } },
+		{ "Life",   new[] { "Rejuvenate", "Bloom Strike", "Fae Whisper", "Nature’s Pact", "Wild Growth", "Spore Burst" } },
+		{ "Death",  new[] { "Grave Chill", "Wither", "Soul Rend", "Plague Mist", "Doom Mark", "Bone Lance" } },
+	};
+
+	public static readonly Dictionary<string, string[]> triElementsList = new Dictionary<string, string[]>
+	{
+		{ "Inferno",    new[] { "Hellfire Wave", "Meteor Crash", "Dragon’s Breath", "Volcanic Roar", "Ember Nova", "Infernal Spiral" } },
+		{ "Tsunami",    new[] { "Abyssal Surge", "Leviathan Call", "Riptide Rend", "Aqua Maelstrom", "Stormfront", "Drown" } },
+		{ "Gaia",       new[] { "Worldbreaker", "Nature’s Wrath", "Primeval Crush", "Living Mountain", "Verdant Pulse", "Cataclysm" } },
+		{ "Hurricane",  new[] { "Skyfall", "Thunderstorm", "Supercell", "Typhoon Crash", "Storm Barrier", "Jetstream Blade" } },
+		{ "Creation",   new[] { "Genesis Beam", "Ordershift", "Reality Stitch", "Axiom Burst", "Starforge", "Emanation" } },
+		{ "Void",       new[] { "Null Sphere", "Entropy Lash", "Black Star", "Erase", "Void Step", "Oblivion Surge" } }
+	};
+
 	public static string[] adventurerAdjectives =
 	{
 		"Brash",
