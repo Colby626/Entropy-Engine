@@ -24,72 +24,195 @@ public class RollAttack : MonoBehaviour
 	// Called by button 
 	public void AttackRoll()
     {
-        /*var selectedCharacter = characterSheet != null && characterSheet.gameObject.activeSelf ? characterSheet.character : characterList.selectedCharacter;
+        var selectedCharacter = characterSheet != null && characterSheet.gameObject.activeSelf ? characterSheet.character : characterList.selectedCharacter;
         if (selectedCharacter == null)
             return;
 
-		StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         var weaponType = weaponTypeGroup.GetFirstActiveToggle();
-		var weaponSize = weaponSizeGroup.GetFirstActiveToggle();
-		var weaponMaterial = weaponMaterialGroup.GetFirstActiveToggle();
-		var arrowMaterial = arrowMaterialGroup.GetFirstActiveToggle();
-		var enchantmentLevel = enchantmentLevelGroup.GetFirstActiveToggle();
+        var weaponSize = weaponSizeGroup.GetFirstActiveToggle();
+        var weaponMaterial = weaponMaterialGroup.GetFirstActiveToggle();
+        var enchantmentLevel = enchantmentLevelGroup.GetFirstActiveToggle();
 
-        int diceRoll = 0;
-        int materialBonus = 0;
+        int numberOfDice = 0;
+        bool diceMultiplier = false;
+        int maximumOnDice = 0;
         int enchantmentDamageRoll = 0;
-        int sneakAttackBonus = sneakAttackToggle.isOn ? 1 : 0;
-		int physicalDamage = 0;
-		int magicalDamage = 0;
+        int physicalDamage = 0;
+        int magicalDamage = 0;
 
-		switch (weaponSize.name)
+        switch (weaponSize.name)
         {
-            case "Light": //1d6
-				diceRoll = RollDice(1, 6);
+            case "One-Handed":
+                diceMultiplier = false;
                 break;
 
-            case "Balanced": //1d8
-				diceRoll = RollDice(1, 8);
-                break;
-
-            case "Heavy": //2d6
-				diceRoll = RollDice(2, 6);
-                break;
-
-            case "Massive": //2d8
-				diceRoll = RollDice(2, 8);
-                break;
-
-            case "Colossal": //4d12
-				diceRoll = RollDice(4, 12);
+            case "Two-Handed":
+                diceMultiplier = true;
                 break;
 
             default:
                 break;
         }
 
-		if (weaponType.name == "Magic")
-			materialBonus += 3;
-		switch (weaponMaterial.name)
+        switch (weaponMaterial.name)
+        {
+            case "Unarmed":
+                numberOfDice = 2;
+                maximumOnDice = 4;
+                break;
+
+            case "Primitive":
+                numberOfDice = 2;
+                maximumOnDice = 6;
+                break;
+
+            case "Iron":
+                numberOfDice = 2;
+                maximumOnDice = 8;
+                break;
+
+            case "Steel":
+                numberOfDice = 4;
+                maximumOnDice = 8;
+                break;
+
+            case "Dlaren":
+                numberOfDice = 6;
+                maximumOnDice = 8;
+                break;
+
+            case "Valkyrian":
+                numberOfDice = 8;
+                maximumOnDice = 8;
+                break;
+
+            case "Draconic":
+                numberOfDice = 10;
+                maximumOnDice = 8;
+                break;
+
+            case "Divine/Demonic":
+                numberOfDice = 12;
+                maximumOnDice = 8;
+                break;
+
+            default:
+                break;
+        }
+
+        switch (enchantmentLevel.name)
+        {
+            case "Unenchanted":
+                break;
+
+            case "Common":
+                enchantmentDamageRoll = 5;
+                break;
+
+            case "Uncommon": 
+                enchantmentDamageRoll = 10;
+                break;
+
+            case "Rare": 
+                enchantmentDamageRoll = 20;
+                break;
+
+            case "Epic": 
+                enchantmentDamageRoll = 40;
+                break;
+
+            case "Legendary": 
+                enchantmentDamageRoll = 80;
+                break;
+
+            case "Cataclysmic":
+                enchantmentDamageRoll = 160;
+                break;
+
+            default:
+                break;
+        }
+
+        if (diceMultiplier) maximumOnDice = maximumOnDice + maximumOnDice / 2;
+        physicalDamage = RollDice(numberOfDice, maximumOnDice);
+
+        stringBuilder.Append("Damage: " + (physicalDamage + magicalDamage) + "\n");
+        stringBuilder.Append("Physical Damage: " + physicalDamage + "\n");
+        stringBuilder.Append("Magical Damage: " + magicalDamage + "\n");
+        if (enchantmentLevel.name != "Unenchanted")
+        {
+            stringBuilder.Append("True Damage: " + enchantmentDamageRoll + "\n");
+        }
+        combatLog.text = stringBuilder.ToString() + "\n" + combatLog.text;
+
+        /* Lordship System
+        var selectedCharacter = characterSheet != null && characterSheet.gameObject.activeSelf ? characterSheet.character : characterList.selectedCharacter;
+        if (selectedCharacter == null)
+            return;
+
+        StringBuilder stringBuilder = new StringBuilder();
+        var weaponType = weaponTypeGroup.GetFirstActiveToggle();
+        var weaponSize = weaponSizeGroup.GetFirstActiveToggle();
+        var weaponMaterial = weaponMaterialGroup.GetFirstActiveToggle();
+        var arrowMaterial = arrowMaterialGroup.GetFirstActiveToggle();
+        var enchantmentLevel = enchantmentLevelGroup.GetFirstActiveToggle();
+
+        int diceRoll = 0;
+        int materialBonus = 0;
+        int enchantmentDamageRoll = 0;
+        int sneakAttackBonus = sneakAttackToggle.isOn ? 1 : 0;
+        int physicalDamage = 0;
+        int magicalDamage = 0;
+
+        switch (weaponSize.name)
+        {
+            case "Light": //1d6
+                diceRoll = RollDice(1, 6);
+                break;
+
+            case "Balanced": //1d8
+                diceRoll = RollDice(1, 8);
+                break;
+
+            case "Heavy": //2d6
+                diceRoll = RollDice(2, 6);
+                break;
+
+            case "Massive": //2d8
+                diceRoll = RollDice(2, 8);
+                break;
+
+            case "Colossal": //4d12
+                diceRoll = RollDice(4, 12);
+                break;
+
+            default:
+                break;
+        }
+
+        if (weaponType.name == "Magic")
+            materialBonus += 3;
+        switch (weaponMaterial.name)
         {
             case "F":
-				materialBonus += 2;
+                materialBonus += 2;
                 break;
 
             case "E":
-				materialBonus += 4;
+                materialBonus += 4;
                 break;
 
             case "D":
-				materialBonus += 6;
+                materialBonus += 6;
                 break;
 
             case "C":
-				materialBonus += 8;
+                materialBonus += 8;
                 break;
 
             case "B":
-				materialBonus += 10;
+                materialBonus += 10;
                 break;
 
             case "A":
@@ -117,40 +240,40 @@ public class RollAttack : MonoBehaviour
         }
 
         if (weaponType.name == "Melee" || weaponType.name == "Ranged")
-		{
+        {
             switch (enchantmentLevel.name)
             {
                 case "Unenchanted":
                     break;
 
                 case "Common": //1d8
-					enchantmentDamageRoll = Random.Range(1, 9);
+                    enchantmentDamageRoll = Random.Range(1, 9);
                     break;
 
                 case "Uncommon": //2d8
-					enchantmentDamageRoll = Random.Range(1, 9);
-					enchantmentDamageRoll += Random.Range(1, 9);
+                    enchantmentDamageRoll = Random.Range(1, 9);
+                    enchantmentDamageRoll += Random.Range(1, 9);
                     break;
 
                 case "Rare": //3d8
-					enchantmentDamageRoll = Random.Range(1, 9);
-					enchantmentDamageRoll += Random.Range(1, 9);
-					enchantmentDamageRoll += Random.Range(1, 9);
+                    enchantmentDamageRoll = Random.Range(1, 9);
+                    enchantmentDamageRoll += Random.Range(1, 9);
+                    enchantmentDamageRoll += Random.Range(1, 9);
                     break;
 
                 case "Epic": //4d8
-					enchantmentDamageRoll = Random.Range(1, 9);
-					enchantmentDamageRoll += Random.Range(1, 9);
-					enchantmentDamageRoll += Random.Range(1, 9);
-					enchantmentDamageRoll += Random.Range(1, 9);
+                    enchantmentDamageRoll = Random.Range(1, 9);
+                    enchantmentDamageRoll += Random.Range(1, 9);
+                    enchantmentDamageRoll += Random.Range(1, 9);
+                    enchantmentDamageRoll += Random.Range(1, 9);
                     break;
 
                 case "Legendary": //5d8
-					enchantmentDamageRoll = Random.Range(1, 9);
-					enchantmentDamageRoll += Random.Range(1, 9);
-					enchantmentDamageRoll += Random.Range(1, 9);
-					enchantmentDamageRoll += Random.Range(1, 9);
-					enchantmentDamageRoll += Random.Range(1, 9);
+                    enchantmentDamageRoll = Random.Range(1, 9);
+                    enchantmentDamageRoll += Random.Range(1, 9);
+                    enchantmentDamageRoll += Random.Range(1, 9);
+                    enchantmentDamageRoll += Random.Range(1, 9);
+                    enchantmentDamageRoll += Random.Range(1, 9);
                     break;
 
                 default:
@@ -160,35 +283,35 @@ public class RollAttack : MonoBehaviour
             switch (selectedCharacter.Spirit)
             {
                 case Rating.F:
-					enchantmentMultiplier = 1 + sneakAttackBonus;
+                    enchantmentMultiplier = 1 + sneakAttackBonus;
                     break;
 
                 case Rating.E: // 1d2
-					enchantmentMultiplier = RollDice(1, 2) + sneakAttackBonus;
+                    enchantmentMultiplier = RollDice(1, 2) + sneakAttackBonus;
                     break;
 
                 case Rating.D: // 1d4
-					enchantmentMultiplier = RollDice(1, 4) + sneakAttackBonus;
-					break;
+                    enchantmentMultiplier = RollDice(1, 4) + sneakAttackBonus;
+                    break;
 
                 case Rating.C: // 1d6
-					enchantmentMultiplier = RollDice(1, 6) + sneakAttackBonus;
-					break;
+                    enchantmentMultiplier = RollDice(1, 6) + sneakAttackBonus;
+                    break;
 
                 case Rating.B: // 1d8
-					enchantmentMultiplier = RollDice(1, 8) + sneakAttackBonus;
-					break;
+                    enchantmentMultiplier = RollDice(1, 8) + sneakAttackBonus;
+                    break;
 
                 case Rating.A: // 2d4
-					enchantmentMultiplier = RollDice(2, 4) + sneakAttackBonus;
+                    enchantmentMultiplier = RollDice(2, 4) + sneakAttackBonus;
                     break;
 
                 case Rating.S: // 2d6
-					enchantmentMultiplier = RollDice(2, 6) + sneakAttackBonus;
+                    enchantmentMultiplier = RollDice(2, 6) + sneakAttackBonus;
                     break;
 
                 case Rating.SS: // 3d4
-					enchantmentMultiplier = RollDice(3, 4) + sneakAttackBonus;
+                    enchantmentMultiplier = RollDice(3, 4) + sneakAttackBonus;
                     break;
 
                 default:
@@ -200,36 +323,36 @@ public class RollAttack : MonoBehaviour
                 switch (selectedCharacter.Strength)
                 {
                     case Rating.F:
-						damageMultiplier = 1 + sneakAttackBonus;
-						break;
+                        damageMultiplier = 1 + sneakAttackBonus;
+                        break;
 
                     case Rating.E: // 1d2
-						damageMultiplier = RollDice(1, 2) + sneakAttackBonus;
-						break;
+                        damageMultiplier = RollDice(1, 2) + sneakAttackBonus;
+                        break;
 
                     case Rating.D: // 1d4
-						damageMultiplier = RollDice(1, 4) + sneakAttackBonus;
-						break;
+                        damageMultiplier = RollDice(1, 4) + sneakAttackBonus;
+                        break;
 
                     case Rating.C: // 1d6
-						damageMultiplier = RollDice(1, 6) + sneakAttackBonus;
+                        damageMultiplier = RollDice(1, 6) + sneakAttackBonus;
                         break;
 
                     case Rating.B: // 1d8
-						damageMultiplier = RollDice(1, 8) + sneakAttackBonus;
-						break;
+                        damageMultiplier = RollDice(1, 8) + sneakAttackBonus;
+                        break;
 
                     case Rating.A: // 2d4
-						damageMultiplier = RollDice(2, 4) + sneakAttackBonus;
-						break;
+                        damageMultiplier = RollDice(2, 4) + sneakAttackBonus;
+                        break;
 
                     case Rating.S: // 2d6
-						damageMultiplier = RollDice(2, 6) + sneakAttackBonus;
-						break;
+                        damageMultiplier = RollDice(2, 6) + sneakAttackBonus;
+                        break;
 
                     case Rating.SS: // 3d4
-						damageMultiplier = RollDice(3, 4) + sneakAttackBonus;
-						break;
+                        damageMultiplier = RollDice(3, 4) + sneakAttackBonus;
+                        break;
 
                     default:
                         break;
@@ -240,28 +363,28 @@ public class RollAttack : MonoBehaviour
                 switch (arrowMaterial.name)
                 {
                     case "Primitive":
-						damageMultiplier = 1 + sneakAttackBonus;
-						break;
+                        damageMultiplier = 1 + sneakAttackBonus;
+                        break;
 
                     case "Iron": // 1d4
-						damageMultiplier = RollDice(1, 4) + sneakAttackBonus;
-						break;
+                        damageMultiplier = RollDice(1, 4) + sneakAttackBonus;
+                        break;
 
                     case "Steel": // 1d6
-						damageMultiplier = RollDice(1, 6) + sneakAttackBonus;
-						break;
+                        damageMultiplier = RollDice(1, 6) + sneakAttackBonus;
+                        break;
 
                     case "Dlaren": // 1d8
-						damageMultiplier = RollDice(1, 8) + sneakAttackBonus;
-						break;
+                        damageMultiplier = RollDice(1, 8) + sneakAttackBonus;
+                        break;
 
                     case "Draconic": // 2d4
-						damageMultiplier = RollDice(2, 4) + sneakAttackBonus;
-						break;
+                        damageMultiplier = RollDice(2, 4) + sneakAttackBonus;
+                        break;
 
                     case "Divine/Demonic": // 2d6
-						damageMultiplier = RollDice(2, 6) + sneakAttackBonus;
-						break;
+                        damageMultiplier = RollDice(2, 6) + sneakAttackBonus;
+                        break;
 
                     default:
                         break;
@@ -276,36 +399,36 @@ public class RollAttack : MonoBehaviour
             switch (selectedCharacter.Intelligence)
             {
                 case Rating.F:
-					damageMultiplier = 1 + sneakAttackBonus;
+                    damageMultiplier = 1 + sneakAttackBonus;
                     break;
 
                 case Rating.E: // 1d2
-					damageMultiplier = RollDice(1, 2) + sneakAttackBonus;
-					break;
+                    damageMultiplier = RollDice(1, 2) + sneakAttackBonus;
+                    break;
 
                 case Rating.D: // 1d4
-					damageMultiplier = RollDice(1, 4) + sneakAttackBonus;
-					break;
+                    damageMultiplier = RollDice(1, 4) + sneakAttackBonus;
+                    break;
 
                 case Rating.C: // 1d6
-					damageMultiplier = RollDice(1, 6) + sneakAttackBonus;
-					break;
+                    damageMultiplier = RollDice(1, 6) + sneakAttackBonus;
+                    break;
 
                 case Rating.B: // 1d8
-					damageMultiplier = RollDice(1, 8) + sneakAttackBonus;
-					break;
+                    damageMultiplier = RollDice(1, 8) + sneakAttackBonus;
+                    break;
 
                 case Rating.A: // 2d4
-					damageMultiplier = RollDice(2, 4) + sneakAttackBonus;
-					break;
+                    damageMultiplier = RollDice(2, 4) + sneakAttackBonus;
+                    break;
 
                 case Rating.S: // 2d6
-					damageMultiplier = RollDice(2, 6) + sneakAttackBonus;
-					break;
+                    damageMultiplier = RollDice(2, 6) + sneakAttackBonus;
+                    break;
 
                 case Rating.SS: // 3d4
-					damageMultiplier = RollDice(3, 4) + sneakAttackBonus;
-					break;
+                    damageMultiplier = RollDice(3, 4) + sneakAttackBonus;
+                    break;
 
                 default:
                     break;
@@ -326,7 +449,7 @@ public class RollAttack : MonoBehaviour
         stringBuilder.Append("Material Bonus: " + materialBonus + "\n");
         stringBuilder.Append("Dice roll: " + diceRoll + "\n");
         combatLog.text = stringBuilder.ToString() + "\n" + combatLog.text;*/
-	}
+    }
 
     private int RollDice(int numDice, int maxRoll)
     {

@@ -135,22 +135,22 @@ public class Variables : MonoBehaviour
 
 	public static readonly Dictionary<string, string[]> singleElementsList = new Dictionary<string, string[]>
 	{
-		{ "Fire",   new[] { "Flame Burst", "Ignite", "Ember Shield", "Scorch", "Phoenix Dive", "Cinder Storm" } },
-		{ "Water",  new[] { "Aqua Jet", "Tidal Pull", "Bubble Shield", "Purify", "Ice Shard", "Maelstrom" } },
-		{ "Earth",  new[] { "Rock Spikes", "Iron Hide", "Quake", "Stone Bind", "Thorn Skin", "Crystal Wall" } },
-		{ "Air",    new[] { "Gale Slash", "Wind Step", "Air Shield", "Lightning Arc", "Whirlwind", "Tempest" } },
-		{ "Light",  new[] { "Radiance", "Heal Beam", "Smite", "Blinding Flash", "Sanctify", "Judgment" } },
-		{ "Dark",   new[] { "Shadow Bolt", "Drain Life", "Fear", "Night Cloak", "Curse", "Abyssal Grasp" } },
+		{ "Fire",   new[] { "Blazing Dash", "Flame Burst", "Flame Grasp", "Phoenix Fire", "Flame Manipulation", "Cinderstorm" } },
+		{ "Water",  new[] { "Tidal Surge", "Water Manipulation", "Mist Veil", "Healing Waters", "Rejuvenating Liquid", "Erosion" } },
+		{ "Earth",  new[] { "Stone Grasp", "Quake Burst", "Terra Ward", "Granite Skin", "Seismic Sense", "Earth Manipulation" } },
+		{ "Air",    new[] { "Tempest Step", "Cyclone", "Air Shroud", "Air Manipulation", "Gale Blade", "Vacuum" } },
+		{ "Light",  new[] { "Flare", "Light Manipulation", "Halo Ward", "Dawnstep", "Beacon Pulse", "Aegis of the Sun" } },
+		{ "Dark",   new[] { "Dark Grasp", "Dark Pulse", "Dark Shroud", "Dark Rend", "Dark Step", "Dark Manipulation" } },
 	};
 
 	public static readonly Dictionary<string, string[]> dualElementsList = new Dictionary<string, string[]>
 	{
-		{ "Blaze",  new[] { "Firestorm", "Searing Wave", "Burning Focus", "Magma Spear", "Wildfire Step", "Combustion Field" } },
-		{ "Flood",  new[] { "Deluge", "Water Prison", "Steam Veil", "Rushing Current", "Raincall", "Pressure Crush" } },
-		{ "Stone",  new[] { "Mudslide", "Earthen Grasp", "Petrify", "Sandstorm Armor", "Tremor Pulse", "Obsidian Shards" } },
-		{ "Gust",   new[] { "Shockwave", "Thunderstep", "Cyclone Guard", "Arc Bolt", "Static Shield", "Sky Hammer" } },
-		{ "Life",   new[] { "Rejuvenate", "Bloom Strike", "Fae Whisper", "Nature’s Pact", "Wild Growth", "Spore Burst" } },
-		{ "Death",  new[] { "Grave Chill", "Wither", "Soul Rend", "Plague Mist", "Doom Mark", "Bone Lance" } },
+		{ "Hellfire",  new[] { "Infernal Brand", "Damnation Burst", "Soul Scorch", "Hellfire Manipulation", "Devil's Grasp", "Pillar of Torment" } },
+		{ "Lightning",  new[] { "Charged Weapon", "Thunder Dash", "Arc Sphere", "Volt Chain", "Lightning Manipulation", "Lightning Aura" } },
+		{ "Metal",  new[] { "Steel Skin", "Forgemaster's Bulwark", "Mercurial Shift", "Iron Rend", "Metal Manipulation", "Magnet Lash" } },
+		{ "Steam",   new[] { "Steam Manipulation", "Mist Cloak", "Pressure Vent", "Condense", "Steam Jet", "Superheat" } },
+		{ "Necrotic",   new[] { "Necrotic Manipulation", "Ashen Grasp", "Scorchbone", "Funeral Pyre", "Necrotic Furnace", "Necrowake" } },
+		{ "Solar",  new[] { "Solar Manipulation", "Flare Nova", "Solar Ascension", "Radiant Renewal", "Corona Shield", "Daybreak" } },
 	};
 
 	public static readonly Dictionary<string, string[]> triElementsList = new Dictionary<string, string[]>
