@@ -47,6 +47,7 @@ public class GenerateStats : MonoBehaviour
         characterList.GenerateNPC(new CharacterList.NPC()
         {
             Name = randomAdjective + " " + currentClass.ToString(),
+            Rarity = currentRarity,
 
             Endurance = enduranceStat,
             Strength = strengthStat,
@@ -292,6 +293,32 @@ public class GenerateStats : MonoBehaviour
             Rarity.Low_Cataclysmic => Random.Range(151, 160),
             Rarity.Mid_Cataclysmic => Random.Range(161, 170),
             Rarity.High_Cataclysmic => Random.Range(171, 180),
+            _ => 0,
+        };
+    }
+
+    private int CalculateSkillLevelBasedOnRarity(Rarity rarity)
+    {
+        return rarity switch
+        {
+            Rarity.Low_Common => Random.Range(1, 3),
+            Rarity.Mid_Common => Random.Range(2, 4),
+            Rarity.High_Common => Random.Range(3, 4),
+            Rarity.Low_Uncommon => Random.Range(3, 5),
+            Rarity.Mid_Uncommon => Random.Range(4, 5),
+            Rarity.High_Uncommon => Random.Range(4, 6),
+            Rarity.Low_Rare => Random.Range(5, 6),
+            Rarity.Mid_Rare => Random.Range(5, 7),
+            Rarity.High_Rare => Random.Range(6, 7),
+            Rarity.Low_Epic => Random.Range(6, 8),
+            Rarity.Mid_Epic => Random.Range(7, 8),
+            Rarity.High_Epic => Random.Range(8, 9),
+            Rarity.Low_Legendary => Random.Range(8, 9),
+            Rarity.Mid_Legendary => Random.Range(9, 10),
+            Rarity.High_Legendary => Random.Range(9, 11),
+            Rarity.Low_Cataclysmic => Random.Range(10, 11),
+            Rarity.Mid_Cataclysmic => Random.Range(10, 11),
+            Rarity.High_Cataclysmic => Random.Range(10, 11),
             _ => 0,
         };
     }
@@ -619,7 +646,7 @@ public class GenerateStats : MonoBehaviour
             skillLevels["Light Armor"] = 1;
             weaponChoice = mageWeapons[Random.Range(0, mageWeapons.Length)];
         }
-        skillLevels[weaponChoice] = 1;
+        skillLevels[weaponChoice] = CalculateSkillLevelBasedOnRarity(currentRarity);
 
         StringBuilder result = new();
 

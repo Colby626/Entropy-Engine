@@ -14,9 +14,12 @@ public class ToggleChange : MonoBehaviour
     {
         if (meleeToggle.isOn)
         {
-            foreach (Transform child in otherMaterialGroup.transform)
-            {
-                child.GetComponent<Toggle>().interactable = false;
+			if (otherMaterialGroup != null)
+			{
+                foreach (Transform child in otherMaterialGroup.transform)
+                {
+                    child.GetComponent<Toggle>().interactable = false;
+                }
             }
 			foreach (Transform child in enchantmentLevelGroup.transform)
 			{
@@ -25,9 +28,12 @@ public class ToggleChange : MonoBehaviour
 		}
 		else if (rangedToggle.isOn)
 		{
-			foreach (Transform child in otherMaterialGroup.transform)
+			if (otherMaterialGroup != null)
 			{
-				child.GetComponent<Toggle>().interactable = true;
+				foreach (Transform child in otherMaterialGroup.transform)
+				{
+					child.GetComponent<Toggle>().interactable = true;
+				}
 			}
 			foreach (Transform child in enchantmentLevelGroup.transform)
 			{
@@ -36,10 +42,13 @@ public class ToggleChange : MonoBehaviour
 		}
 		else if (magicToggle.isOn)
 		{
-			foreach (Transform child in otherMaterialGroup.transform)
-			{
-				child.GetComponent<Toggle>().interactable = false;
-			}
+				if (otherMaterialGroup != null)
+				{
+					foreach (Transform child in otherMaterialGroup.transform)
+					{
+						child.GetComponent<Toggle>().interactable = false;
+					}
+				}
 			foreach (Transform child in enchantmentLevelGroup.transform)
 			{
 				child.GetComponent<Toggle>().interactable = false;

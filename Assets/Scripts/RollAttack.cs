@@ -136,6 +136,91 @@ public class RollAttack : MonoBehaviour
         if (diceMultiplier) maximumOnDice = maximumOnDice + maximumOnDice / 2;
         damage = RollDice(numberOfDice, maximumOnDice);
 
+        switch (weaponType.name)
+        {
+            case "Melee":
+                switch (selectedCharacter.Rarity)
+                {
+                    case Rarity.Low_Common:
+                    case Rarity.Mid_Common:
+                    case Rarity.High_Common:
+                        damage += selectedCharacter.Strength / 6;
+                        break;
+                    case Rarity.Low_Uncommon:
+                    case Rarity.Mid_Uncommon:
+                    case Rarity.High_Uncommon:
+                        damage += selectedCharacter.Strength / 5;
+                        break;
+                    case Rarity.Low_Rare:
+                    case Rarity.Mid_Rare:
+                    case Rarity.High_Rare:
+                        damage += selectedCharacter.Strength / 4;
+                        break;
+                    case Rarity.Low_Epic:
+                    case Rarity.Mid_Epic:
+                    case Rarity.High_Epic:
+                        damage += selectedCharacter.Strength / 3;
+                        break;
+                    case Rarity.Low_Legendary:
+                    case Rarity.Mid_Legendary:
+                    case Rarity.High_Legendary:
+                        damage += selectedCharacter.Strength / 2;
+                        break;
+                    case Rarity.Low_Cataclysmic:
+                    case Rarity.Mid_Cataclysmic:
+                    case Rarity.High_Cataclysmic:
+                        damage += selectedCharacter.Strength;
+                        break;
+                    default:
+                        damage += 0;
+                        break;
+                }
+                break;
+
+            case "Ranged":
+                damage *= 2;
+                break;
+
+            case "Magic":
+                switch (selectedCharacter.Rarity)
+                {
+                    case Rarity.Low_Common:
+                    case Rarity.Mid_Common:
+                    case Rarity.High_Common:
+                        damage += selectedCharacter.Spirit / 6;
+                        break;
+                    case Rarity.Low_Uncommon:
+                    case Rarity.Mid_Uncommon:
+                    case Rarity.High_Uncommon:
+                        damage += selectedCharacter.Spirit / 5;
+                        break;
+                    case Rarity.Low_Rare:
+                    case Rarity.Mid_Rare:
+                    case Rarity.High_Rare:
+                        damage += selectedCharacter.Spirit / 4;
+                        break;
+                    case Rarity.Low_Epic:
+                    case Rarity.Mid_Epic:
+                    case Rarity.High_Epic:
+                        damage += selectedCharacter.Spirit / 3;
+                        break;
+                    case Rarity.Low_Legendary:
+                    case Rarity.Mid_Legendary:
+                    case Rarity.High_Legendary:
+                        damage += selectedCharacter.Spirit / 2;
+                        break;
+                    case Rarity.Low_Cataclysmic:
+                    case Rarity.Mid_Cataclysmic:
+                    case Rarity.High_Cataclysmic:
+                        damage += selectedCharacter.Spirit;
+                        break;
+                    default:
+                        damage += 0;
+                        break;
+                }
+                break;
+        }
+
         stringBuilder.Append("Damage: " + (damage) + "\n");
         if (enchantmentLevel.name != "Unenchanted")
         {

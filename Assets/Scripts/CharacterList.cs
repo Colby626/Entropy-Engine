@@ -10,6 +10,7 @@ public class CharacterList : MonoBehaviour
 	public class NPC
 	{
 		public string Name;
+        public Rarity Rarity;
 
 		public int Strength;
 		public int Dexterity;
