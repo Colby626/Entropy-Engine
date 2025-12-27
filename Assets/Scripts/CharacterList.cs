@@ -114,7 +114,7 @@ public class CharacterList : MonoBehaviour
     private int DRFromAbilities(string abilities, Rarity currentRarity)
     {
         int workingBonus = 0;
-        int rarityValue = ((int)currentRarity + 1) / 3;
+        int rarityValue = ((int)currentRarity) / 3;
         string pattern = @"(Light Armor|Medium Armor|Heavy Armor): \d+";
 
         Regex regex = new(pattern);

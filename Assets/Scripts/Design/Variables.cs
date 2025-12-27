@@ -163,7 +163,47 @@ public class Variables : MonoBehaviour
 		{ "Void",       new[] { "Null Sphere", "Entropy Lash", "Black Star", "Erase", "Void Step", "Oblivion Surge" } }
 	};
 
-	public static string[] adventurerAdjectives =
+	public static readonly string[] warriorWeapons = new string[]
+	{
+		"Greatsword",
+		"Greataxe",
+		"GreatHammer",
+		"GreatSpear",
+		"Polearm",
+		"Longsword",
+		"Waraxe",
+		"Battleaxe",
+		"Mace",
+		"Maul",
+		"Shortspear",
+		"Spear",
+	};
+
+
+	public static readonly string[] rogueWeapons = new string[]
+	{
+		"Thrown Weapon",
+		"Shortsword",
+		"Dagger",
+	};
+
+
+	public static readonly string[] archerWeapons = new string[]
+	{
+		"GreatBow",
+		"Ballista",
+		"Longbow",
+		"Shortbow",
+		"Crossbow",
+	};
+
+
+	public static readonly string[] mageWeapons = new string[]
+	{
+		"Staff",
+	};
+
+    public static string[] adventurerAdjectives =
 	{
 		"Brash",
 		"Greedy",

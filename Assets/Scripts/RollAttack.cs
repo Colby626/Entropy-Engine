@@ -38,8 +38,7 @@ public class RollAttack : MonoBehaviour
         bool diceMultiplier = false;
         int maximumOnDice = 0;
         int enchantmentDamageRoll = 0;
-        int physicalDamage = 0;
-        int magicalDamage = 0;
+        int damage = 0;
 
         switch (weaponSize.name)
         {
@@ -135,11 +134,9 @@ public class RollAttack : MonoBehaviour
         }
 
         if (diceMultiplier) maximumOnDice = maximumOnDice + maximumOnDice / 2;
-        physicalDamage = RollDice(numberOfDice, maximumOnDice);
+        damage = RollDice(numberOfDice, maximumOnDice);
 
-        stringBuilder.Append("Damage: " + (physicalDamage + magicalDamage) + "\n");
-        stringBuilder.Append("Physical Damage: " + physicalDamage + "\n");
-        stringBuilder.Append("Magical Damage: " + magicalDamage + "\n");
+        stringBuilder.Append("Damage: " + (damage) + "\n");
         if (enchantmentLevel.name != "Unenchanted")
         {
             stringBuilder.Append("True Damage: " + enchantmentDamageRoll + "\n");

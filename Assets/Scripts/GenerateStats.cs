@@ -597,19 +597,29 @@ public class GenerateStats : MonoBehaviour
         // Assign armor type based on class pattern
         Dictionary<string, int> skillLevels = new();
         string className = currentClass.ToString();
+        string weaponChoice = "Sword";
 
         if (className.StartsWith("Warrior") || currentClass == Class.All_Rounder)
         {
             skillLevels["Heavy Armor"] = 1;
+            weaponChoice = warriorWeapons[Random.Range(0, warriorWeapons.Length)];
         }
-        else if (className.StartsWith("Archer") || className.StartsWith("Rogue"))
+        else if (className.StartsWith("Archer"))
         {
             skillLevels["Medium Armor"] = 1;
+            weaponChoice = archerWeapons[Random.Range(0, archerWeapons.Length)];
+        }
+        else if (className.StartsWith("Rogue"))
+        {
+            skillLevels["Medium Armor"] = 1;
+            weaponChoice = rogueWeapons[Random.Range(0, rogueWeapons.Length)];
         }
         else if (className.StartsWith("Mage"))
         {
             skillLevels["Light Armor"] = 1;
+            weaponChoice = mageWeapons[Random.Range(0, mageWeapons.Length)];
         }
+        skillLevels[weaponChoice] = 1;
 
         StringBuilder result = new();
 
