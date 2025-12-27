@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -131,6 +132,23 @@ public class RollAttack : MonoBehaviour
 
             default:
                 break;
+        }
+
+        string weaponSkill = "0";
+
+        string pattern = @"(Greatsword|Greataxe|GreatHammer|GreatSpear|Polearm|Longsword|Waraxe|Battleaxe|Mace|Maul|Shortspear|Spear|Thrown Weapon|Shortsword|Dagger|GreatBow|Ballista|Longbow|Shortbow|Crossbow|Staff): (\d+)";
+
+        Regex regex = new(pattern);
+
+        Match match = regex.Match(selectedCharacter.Abilities);
+
+        if (match.Success)
+        {
+            string weapon = match.Groups[1].Value;
+            int skill = int.Parse(match.Groups[2].Value);
+
+            Debug.Log($"Weapon: {weapon}, Skill: {skill}");
+            numberOfDice += skill;
         }
 
         if (diceMultiplier) maximumOnDice = maximumOnDice + maximumOnDice / 2;
