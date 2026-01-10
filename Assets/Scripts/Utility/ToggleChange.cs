@@ -42,15 +42,17 @@ public class ToggleChange : MonoBehaviour
 		}
 		else if (magicToggle.isOn)
 		{
-				if (otherMaterialGroup != null)
+			if (otherMaterialGroup != null)
+			{
+				foreach (Transform child in otherMaterialGroup.transform)
 				{
-					foreach (Transform child in otherMaterialGroup.transform)
-					{
-						child.GetComponent<Toggle>().interactable = false;
-					}
+					child.GetComponent<Toggle>().interactable = false;
 				}
+			}
 			foreach (Transform child in enchantmentLevelGroup.transform)
 			{
+				if (child.gameObject.name == "Unenchanted")
+					child.GetComponent<Toggle>().isOn = true;
 				child.GetComponent<Toggle>().interactable = false;
 			}
 		}

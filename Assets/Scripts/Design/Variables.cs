@@ -203,6 +203,20 @@ public class Variables : MonoBehaviour
 		"Staff",
 	};
 
+	public static readonly string[] magicSchools = new string[]
+	{
+		"Pyromancy",
+		"Heliomancy",
+		"Cryomancy",
+		"Geomancy",
+		"Electromancy",
+		"Hemomancy",
+		"Necromancy",
+		"Goety",
+		"Shadowmancy",
+		"Aeromancy",
+	};
+
     public static string[] adventurerAdjectives =
 	{
 		"Brash",

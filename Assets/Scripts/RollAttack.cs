@@ -151,6 +151,19 @@ public class RollAttack : MonoBehaviour
             numberOfDice += skill;
         }
 
+        pattern = @"(Pyromancy|Heliomancy|Cryomancy|Geomancy|Electromancy|Hemomancy|Necromancy|Goety|Shadowmancy|Aeromancy|): (\d+)";
+
+        match = regex.Match(selectedCharacter.Abilities);
+
+        if (match.Success)
+        {
+            string magic = match.Groups[1].Value;
+            int skill = int.Parse(match.Groups[2].Value);
+
+            Debug.Log($"Magic: {magic}, Skill: {skill}");
+            numberOfDice += skill;
+        }
+
         if (diceMultiplier) maximumOnDice = maximumOnDice + maximumOnDice / 2;
         damage = RollDice(numberOfDice, maximumOnDice);
 
@@ -162,32 +175,32 @@ public class RollAttack : MonoBehaviour
                     case Rarity.Low_Common:
                     case Rarity.Mid_Common:
                     case Rarity.High_Common:
-                        damage += selectedCharacter.Strength / 6;
+                        damage += (selectedCharacter.Strength / 6) * 2;
                         break;
                     case Rarity.Low_Uncommon:
                     case Rarity.Mid_Uncommon:
                     case Rarity.High_Uncommon:
-                        damage += selectedCharacter.Strength / 5;
+                        damage += (selectedCharacter.Strength / 5) * 2;
                         break;
                     case Rarity.Low_Rare:
                     case Rarity.Mid_Rare:
                     case Rarity.High_Rare:
-                        damage += selectedCharacter.Strength / 4;
+                        damage += (selectedCharacter.Strength / 4) * 2;
                         break;
                     case Rarity.Low_Epic:
                     case Rarity.Mid_Epic:
                     case Rarity.High_Epic:
-                        damage += selectedCharacter.Strength / 3;
+                        damage += (selectedCharacter.Strength / 3) * 2;
                         break;
                     case Rarity.Low_Legendary:
                     case Rarity.Mid_Legendary:
                     case Rarity.High_Legendary:
-                        damage += selectedCharacter.Strength / 2;
+                        damage += (selectedCharacter.Strength / 2) * 2;
                         break;
                     case Rarity.Low_Cataclysmic:
                     case Rarity.Mid_Cataclysmic:
                     case Rarity.High_Cataclysmic:
-                        damage += selectedCharacter.Strength;
+                        damage += selectedCharacter.Strength * 2;
                         break;
                     default:
                         damage += 0;
@@ -205,32 +218,32 @@ public class RollAttack : MonoBehaviour
                     case Rarity.Low_Common:
                     case Rarity.Mid_Common:
                     case Rarity.High_Common:
-                        damage += selectedCharacter.Spirit / 6;
+                        damage += (selectedCharacter.Spirit / 6) * 2;
                         break;
                     case Rarity.Low_Uncommon:
                     case Rarity.Mid_Uncommon:
                     case Rarity.High_Uncommon:
-                        damage += selectedCharacter.Spirit / 5;
+                        damage += (selectedCharacter.Spirit / 5) * 2;
                         break;
                     case Rarity.Low_Rare:
                     case Rarity.Mid_Rare:
                     case Rarity.High_Rare:
-                        damage += selectedCharacter.Spirit / 4;
+                        damage += (selectedCharacter.Spirit / 4) * 2;
                         break;
                     case Rarity.Low_Epic:
                     case Rarity.Mid_Epic:
                     case Rarity.High_Epic:
-                        damage += selectedCharacter.Spirit / 3;
+                        damage += (selectedCharacter.Spirit / 3) * 2;
                         break;
                     case Rarity.Low_Legendary:
                     case Rarity.Mid_Legendary:
                     case Rarity.High_Legendary:
-                        damage += selectedCharacter.Spirit / 2;
+                        damage += (selectedCharacter.Spirit / 2) * 2;
                         break;
                     case Rarity.Low_Cataclysmic:
                     case Rarity.Mid_Cataclysmic:
                     case Rarity.High_Cataclysmic:
-                        damage += selectedCharacter.Spirit;
+                        damage += selectedCharacter.Spirit * 2;
                         break;
                     default:
                         damage += 0;

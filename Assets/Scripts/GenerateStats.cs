@@ -64,9 +64,9 @@ public class GenerateStats : MonoBehaviour
             InitiativeBonus = CalculateInitiativeBonus(),
             CriticalBonus = CalculateCriticalBonus(),
             MovementSpeed = 3 + (agilityStat / 10),
-            StrengthDamageBonus = CalculateStatBonus(strengthStat),
-            DexterityDamageBonus = CalculateStatBonus(dexterityStat),
-            SpiritDamageBonus = CalculateStatBonus(spiritStat),
+            StrengthDamageBonus = CalculateStatBonus(strengthStat) * 2,
+            DexterityDamageBonus = CalculateStatBonus(dexterityStat) * 2,
+            SpiritDamageBonus = CalculateStatBonus(spiritStat) * 2,
 
             Element = currentElement,
             Abilities = GenerateAbilities(currentElement),
@@ -625,6 +625,8 @@ public class GenerateStats : MonoBehaviour
         Dictionary<string, int> skillLevels = new();
         string className = currentClass.ToString();
         string weaponChoice = "Sword";
+        string magicChoice = "Fire";
+        int skillLevel = CalculateSkillLevelBasedOnRarity(currentRarity);
 
         if (className.StartsWith("Warrior") || currentClass == Class.All_Rounder)
         {
@@ -645,8 +647,10 @@ public class GenerateStats : MonoBehaviour
         {
             skillLevels["Light Armor"] = 1;
             weaponChoice = mageWeapons[Random.Range(0, mageWeapons.Length)];
+            magicChoice = magicSchools[Random.Range(0, magicSchools.Length)];
+            skillLevels[magicChoice] = skillLevel;
         }
-        skillLevels[weaponChoice] = CalculateSkillLevelBasedOnRarity(currentRarity);
+        skillLevels[weaponChoice] = skillLevel;
 
         StringBuilder result = new();
 
