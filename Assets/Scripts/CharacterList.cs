@@ -58,7 +58,9 @@ public class CharacterList : MonoBehaviour
         Balanced,
         Heavy,
         Massive,
-        Colossal
+        Colossal,
+        OneHanded,
+        TwoHanded
     }
 
 	public enum Material

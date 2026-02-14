@@ -55,50 +55,94 @@ public class RollAttack : MonoBehaviour
                 break;
         }
 
-        switch (weaponMaterial.name)
+        if (weaponType.name == "Magic")
         {
-            case "Unarmed":
-                numberOfDice = 2;
-                maximumOnDice = 4;
-                break;
+            maximumOnDice = 8;
+            switch (weaponMaterial.name)
+            {
+                case "Unarmed":
+                    numberOfDice = 2;
+                    break;
 
-            case "Primitive":
-                numberOfDice = 2;
-                maximumOnDice = 6;
-                break;
+                case "Primitive":
+                    numberOfDice = 4;
+                    break;
 
-            case "Iron":
-                numberOfDice = 2;
-                maximumOnDice = 8;
-                break;
+                case "Iron":
+                    numberOfDice = 8;
+                    break;
 
-            case "Steel":
-                numberOfDice = 4;
-                maximumOnDice = 8;
-                break;
+                case "Steel":
+                    numberOfDice = 16;
+                    break;
 
-            case "Dlaren":
-                numberOfDice = 6;
-                maximumOnDice = 8;
-                break;
+                case "Dlaren":
+                    numberOfDice = 32;
+                    break;
 
-            case "Valkyrian":
-                numberOfDice = 8;
-                maximumOnDice = 8;
-                break;
+                case "Valkyrian":
+                    numberOfDice = 64;
+                    break;
 
-            case "Draconic":
-                numberOfDice = 10;
-                maximumOnDice = 8;
-                break;
+                case "Draconic":
+                    numberOfDice = 128;
+                    break;
 
-            case "Divine/Demonic":
-                numberOfDice = 12;
-                maximumOnDice = 8;
-                break;
+                case "Divine/Demonic":
+                    numberOfDice = 256;
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            switch (weaponMaterial.name)
+            {
+                case "Unarmed":
+                    numberOfDice = 2;
+                    maximumOnDice = 4;
+                    break;
+
+                case "Primitive":
+                    numberOfDice = 2;
+                    maximumOnDice = 6;
+                    break;
+
+                case "Iron":
+                    numberOfDice = 2;
+                    maximumOnDice = 8;
+                    break;
+
+                case "Steel":
+                    numberOfDice = 4;
+                    maximumOnDice = 8;
+                    break;
+
+                case "Dlaren":
+                    numberOfDice = 6;
+                    maximumOnDice = 8;
+                    break;
+
+                case "Valkyrian":
+                    numberOfDice = 8;
+                    maximumOnDice = 8;
+                    break;
+
+                case "Draconic":
+                    numberOfDice = 10;
+                    maximumOnDice = 8;
+                    break;
+
+                case "Divine/Demonic":
+                    numberOfDice = 12;
+                    maximumOnDice = 8;
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         switch (enchantmentLevel.name)
@@ -164,48 +208,13 @@ public class RollAttack : MonoBehaviour
             numberOfDice += skill;
         }
 
-        if (diceMultiplier) maximumOnDice = maximumOnDice + maximumOnDice / 2;
+        if (diceMultiplier) numberOfDice = numberOfDice + numberOfDice / 2;
         damage = RollDice(numberOfDice, maximumOnDice);
 
         switch (weaponType.name)
         {
             case "Melee":
-                switch (selectedCharacter.Rarity)
-                {
-                    case Rarity.Low_Common:
-                    case Rarity.Mid_Common:
-                    case Rarity.High_Common:
-                        damage += (selectedCharacter.Strength / 6) * 2;
-                        break;
-                    case Rarity.Low_Uncommon:
-                    case Rarity.Mid_Uncommon:
-                    case Rarity.High_Uncommon:
-                        damage += (selectedCharacter.Strength / 5) * 2;
-                        break;
-                    case Rarity.Low_Rare:
-                    case Rarity.Mid_Rare:
-                    case Rarity.High_Rare:
-                        damage += (selectedCharacter.Strength / 4) * 2;
-                        break;
-                    case Rarity.Low_Epic:
-                    case Rarity.Mid_Epic:
-                    case Rarity.High_Epic:
-                        damage += (selectedCharacter.Strength / 3) * 2;
-                        break;
-                    case Rarity.Low_Legendary:
-                    case Rarity.Mid_Legendary:
-                    case Rarity.High_Legendary:
-                        damage += (selectedCharacter.Strength / 2) * 2;
-                        break;
-                    case Rarity.Low_Cataclysmic:
-                    case Rarity.Mid_Cataclysmic:
-                    case Rarity.High_Cataclysmic:
-                        damage += selectedCharacter.Strength * 2;
-                        break;
-                    default:
-                        damage += 0;
-                        break;
-                }
+                damage += selectedCharacter.StrengthDamageBonus;
                 break;
 
             case "Ranged":
@@ -213,42 +222,7 @@ public class RollAttack : MonoBehaviour
                 break;
 
             case "Magic":
-                switch (selectedCharacter.Rarity)
-                {
-                    case Rarity.Low_Common:
-                    case Rarity.Mid_Common:
-                    case Rarity.High_Common:
-                        damage += (selectedCharacter.Spirit / 6) * 2;
-                        break;
-                    case Rarity.Low_Uncommon:
-                    case Rarity.Mid_Uncommon:
-                    case Rarity.High_Uncommon:
-                        damage += (selectedCharacter.Spirit / 5) * 2;
-                        break;
-                    case Rarity.Low_Rare:
-                    case Rarity.Mid_Rare:
-                    case Rarity.High_Rare:
-                        damage += (selectedCharacter.Spirit / 4) * 2;
-                        break;
-                    case Rarity.Low_Epic:
-                    case Rarity.Mid_Epic:
-                    case Rarity.High_Epic:
-                        damage += (selectedCharacter.Spirit / 3) * 2;
-                        break;
-                    case Rarity.Low_Legendary:
-                    case Rarity.Mid_Legendary:
-                    case Rarity.High_Legendary:
-                        damage += (selectedCharacter.Spirit / 2) * 2;
-                        break;
-                    case Rarity.Low_Cataclysmic:
-                    case Rarity.Mid_Cataclysmic:
-                    case Rarity.High_Cataclysmic:
-                        damage += selectedCharacter.Spirit * 2;
-                        break;
-                    default:
-                        damage += 0;
-                        break;
-                }
+                damage += selectedCharacter.SpiritDamageBonus;
                 break;
         }
 
@@ -577,7 +551,7 @@ public class RollAttack : MonoBehaviour
         return total;
     }
 
-    private int RollExplodingDice(int numDice, int maxRoll)
+    /*private int RollExplodingDice(int numDice, int maxRoll)
     {
         int total = 0;
 
@@ -600,5 +574,5 @@ public class RollAttack : MonoBehaviour
     public void Clear()
 	{
 		combatLog.text = "";
-	}
+	}*/
 }

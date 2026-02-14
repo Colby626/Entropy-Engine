@@ -29,7 +29,11 @@ public class UpdateDefault : MonoBehaviour
 					selectedCharacter.WeaponSize = CharacterList.WeaponSize.Massive;
 				else if (name == "Colossal")
 					selectedCharacter.WeaponSize = CharacterList.WeaponSize.Colossal;
-				break;
+                else if (name == "One-Handed")
+                    selectedCharacter.WeaponSize = CharacterList.WeaponSize.OneHanded;
+                else if (name == "Two-Handed")
+                    selectedCharacter.WeaponSize = CharacterList.WeaponSize.TwoHanded;
+                break;
 
 			case "WeaponMaterial":
 				if (name == "Iron")
@@ -46,7 +50,7 @@ public class UpdateDefault : MonoBehaviour
 					selectedCharacter.WeaponMaterial = CharacterList.Material.Divine_Demonic;
 				break;
 
-			case "ArrowMaterial":
+			case "OtherMaterial":
 				if (name == "Iron")
 					selectedCharacter.ArrowMaterial = CharacterList.Material.Iron;
 				else if (name == "Steel")
