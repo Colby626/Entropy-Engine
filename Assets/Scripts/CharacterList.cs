@@ -94,8 +94,9 @@ public class CharacterList : MonoBehaviour
 
     public void GenerateNPC(NPC npc, Rarity npcRarity)
     {
-        npc.AC = ((int)npc.Agility / 10 >= 15 ? 15 : (int)npc.Agility / 10) + 8;
-        npc.DR = (int)npc.Endurance / 5 + DRFromAbilities(npc.Abilities, npcRarity); 
+        npc.AC = ((int)npc.Agility / 10 >= 27 ? 27 : (int)npc.Agility / 10) + 8;
+        npc.DR = DRFromAbilities(npc.Abilities, npcRarity);
+        npc.PlusToHit = npc.PlusToHit + PlusToHitFromAbilities(npc.Abilities);
         npcs.Add(npc);
         AddNPCToScrollview(npc);
     }
@@ -149,7 +150,7 @@ public class CharacterList : MonoBehaviour
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 5;
+                workingBonus += 0;
             }
             if (armorType == "Medium Armor")
             {
@@ -157,70 +158,90 @@ public class CharacterList : MonoBehaviour
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 25;
+                workingBonus += 20;
             }
         }
         if (rarityValue == (int)Material.Dlaren)
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 10;
+                workingBonus += 0;
             }
             if (armorType == "Medium Armor")
             {
-                workingBonus += 25;
+                workingBonus += 15;
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 50;
+                workingBonus += 30;
             }
         }
         if (rarityValue == (int)Material.Valkyrian)
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 25;
+                workingBonus += 0;
             }
             if (armorType == "Medium Armor")
             {
-                workingBonus += 50;
+                workingBonus += 20;
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 100;
+                workingBonus += 40;
             }
         }
         if (rarityValue == (int)Material.Draconic)
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 50;
+                workingBonus += 0;
             }
             if (armorType == "Medium Armor")
             {
-                workingBonus += 100;
+                workingBonus += 25;
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 150;
+                workingBonus += 50;
             }
         }
         if (rarityValue == (int)Material.Divine_Demonic)
         {
             if (armorType == "Light Armor")
             {
-                workingBonus += 150;
+                workingBonus += 0;
             }
             if (armorType == "Medium Armor")
             {
-                workingBonus += 200;
+                workingBonus += 30;
             }
             if (armorType == "Heavy Armor")
             {
-                workingBonus += 250;
+                workingBonus += 60;
             }
         }
         return workingBonus;
+    }
+
+    private int PlusToHitFromAbilities(string abilities)
+    {
+        string pattern = @"(Greatsword|Greataxe|GreatHammer|GreatSpear|Polearm|Longsword|Waraxe|Battleaxe|Mace|Maul|Shortspear|Spear|Thrown Weapon|Shortsword|Dagger|GreatBow|Ballista|Longbow|Shortbow|Crossbow|Staff|Pyromancy|Heliomancy|Cryomancy|Geomancy|Electromancy|Hemomancy|Necromancy|Goety|Shadowmancy|Aeromancy): (\d+)";
+
+        Regex regex = new(pattern);
+
+        Match match = regex.Match(abilities);
+
+        if (match.Success)
+        {
+            string weapon = match.Groups[1].Value;
+            int skill = int.Parse(match.Groups[2].Value);
+
+            Debug.Log($"Weapon: {weapon}, Skill: {skill}");
+            return skill;
+        }
+
+        return 0;
     }
 
     public void DeleteNPC(CharacterTemplate template)

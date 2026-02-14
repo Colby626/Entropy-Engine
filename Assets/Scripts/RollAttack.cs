@@ -178,6 +178,7 @@ public class RollAttack : MonoBehaviour
                 break;
         }
 
+        /* This makes skill levels increase damage dice by 1 per level
         string pattern = @"(Greatsword|Greataxe|GreatHammer|GreatSpear|Polearm|Longsword|Waraxe|Battleaxe|Mace|Maul|Shortspear|Spear|Thrown Weapon|Shortsword|Dagger|GreatBow|Ballista|Longbow|Shortbow|Crossbow|Staff): (\d+)";
 
         Regex regex = new(pattern);
@@ -205,6 +206,7 @@ public class RollAttack : MonoBehaviour
             Debug.Log($"Magic: {magic}, Skill: {skill}");
             numberOfDice += skill;
         }
+        */
 
         if (diceMultiplier) numberOfDice = numberOfDice + numberOfDice / 2;
         damage = RollDice(numberOfDice, maximumOnDice);
