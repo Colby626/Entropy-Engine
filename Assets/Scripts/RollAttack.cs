@@ -178,8 +178,6 @@ public class RollAttack : MonoBehaviour
                 break;
         }
 
-        string weaponSkill = "0";
-
         string pattern = @"(Greatsword|Greataxe|GreatHammer|GreatSpear|Polearm|Longsword|Waraxe|Battleaxe|Mace|Maul|Shortspear|Spear|Thrown Weapon|Shortsword|Dagger|GreatBow|Ballista|Longbow|Shortbow|Crossbow|Staff): (\d+)";
 
         Regex regex = new(pattern);
