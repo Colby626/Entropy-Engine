@@ -26,6 +26,15 @@ public class Variables : MonoBehaviour
 		High_Cataclysmic
 	}
 
+	public enum Tier
+	{
+		Common,
+		Uncommon,
+		Rare,
+		Epic,
+		Legendary
+	}
+
 	public enum Class
 	{
 		Warrior,
@@ -129,10 +138,10 @@ public class Variables : MonoBehaviour
 	public static readonly Dictionary<Class, float[]> fiftyClassWeights = new Dictionary<Class, float[]>
 	{
         // endurance strength finesse intelligence spirit
-        { Class.Warrior, new float[] { 0.35f, 0.3f, 0.2f, 0.1f, 0.05f} },
-		{ Class.Archer, new float[] { 0.3f, 0.05f, 0.35f, 0.25f, 0.05f} },
-		{ Class.Rogue, new float[] { 0.2f, 0.1f, 0.3f, 0.35f, 0.05f} },
-		{ Class.Mage, new float[] { 0.2f, 0.0f, 0.2f, 0.1f, 0.5f} },
+        { Class.Warrior, new float[] { 0.35f, 0.3f, 0.2f, 0f, 0.15f} },
+		{ Class.Archer, new float[] { 0.3f, 0.05f, 0.35f, 0f, 0.3f} },
+		{ Class.Rogue, new float[] { 0.2f, 0.25f, 0.15f, 0.05f, 0.35f} },
+		{ Class.Mage, new float[] { 0.2f, 0.0f, 0.2f, 0.3f, 0.3f} },
 
 		{ Class.All_Rounder, new float[] { 0.2375f, 0.175f, 0.2f, 0.2125f, 0.0875f} },
 

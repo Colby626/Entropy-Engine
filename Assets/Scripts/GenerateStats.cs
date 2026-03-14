@@ -10,10 +10,12 @@ using System.Linq;
 public class GenerateStats : MonoBehaviour
 {
 	public TMP_Dropdown rarityDropdown;
+    public TMP_Dropdown tierDropdown;
     public TMP_Dropdown classDropdown;
     public TMP_Dropdown elementTierDropdown;
 
     private Rarity currentRarity;
+    private Tier currentTier;
     private Class currentClass;
     private ElementTier currentElementTier;
 
@@ -82,9 +84,9 @@ public class GenerateStats : MonoBehaviour
     // Called by the Generate button in the 50 level tab
     public void Generate50LevelStatPoints()
     {
-		int level = Calculate50LevelBasedOnRarity(currentRarity);
+		int level = Calculate50LevelBasedOnRarity(currentTier);
 		Debug.Log("Level calculated: " + level);
-        int statPoints = level * 3;
+        int statPoints = Calculate50LevelStats(level);
 		Debug.Log("Total stat points: " + statPoints);
 
 		enduranceStat = 1;
@@ -114,14 +116,14 @@ public class GenerateStats : MonoBehaviour
 			CurrentHealth = enduranceStat * 10, 
 			MaxMana = spiritStat * 10,
 			CurrentMana = spiritStat * 10, 
-			PlusToHit = finesseStat / 5,
-			InitiativeBonus = spiritStat / 5,
-			MovementSpeed = 3 + (spiritStat / 5),
+			PlusToHit = spiritStat / 5,
+			InitiativeBonus = strengthStat / 5,
+			MovementSpeed = 3 + (strengthStat / 5),
 			MeleeDamageBonus = strengthStat * 5, 
 			RangedDamageBonus = finesseStat * 5, 
 			SpellDamageBonus = intelligenceStat * 5, 
             Resistance = enduranceStat / 5,
-            AC = 8 + strengthStat / 5,
+            AC = 8 + finesseStat / 5,
             Charisma = intelligenceStat / 5,
 
 			Abilities = GenerateAbilities(),
@@ -381,28 +383,15 @@ public class GenerateStats : MonoBehaviour
         };
     }
 
-	private int Calculate50LevelBasedOnRarity(Rarity rarity)
+	private int Calculate50LevelBasedOnRarity(Tier tier)
 	{
-		return rarity switch
+		return tier switch
 		{
-			Rarity.Low_Common => Random.Range(1, 3),
-			Rarity.Mid_Common => Random.Range(4, 5),
-			Rarity.High_Common => Random.Range(6, 7),
-			Rarity.Low_Uncommon => Random.Range(8, 11),
-			Rarity.Mid_Uncommon => Random.Range(12, 13),
-			Rarity.High_Uncommon => Random.Range(14, 15),
-			Rarity.Low_Rare => Random.Range(16, 19),
-			Rarity.Mid_Rare => Random.Range(20, 21),
-			Rarity.High_Rare => Random.Range(22, 23),
-			Rarity.Low_Epic => Random.Range(24, 27),
-			Rarity.Mid_Epic => Random.Range(28, 29),
-			Rarity.High_Epic => Random.Range(30, 31),
-			Rarity.Low_Legendary => Random.Range(32, 35),
-			Rarity.Mid_Legendary => Random.Range(36, 37),
-			Rarity.High_Legendary => Random.Range(38, 39),
-			Rarity.Low_Cataclysmic => Random.Range(40, 43),
-			Rarity.Mid_Cataclysmic => Random.Range(44, 47),
-			Rarity.High_Cataclysmic => Random.Range(48, 51),
+			Tier.Common => Random.Range(1, 11),
+			Tier.Uncommon => Random.Range(11, 21),
+			Tier.Rare => Random.Range(21, 31),
+			Tier.Epic => Random.Range(31, 41),
+			Tier.Legendary => Random.Range(41, 51),
 			_ => 0,
 		};
 	}
@@ -466,20 +455,71 @@ public class GenerateStats : MonoBehaviour
         return sum;
     }
 
+    private int Calculate50LevelStats(int level)
+    {
+		int sum = 0;
+        sum = level * 3; 
+		if (level > 10) // For uncommon, they get 2 stat points per level
+		{
+			sum += 3;
+		}
+		if (level > 20) // Rares get 4 stat points per level
+		{
+			sum += 6;
+		}
+		if (level > 30)
+		{
+			sum += 9;
+		}
+		if (level > 40)
+		{
+			sum += 12;
+		}
+		return sum;
+	}
+
 	public void Start()
     {
         // Sets the dropdown menus' to have the correct enum to choose from
-        rarityDropdown.options.Clear();
-        foreach (string rarityName in Enum.GetNames(typeof(Rarity)))
+        if (rarityDropdown != null)
         {
-            rarityDropdown.options.Add(new TMP_Dropdown.OptionData(rarityName));
-        }
-        classDropdown.options.Clear();
-        foreach (string className in Enum.GetNames(typeof(Class)))
+			rarityDropdown.options.Clear();
+			foreach (string rarityName in Enum.GetNames(typeof(Rarity)))
+			{
+				rarityDropdown.options.Add(new TMP_Dropdown.OptionData(rarityName));
+			}
+			rarityDropdown.onValueChanged.AddListener(OnRarityDropdownValueChanged);
+			rarityDropdown.RefreshShownValue();
+
+			Debug.Log(this + " is missing its Rarity Tier Dropdown reference");
+		}
+
+		if (tierDropdown != null)
         {
-            classDropdown.options.Add(new TMP_Dropdown.OptionData(className));
-        }
-        if (elementTierDropdown != null)
+			tierDropdown.options.Clear();
+			foreach (string tierName in Enum.GetNames(typeof(Tier)))
+			{
+				tierDropdown.options.Add(new TMP_Dropdown.OptionData(tierName));
+			}
+			tierDropdown.onValueChanged.AddListener(OnTierDropdownValueChanged);
+			tierDropdown.RefreshShownValue();
+
+			Debug.Log(this + " is missing its Tier Dropdown reference");
+		}
+
+        if (classDropdown != null)
+        {
+            classDropdown.options.Clear();
+            foreach (string className in Enum.GetNames(typeof(Class)))
+            {
+                classDropdown.options.Add(new TMP_Dropdown.OptionData(className));
+            }
+            classDropdown.onValueChanged.AddListener(OnClassDropdownValueChanged);
+            classDropdown.RefreshShownValue();
+			Debug.Log(this + " is missing its Class Tier Dropdown reference");
+		}
+
+		if (elementTierDropdown != null)
         {
 			elementTierDropdown.options.Clear();
 			foreach (string elementTier in Enum.GetNames(typeof(ElementTier)))
@@ -490,12 +530,6 @@ public class GenerateStats : MonoBehaviour
 			elementTierDropdown.RefreshShownValue();
             Debug.Log(this + " is missing its Element Tier Dropdown reference");
 		}
-
-		rarityDropdown.onValueChanged.AddListener(OnRarityDropdownValueChanged);
-        classDropdown.onValueChanged.AddListener(OnClassDropdownValueChanged);
-
-		rarityDropdown.RefreshShownValue();
-        classDropdown.RefreshShownValue();
 	}
 
     public void OnRarityDropdownValueChanged(int index)
@@ -504,7 +538,13 @@ public class GenerateStats : MonoBehaviour
         Debug.Log("Rarity changed to: " + currentRarity);
     }
 
-    public void OnClassDropdownValueChanged(int index)
+	public void OnTierDropdownValueChanged(int index)
+	{
+		currentTier = (Tier)index;
+		Debug.Log("Tier changed to: " + currentTier);
+	}
+
+	public void OnClassDropdownValueChanged(int index)
     {
         currentClass = (Class)index;
         Debug.Log("Class changed to: " + currentClass);

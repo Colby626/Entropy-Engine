@@ -67,6 +67,7 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 		else if (npcData.System == "50 Level")
 		{
 			statsText.AppendLine($"<b><u>{npcData.Name}</u></b>"); // Underline and bold
+			statsText.AppendLine($"Level: {npcData.Level}");
 			statsText.AppendLine("AC: " + npcData.AC);
 			statsText.AppendLine("DR: " + npcData.DR + " NOT WORKING");
 			statsText.AppendLine("Melee Dmg Bonus: " + npcData.MeleeDamageBonus);
