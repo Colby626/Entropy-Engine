@@ -13,6 +13,11 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 	private CharacterList characterList;
 	private Transform combatTab;
 
+	private TextMeshProUGUI fiftyLevelListOfStats;
+	private TextMeshProUGUI fiftyLevelAbilityDetailsText;
+	private TMP_InputField fiftyLevelNotes;
+	private Transform fiftyLevelCombatTab;
+
 	public void Start()
 	{
 		characterList = GetComponent<CharacterTemplate>().characterList;
@@ -21,6 +26,10 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 		abilityDetailsText = characterList.abilityDetailsText;
 		notes = characterList.notes;
 		combatTab = characterList.combatTab;
+		fiftyLevelListOfStats = characterList.fiftyLevelListOfStats;
+		fiftyLevelAbilityDetailsText = characterList.fiftyLevelAbilityDetailsText;
+		fiftyLevelNotes = characterList.fiftyLevelNotes;
+		fiftyLevelCombatTab = characterList.fiftyLevelCombatTab;
     }
 
 	public void OnSelect(BaseEventData eventData)
@@ -29,28 +38,58 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 		characterList.selectedCharacter = npcData;
 
         StringBuilder statsText = new ();
-		statsText.AppendLine($"<b><u>{npcData.Name}</u></b>"); // Underline and bold
-		statsText.AppendLine("Element: " + npcData.Element);
-		statsText.AppendLine("AC: " + npcData.AC);
-		statsText.AppendLine("DR: " + npcData.DR);
-		statsText.AppendLine("Str Dmg Bonus: " + npcData.StrengthDamageBonus);
-        statsText.AppendLine("Spt Dmg Bonus: " + npcData.SpiritDamageBonus);
-        statsText.AppendLine("Plus To Hit: " + npcData.PlusToHit);
-		statsText.AppendLine("Critical Bonus: " + npcData.CriticalBonus);
-		statsText.AppendLine("Movement Spaces: " + npcData.MovementSpeed);
-		statsText.AppendLine("Strength: " + npcData.Strength);
-		statsText.AppendLine("Dexterity: " + npcData.Dexterity);
-		statsText.AppendLine("Agility: " + npcData.Agility);
-		statsText.AppendLine("Spirit: " + npcData.Spirit);
-		statsText.AppendLine("Endurance: " + npcData.Endurance);
-		statsText.AppendLine("Max Health: " + npcData.MaxHealth);
-		statsText.AppendLine("Max Mana: " + npcData.MaxMana);
 
-		lordshipListOfStats.text = statsText.ToString();
-		abilityDetailsText.text = npcData.Abilities;
-		notes.gameObject.SetActive(true);
-		notes.text = npcData.Notes;
-		notes.GetComponent<UpdateNotes>().npc = npcData;
+		if (npcData.System == "Lordship")
+		{
+			statsText.AppendLine($"<b><u>{npcData.Name}</u></b>"); // Underline and bold
+			statsText.AppendLine("Element: " + npcData.Element);
+			statsText.AppendLine("AC: " + npcData.AC);
+			statsText.AppendLine("DR: " + npcData.DR);
+			statsText.AppendLine("Str Dmg Bonus: " + npcData.StrengthDamageBonus);
+			statsText.AppendLine("Spt Dmg Bonus: " + npcData.SpiritDamageBonus);
+			statsText.AppendLine("Plus To Hit: " + npcData.PlusToHit);
+			statsText.AppendLine("Critical Bonus: " + npcData.CriticalBonus);
+			statsText.AppendLine("Movement Spaces: " + npcData.MovementSpeed);
+			statsText.AppendLine("Strength: " + npcData.Strength);
+			statsText.AppendLine("Dexterity: " + npcData.Dexterity);
+			statsText.AppendLine("Agility: " + npcData.Agility);
+			statsText.AppendLine("Spirit: " + npcData.Spirit);
+			statsText.AppendLine("Endurance: " + npcData.Endurance);
+			statsText.AppendLine("Max Health: " + npcData.MaxHealth);
+			statsText.AppendLine("Max Mana: " + npcData.MaxMana);
+
+			lordshipListOfStats.text = statsText.ToString();
+			abilityDetailsText.text = npcData.Abilities;
+			notes.gameObject.SetActive(true);
+			notes.text = npcData.Notes;
+			notes.GetComponent<UpdateNotes>().npc = npcData;
+		}
+		else if (npcData.System == "50 Level")
+		{
+			statsText.AppendLine($"<b><u>{npcData.Name}</u></b>"); // Underline and bold
+			statsText.AppendLine("AC: " + npcData.AC);
+			statsText.AppendLine("Melee Dmg Bonus: " + npcData.MeleeDamageBonus);
+			statsText.AppendLine("Ranged Dmg Bonus: " + npcData.RangedDamageBonus);
+			statsText.AppendLine("Spell Dmg Bonus: " + npcData.SpellDamageBonus);
+			statsText.AppendLine("Plus To Hit: " + npcData.PlusToHit);
+			statsText.AppendLine("Movement Spaces: " + npcData.MovementSpeed);
+			statsText.AppendLine("Strength: " + npcData.Strength);
+			statsText.AppendLine("Finesse: " + npcData.Finesse);
+			statsText.AppendLine("Intelligence: " + npcData.Intelligence);
+			statsText.AppendLine("Spirit: " + npcData.Spirit);
+			statsText.AppendLine("Endurance: " + npcData.Endurance);
+			statsText.AppendLine("Resistance: " + npcData.Resistance);
+			statsText.AppendLine("Charisma: " + npcData.Charisma);
+			statsText.AppendLine("Max Health: " + npcData.MaxHealth);
+			statsText.AppendLine("Max Mana: " + npcData.MaxMana);
+
+			fiftyLevelListOfStats.text = statsText.ToString();
+			fiftyLevelAbilityDetailsText.text = npcData.Abilities;
+			fiftyLevelNotes.gameObject.SetActive(true);
+			fiftyLevelNotes.text = npcData.Notes;
+			fiftyLevelNotes.GetComponent<UpdateNotes>().npc = npcData;
+		}
+
 		SetTogglesToCharacterDefault();
 	}
 

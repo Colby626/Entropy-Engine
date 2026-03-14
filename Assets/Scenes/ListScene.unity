@@ -8975,7 +8975,7 @@ GameObject:
   - component: {fileID: 230884341}
   - component: {fileID: 230884340}
   m_Layer: 0
-  m_Name: LordshipRarityDropdown
+  m_Name: RarityDropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28038,7 +28038,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 316844333}
   m_HandleRect: {fileID: 316844332}
   m_Direction: 2
-  m_Value: 0.9999997
+  m_Value: 1
   m_Size: 0.70312494
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -34379,7 +34379,7 @@ GameObject:
   - component: {fileID: 766595041}
   - component: {fileID: 766595040}
   m_Layer: 0
-  m_Name: LordshipTypeDropdown
+  m_Name: TypeDropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69382,7 +69382,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 116555173}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999958
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

@@ -10,11 +10,15 @@ public class CharacterList : MonoBehaviour
 	public class NPC
 	{
 		public string Name;
+        public string System;
         public Rarity Rarity;
+        public int Level;
 
 		public int Strength;
 		public int Dexterity;
+        public int Finesse;
 		public int Agility;
+        public int Intelligence;
 		public int Spirit;
 		public int Endurance;
 
@@ -28,10 +32,15 @@ public class CharacterList : MonoBehaviour
         public int CriticalBonus;
         public int MovementSpeed;
         public int InitiativeBonus;
+        public int Resistance;
+        public int Charisma;
 
         public int StrengthDamageBonus;
         public int DexterityDamageBonus;
         public int SpiritDamageBonus;
+        public int MeleeDamageBonus;
+        public int RangedDamageBonus;
+        public int SpellDamageBonus;
 
         public int Initiative;
         public string Element;
@@ -92,7 +101,14 @@ public class CharacterList : MonoBehaviour
     public NPC selectedCharacter;
     public Transform combatTab;
 
-    public void GenerateNPC(NPC npc, Rarity npcRarity)
+	public Transform fiftyLevelContentObjectInScrollview;
+	public TextMeshProUGUI fiftyLevelListOfStats;
+	public TextMeshProUGUI fiftyLevelAbilityDetailsText;
+	public TMP_InputField fiftyLevelNotes;
+	public NPC fiftyLevelSelectedCharacter;
+	public Transform fiftyLevelCombatTab;
+
+	public void GenerateNPC(NPC npc, Rarity npcRarity)
     {
         npc.AC = ((int)npc.Agility / 10 >= 27 ? 27 : (int)npc.Agility / 10) + 8;
         npc.DR = DRFromAbilities(npc.Abilities, npcRarity);
@@ -101,7 +117,13 @@ public class CharacterList : MonoBehaviour
         AddNPCToScrollview(npc);
     }
 
-    /*private int ACReducedFromHeavyArmor(string abilities)
+	public void GenerateNPC(NPC npc)
+	{
+		npcs.Add(npc);
+		AddNPCToScrollview(npc);
+	}
+
+	/*private int ACReducedFromHeavyArmor(string abilities)
     {
         string pattern = @"Heavy Armor";
 
@@ -115,7 +137,7 @@ public class CharacterList : MonoBehaviour
             return -4;
     }*/
 
-    private int DRFromAbilities(string abilities, Rarity currentRarity)
+	private int DRFromAbilities(string abilities, Rarity currentRarity)
     {
         int workingBonus = 0;
         int rarityValue = ((int)currentRarity) / 3;
@@ -303,9 +325,12 @@ public class CharacterList : MonoBehaviour
     private void AddNPCToScrollview(NPC npc)
     {
         GameObject template = Instantiate(characterTemplatePrefab);
-        template.transform.SetParent(lordshipContentObjectInScrollview);
-        // For whatever reason, this is required for the children to scale properly within the scrollview
-        template.transform.localScale = new Vector3(0.9244992f, 0.9244992f, 0.9244992f);
+        if (npc.System == "Lordship")
+            template.transform.SetParent(lordshipContentObjectInScrollview);
+        else if (npc.System == "50 Level")
+			template.transform.SetParent(fiftyLevelContentObjectInScrollview);
+		// For whatever reason, this is required for the children to scale properly within the scrollview
+		template.transform.localScale = new Vector3(0.9244992f, 0.9244992f, 0.9244992f);
         if (npc.Initiative != 0)
             template.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = npc.Initiative.ToString();
 

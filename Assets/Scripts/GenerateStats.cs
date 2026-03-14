@@ -20,12 +20,14 @@ public class GenerateStats : MonoBehaviour
     private int enduranceStat = 1;
     private int strengthStat = 0;
     private int dexterityStat = 0;
+    private int finesseStat = 0;
     private int agilityStat = 0;
+    private int intelligenceStat = 0;
     private int spiritStat = 0;
 
     public CharacterList characterList;
 
-    // Called by the Generate button
+    // Called by the Generate button in the Lordship tab
     public void GenerateStatPoints()
     {
         int level = CalculateLevelBasedOnRarity(currentRarity);
@@ -47,6 +49,7 @@ public class GenerateStats : MonoBehaviour
         characterList.GenerateNPC(new CharacterList.NPC()
         {
             Name = randomAdjective + " " + currentClass.ToString(),
+            System = "Lordship",
             Rarity = currentRarity,
 
             Endurance = enduranceStat,
@@ -75,6 +78,57 @@ public class GenerateStats : MonoBehaviour
         }, 
         currentRarity);
     }
+
+    // Called by the Generate button in the 50 level tab
+    public void Generate50LevelStatPoints()
+    {
+		int level = Calculate50LevelBasedOnRarity(currentRarity);
+		Debug.Log("Level calculated: " + level);
+        int statPoints = level * 3;
+		Debug.Log("Total stat points: " + statPoints);
+
+		enduranceStat = 1;
+		strengthStat = 0;
+		finesseStat = 0;
+		intelligenceStat = 0;
+		spiritStat = 0;
+		Distribute50StatPoints(statPoints - 1); // Minus 1 for the forced 1 endurance
+
+		int randomIndex = Random.Range(0, adventurerAdjectives.Length);
+		string randomAdjective = adventurerAdjectives[randomIndex];
+
+		characterList.GenerateNPC(new CharacterList.NPC()
+		{
+			Name = randomAdjective + " " + currentClass.ToString(),
+            System = "50 Level",
+            Level = level,
+			Rarity = currentRarity,
+
+			Endurance = enduranceStat,
+			Strength = strengthStat,
+			Finesse = finesseStat,
+			Intelligence = intelligenceStat,
+			Spirit = spiritStat,
+
+			MaxHealth = enduranceStat * 10, 
+			CurrentHealth = enduranceStat * 10, 
+			MaxMana = spiritStat * 10,
+			CurrentMana = spiritStat * 10, 
+			PlusToHit = finesseStat / 5,
+			InitiativeBonus = spiritStat / 5,
+			MovementSpeed = 3 + (spiritStat / 5),
+			MeleeDamageBonus = strengthStat * 5, 
+			RangedDamageBonus = finesseStat * 5, 
+			SpellDamageBonus = intelligenceStat * 5, 
+            Resistance = enduranceStat / 5,
+            AC = 8 + strengthStat / 5,
+            Charisma = intelligenceStat / 5,
+
+			Abilities = GenerateAbilities(),
+
+			Initiative = 0
+		});
+	}
 
     private int CalculateHealth()
     {
@@ -271,7 +325,37 @@ public class GenerateStats : MonoBehaviour
         }
     }
 
-    private int CalculateLevelBasedOnRarity(Rarity rarity)
+	private void Distribute50StatPoints(int statPoints)
+	{
+		for (int i = 0; i < statPoints; i++) // For every stat point to distribute
+		{
+			float random = Random.Range(0f, 1f); // Calculate a random number between 0 and 1
+			float cumulativeWeight = 0f;
+
+			// Go through each stat and check which range the random number falls into
+			for (int statWeight = 0; statWeight < 5; statWeight++)
+			{
+				// Increase the cumulative weight by the amount specified in the current classes' weight map
+				cumulativeWeight += fiftyClassWeights[currentClass][statWeight];
+
+				if (random < cumulativeWeight)
+				{
+					// Increment the corresponding stat based on the random number falling within this weight range
+					switch (statWeight)
+					{
+						case 0: enduranceStat++; break;
+						case 1: strengthStat++; break;
+						case 2: finesseStat++; break;
+						case 3: intelligenceStat++; break;
+						case 4: spiritStat++; break;
+					}
+					break;
+				}
+			}
+		}
+	}
+
+	private int CalculateLevelBasedOnRarity(Rarity rarity)
     {
         return rarity switch
         {
@@ -297,7 +381,33 @@ public class GenerateStats : MonoBehaviour
         };
     }
 
-    private int CalculateSkillLevelBasedOnRarity(Rarity rarity)
+	private int Calculate50LevelBasedOnRarity(Rarity rarity)
+	{
+		return rarity switch
+		{
+			Rarity.Low_Common => Random.Range(1, 3),
+			Rarity.Mid_Common => Random.Range(4, 5),
+			Rarity.High_Common => Random.Range(6, 7),
+			Rarity.Low_Uncommon => Random.Range(8, 11),
+			Rarity.Mid_Uncommon => Random.Range(12, 13),
+			Rarity.High_Uncommon => Random.Range(14, 15),
+			Rarity.Low_Rare => Random.Range(16, 19),
+			Rarity.Mid_Rare => Random.Range(20, 21),
+			Rarity.High_Rare => Random.Range(22, 23),
+			Rarity.Low_Epic => Random.Range(24, 27),
+			Rarity.Mid_Epic => Random.Range(28, 29),
+			Rarity.High_Epic => Random.Range(30, 31),
+			Rarity.Low_Legendary => Random.Range(32, 35),
+			Rarity.Mid_Legendary => Random.Range(36, 37),
+			Rarity.High_Legendary => Random.Range(38, 39),
+			Rarity.Low_Cataclysmic => Random.Range(40, 43),
+			Rarity.Mid_Cataclysmic => Random.Range(44, 47),
+			Rarity.High_Cataclysmic => Random.Range(48, 51),
+			_ => 0,
+		};
+	}
+
+	private int CalculateSkillLevelBasedOnRarity(Rarity rarity)
     {
         return rarity switch
         {
@@ -356,7 +466,7 @@ public class GenerateStats : MonoBehaviour
         return sum;
     }
 
-    public void Start()
+	public void Start()
     {
         // Sets the dropdown menus' to have the correct enum to choose from
         rarityDropdown.options.Clear();
@@ -369,19 +479,23 @@ public class GenerateStats : MonoBehaviour
         {
             classDropdown.options.Add(new TMP_Dropdown.OptionData(className));
         }
-		elementTierDropdown.options.Clear();
-		foreach (string elementTier in Enum.GetNames(typeof(ElementTier)))
-		{
-			elementTierDropdown.options.Add(new TMP_Dropdown.OptionData(elementTier));
+        if (elementTierDropdown != null)
+        {
+			elementTierDropdown.options.Clear();
+			foreach (string elementTier in Enum.GetNames(typeof(ElementTier)))
+			{
+				elementTierDropdown.options.Add(new TMP_Dropdown.OptionData(elementTier));
+			}
+			elementTierDropdown.onValueChanged.AddListener(OnElementTierDropdownValueChanged);
+			elementTierDropdown.RefreshShownValue();
+            Debug.Log(this + " is missing its Element Tier Dropdown reference");
 		}
 
 		rarityDropdown.onValueChanged.AddListener(OnRarityDropdownValueChanged);
         classDropdown.onValueChanged.AddListener(OnClassDropdownValueChanged);
-		elementTierDropdown.onValueChanged.AddListener(OnElementTierDropdownValueChanged);
 
 		rarityDropdown.RefreshShownValue();
         classDropdown.RefreshShownValue();
-		elementTierDropdown.RefreshShownValue();
 	}
 
     public void OnRarityDropdownValueChanged(int index)
@@ -683,7 +797,51 @@ public class GenerateStats : MonoBehaviour
 		return result.ToString();
     }
 
-    private string ChooseElement()
+	private string GenerateAbilities()
+	{
+		// This version is just for armor 
+		// Assign armor type based on class pattern
+		Dictionary<string, int> skillLevels = new();
+		string className = currentClass.ToString();
+		string weaponChoice = "Sword";
+		string magicChoice = "Fire";
+		int skillLevel = CalculateSkillLevelBasedOnRarity(currentRarity);
+
+		if (className.StartsWith("Warrior") || currentClass == Class.All_Rounder)
+		{
+			skillLevels["Heavy Armor"] = 1;
+			weaponChoice = warriorWeapons[Random.Range(0, warriorWeapons.Length)];
+		}
+		else if (className.StartsWith("Archer"))
+		{
+			skillLevels["Medium Armor"] = 1;
+			weaponChoice = archerWeapons[Random.Range(0, archerWeapons.Length)];
+		}
+		else if (className.StartsWith("Rogue"))
+		{
+			skillLevels["Medium Armor"] = 1;
+			weaponChoice = rogueWeapons[Random.Range(0, rogueWeapons.Length)];
+		}
+		else if (className.StartsWith("Mage"))
+		{
+			skillLevels["Light Armor"] = 1;
+			weaponChoice = mageWeapons[Random.Range(0, mageWeapons.Length)];
+			magicChoice = magicSchools[Random.Range(0, magicSchools.Length)];
+			skillLevels[magicChoice] = skillLevel;
+		}
+		skillLevels[weaponChoice] = skillLevel;
+
+		StringBuilder result = new();
+
+		foreach (var skill in skillLevels)
+		{
+			result.AppendLine($"{skill.Key}: {skill.Value}");
+		}
+
+		return result.ToString();
+	}
+
+	private string ChooseElement()
     {
         List<string> keys = new List<string>();
 		switch (currentElementTier)
