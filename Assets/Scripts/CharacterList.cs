@@ -119,6 +119,7 @@ public class CharacterList : MonoBehaviour
 
 	public void GenerateNPC(NPC npc)
 	{
+        npc.DR = DRFromFiftyLevelAbilities(npc.Abilities);
 		npcs.Add(npc);
 		AddNPCToScrollview(npc);
 	}
@@ -246,6 +247,11 @@ public class CharacterList : MonoBehaviour
         return workingBonus;
     }
 
+    private int DRFromFiftyLevelAbilities(string abilities)
+    {
+        return 0;
+    }
+
     private int PlusToHitFromAbilities(string abilities)
     {
         string pattern = @"(Greatsword|Greataxe|GreatHammer|GreatSpear|Polearm|Longsword|Waraxe|Battleaxe|Mace|Maul|Shortspear|Spear|Thrown Weapon|Shortsword|Dagger|GreatBow|Ballista|Longbow|Shortbow|Crossbow|Staff|Pyromancy|Heliomancy|Cryomancy|Geomancy|Electromancy|Hemomancy|Necromancy|Goety|Shadowmancy|Aeromancy): (\d+)";
@@ -266,7 +272,7 @@ public class CharacterList : MonoBehaviour
         return 0;
     }
 
-    public void DeleteNPC(CharacterTemplate template)
+	public void DeleteNPC(CharacterTemplate template)
     {
         npcs.Remove(template.npcData);
 

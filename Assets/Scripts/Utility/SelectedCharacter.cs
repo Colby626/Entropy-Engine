@@ -68,6 +68,7 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 		{
 			statsText.AppendLine($"<b><u>{npcData.Name}</u></b>"); // Underline and bold
 			statsText.AppendLine("AC: " + npcData.AC);
+			statsText.AppendLine("DR: " + npcData.DR + " NOT WORKING");
 			statsText.AppendLine("Melee Dmg Bonus: " + npcData.MeleeDamageBonus);
 			statsText.AppendLine("Ranged Dmg Bonus: " + npcData.RangedDamageBonus);
 			statsText.AppendLine("Spell Dmg Bonus: " + npcData.SpellDamageBonus);
