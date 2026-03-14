@@ -2185,7 +2185,7 @@ GameObject:
   - component: {fileID: 50534627}
   - component: {fileID: 50534626}
   m_Layer: 0
-  m_Name: RarityText
+  m_Name: TierText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2230,7 +2230,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rarity
+  m_text: Tier
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 83eb6a0b9c5c83b4ab642a1862a21960, type: 2}
   m_sharedMaterial: {fileID: -7277767068074507439, guid: 83eb6a0b9c5c83b4ab642a1862a21960, type: 2}
@@ -8980,7 +8980,7 @@ GameObject:
   - component: {fileID: 230884341}
   - component: {fileID: 230884340}
   m_Layer: 0
-  m_Name: RarityDropdown
+  m_Name: TierDropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28044,7 +28044,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 316844332}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.70312494
+  m_Size: 0.703125
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -44570,7 +44570,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0007786555}
+  m_AnchoredPosition: {x: 0, y: 0.00001054237}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &980934511
@@ -64446,6 +64446,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rarityDropdown: {fileID: 230884340}
+  tierDropdown: {fileID: 230884340}
   classDropdown: {fileID: 766595040}
   elementTierDropdown: {fileID: 0}
   characterList: {fileID: 150201057}
@@ -69387,7 +69388,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 116555173}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9965723
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -92083,6 +92084,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rarityDropdown: {fileID: 131691905}
+  tierDropdown: {fileID: 0}
   classDropdown: {fileID: 1489725097}
   elementTierDropdown: {fileID: 198465352}
   characterList: {fileID: 150201057}
