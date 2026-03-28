@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
-
 using static Variables;
 
 public class CharacterList : MonoBehaviour
@@ -34,6 +33,9 @@ public class CharacterList : MonoBehaviour
         public int InitiativeBonus;
         public int Resistance;
         public int Charisma;
+        public int PhysicalSavingThrowBonus;
+        public int MagicSavingThrowBonus;
+        public int SpellSaveDC;
 
         public int StrengthDamageBonus;
         public int DexterityDamageBonus;
@@ -108,21 +110,35 @@ public class CharacterList : MonoBehaviour
 	public NPC fiftyLevelSelectedCharacter;
 	public Transform fiftyLevelCombatTab;
 
-	public void GenerateNPC(NPC npc, Rarity npcRarity)
+	public void GenerateLordshipNPC(NPC npc, Rarity npcRarity)
     {
         npc.AC = ((int)npc.Agility / 10 >= 27 ? 27 : (int)npc.Agility / 10) + 8;
-        npc.DR = DRFromAbilities(npc.Abilities, npcRarity);
-        npc.PlusToHit = npc.PlusToHit + PlusToHitFromAbilities(npc.Abilities);
+        npc.DR += DRFromAbilities(npc);
+        npc.PlusToHit += PlusToHitFromAbilities(npc.Abilities);
         npcs.Add(npc);
         AddNPCToScrollview(npc);
     }
 
-	public void GenerateNPC(NPC npc)
+	public void Generate50LevelNPC(NPC npc, Rarity npcRarity)
 	{
-        npc.DR = DRFromFiftyLevelAbilities(npc.Abilities);
-		npcs.Add(npc);
+        npc.DR += DRFromAbilities(npc);
+        npc.MovementSpeed = WearingHeavyArmor(npc.Abilities) ? 3 : 5;
+        npcs.Add(npc);
 		AddNPCToScrollview(npc);
 	}
+
+    public bool WearingHeavyArmor(string abilities)
+    {
+        string pattern = @"(Heavy Armor)";
+
+        Regex regex = new(pattern);
+
+        Match match = regex.Match(abilities);
+
+        if (match.Success)
+            return true;
+        return false;
+    }
 
 	/*private int ACReducedFromHeavyArmor(string abilities)
     {
@@ -138,10 +154,12 @@ public class CharacterList : MonoBehaviour
             return -4;
     }*/
 
-	private int DRFromAbilities(string abilities, Rarity currentRarity)
+	private int DRFromAbilities(NPC npc)
     {
+        string abilities = npc.Abilities;
+        Rarity currentRarity = npc.Rarity;
         int workingBonus = 0;
-        int rarityValue = ((int)currentRarity) / 3;
+        int rarityValue = npc.System == "50 Level" ? (int)currentRarity : ((int)currentRarity) / 3;
         string pattern = @"(Light Armor|Medium Armor|Heavy Armor): \d+";
 
         Regex regex = new(pattern);

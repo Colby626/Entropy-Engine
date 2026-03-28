@@ -48,7 +48,7 @@ public class GenerateStats : MonoBehaviour
 		int randomIndex = Random.Range(0, adventurerAdjectives.Length);
         string randomAdjective = adventurerAdjectives[randomIndex];
 
-        characterList.GenerateNPC(new CharacterList.NPC()
+        characterList.GenerateLordshipNPC(new CharacterList.NPC()
         {
             Name = randomAdjective + " " + currentClass.ToString(),
             System = "Lordship",
@@ -99,7 +99,7 @@ public class GenerateStats : MonoBehaviour
 		int randomIndex = Random.Range(0, adventurerAdjectives.Length);
 		string randomAdjective = adventurerAdjectives[randomIndex];
 
-		characterList.GenerateNPC(new CharacterList.NPC()
+		characterList.Generate50LevelNPC(new CharacterList.NPC()
 		{
 			Name = randomAdjective + " " + currentClass.ToString(),
             System = "50 Level",
@@ -116,20 +116,23 @@ public class GenerateStats : MonoBehaviour
 			CurrentHealth = enduranceStat * 10, 
 			MaxMana = spiritStat * 10,
 			CurrentMana = spiritStat * 10, 
-			PlusToHit = spiritStat / 5,
-			InitiativeBonus = strengthStat / 5,
-			MovementSpeed = 3 + (strengthStat / 5),
+			PlusToHit = finesseStat / 5 + (strengthStat / 5) * 2,
+			InitiativeBonus = intelligenceStat / 5,
 			MeleeDamageBonus = strengthStat * 5, 
 			RangedDamageBonus = finesseStat * 5, 
 			SpellDamageBonus = intelligenceStat * 5, 
             Resistance = enduranceStat / 5,
-            AC = 8 + finesseStat / 5,
-            Charisma = intelligenceStat / 5,
+            AC = 8 + (finesseStat / 5) * 2 + (strengthStat / 5),
+            Charisma = spiritStat / 5,
+            DR = (enduranceStat / 5) * 5,
+            PhysicalSavingThrowBonus = enduranceStat / 5,
+            MagicSavingThrowBonus = spiritStat / 5,
+            SpellSaveDC = 10 + intelligenceStat / 5,
 
-			Abilities = GenerateAbilities(),
+            Abilities = GenerateAbilities(),
 
 			Initiative = 0
-		});
+		}, currentRarity);
 	}
 
     private int CalculateHealth()
