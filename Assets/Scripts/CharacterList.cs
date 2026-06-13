@@ -36,6 +36,7 @@ public class CharacterList : MonoBehaviour
         public int PhysicalSavingThrowBonus;
         public int MagicSavingThrowBonus;
         public int SpellSaveDC;
+        public int ScalingBonus;
 
         public int StrengthDamageBonus;
         public int DexterityDamageBonus;
@@ -121,11 +122,93 @@ public class CharacterList : MonoBehaviour
 
 	public void Generate50LevelNPC(NPC npc, Rarity npcRarity)
 	{
+        npc.ScalingBonus = ScalingFromAbilities(npc.Abilities, npc.Strength, npc.Finesse);
         npc.DR += DRFromAbilities(npc);
-        npc.MovementSpeed = WearingHeavyArmor(npc.Abilities) ? 3 : 5;
+        npc.MovementSpeed = WearingHeavyArmor(npc.Abilities) ? npc.MovementSpeed - 2 : npc.MovementSpeed;
         npcs.Add(npc);
 		AddNPCToScrollview(npc);
 	}
+
+    private int ScalingFromAbilities(string abilities, int strength, int finesse)
+    {
+        string pattern = @"(Greatsword|Greataxe|GreatHammer|GreatSpear|Polearm|Longsword|Waraxe|Battleaxe|Mace|Maul|Shortspear|Spear|Thrusting Sword|Thrown Weapon|Shortsword|Dagger|Fist|GreatBow|Ballista|Longbow|Shortbow|Crossbow|Staff|Pyromancy|Heliomancy|Cryomancy|Geomancy|Electromancy|Hemomancy|Necromancy|Goety|Shadowmancy|Aeromancy): (\d+)";
+
+        Regex regex = new(pattern);
+
+        Match match = regex.Match(abilities);
+
+        if (match.Success)
+        {
+            string weapon = match.Groups[1].Value;
+
+            switch(weapon)
+            {
+                case "Greatsword":
+                case "Longsword":
+                case "Shortsword":
+                {
+                    return 3 * finesse + 2 * strength;
+                }
+                case "Greataxe":
+                case "Waraxe":
+                case "Battleaxe":
+                {
+                    return 3 * strength + 2 * finesse;
+                }
+                case "GreatHammer":
+                case "Mace":
+                case "Maul":
+                case "Staff":
+                {
+                    return 5 * strength;
+                }
+                case "Fist":
+                {
+                    return 4 * strength + finesse;
+                }
+                case "Polearm":
+                {
+                    return 4 * strength + finesse;
+                }
+                case "GreatSpear":
+                case "Shortspear":
+                case "Spear":
+                {
+                    return 3 * finesse + 2 * strength;
+                }
+                case "Dagger":
+                {
+                    return 5 * finesse;
+                }
+                case "Thrusting Sword":
+                {
+                    return 4 * finesse + strength;
+                }
+                case "Thrown Weapon":
+                {
+                    return 3 * strength + 2 * finesse;
+                }
+                case "GreatBow":
+                case "Longbow":
+                case "Shortbow":
+                {
+                    return 4 * finesse + strength;
+                }
+                case "Ballista":
+                case "Crossbow":
+                {
+                    return 0;
+                }
+                default:
+                {
+                    Debug.Log($"Unknown weapon type {weapon}");
+                    return 0;
+                }
+            }
+        }
+
+        return 0;
+    }
 
     public bool WearingHeavyArmor(string abilities)
     {
@@ -272,7 +355,7 @@ public class CharacterList : MonoBehaviour
 
     private int PlusToHitFromAbilities(string abilities)
     {
-        string pattern = @"(Greatsword|Greataxe|GreatHammer|GreatSpear|Polearm|Longsword|Waraxe|Battleaxe|Mace|Maul|Shortspear|Spear|Thrown Weapon|Shortsword|Dagger|GreatBow|Ballista|Longbow|Shortbow|Crossbow|Staff|Pyromancy|Heliomancy|Cryomancy|Geomancy|Electromancy|Hemomancy|Necromancy|Goety|Shadowmancy|Aeromancy): (\d+)";
+        string pattern = @"(Greatsword|Greataxe|GreatHammer|GreatSpear|Polearm|Longsword|Waraxe|Battleaxe|Mace|Maul|Shortspear|Spear|Thrusting Sword|Thrown Weapon|Shortsword|Dagger|Fist|GreatBow|Ballista|Longbow|Shortbow|Crossbow|Staff|Pyromancy|Heliomancy|Cryomancy|Geomancy|Electromancy|Hemomancy|Necromancy|Goety|Shadowmancy|Aeromancy): (\d+)";
 
         Regex regex = new(pattern);
 

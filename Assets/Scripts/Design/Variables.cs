@@ -82,17 +82,17 @@ public class Variables : MonoBehaviour
 
 	public static readonly Dictionary<Class, float[]> classWeights = new Dictionary<Class, float[]>
 	{
-        // endurance strength dexterity agility spirit
-        { Class.Warrior, new float[] { 0.35f, 0.3f, 0.2f, 0.1f, 0.05f} },
-		{ Class.Archer, new float[] { 0.3f, 0.05f, 0.35f, 0.25f, 0.05f} },
-		{ Class.Rogue, new float[] { 0.2f, 0.1f, 0.3f, 0.35f, 0.05f} },
-		{ Class.Mage, new float[] { 0.2f, 0.0f, 0.2f, 0.1f, 0.5f} },
+        // endurance strength dexterity intelligence spirit
+        { Class.Warrior, new float[] { 0.45f, 0.45f, 0.0f, 0.0f, 0.1f} },
+		{ Class.Archer, new float[] { 0.25f, 0.0f, 0.6f, 0.0f, 0.15f} },
+		{ Class.Rogue, new float[] { 0.4f, 0.35f, 0.2f, 0.0f, 0.05f} },
+		{ Class.Mage, new float[] { 0.2f, 0.0f, 0.0f, 0.5f, 0.3f} },
 
-		{ Class.All_Rounder, new float[] { 0.2375f, 0.175f, 0.2f, 0.2125f, 0.0875f} },
+		{ Class.All_Rounder, new float[] { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f} },
 
 		{ Class.Warrior_Archer, new float[] { 0.3333333333f, 0.2666666667f, 0.2666666667f, 0.1333333333f, 0.0f} },
 		{ Class.Warrior_Rogue, new float[] { 0.3333333333f, 0.2666666667f, 0.2f, 0.2f, 0.0f} },
-		{ Class.Warrior_Mage, new float[] { 0.3166666667f, 0.2f, 0.1333333333f, 0.1166666667f, 0.1166666667f} },
+		{ Class.Warrior_Mage, new float[] { 0.3f, 0.25f, 0.0f, 0.25f, 0.2f} },
 
 		{ Class.Archer_Warrior, new float[] { 0.2666666667f, 0.2333333333f, 0.3333333333f, 0.1666666667f, 0.0f} },
 		{ Class.Archer_Rogue, new float[] { 0.2f, 0.2f, 0.3333333333f, 0.2666666667f, 0.0f} },
@@ -138,16 +138,16 @@ public class Variables : MonoBehaviour
 	public static readonly Dictionary<Class, float[]> fiftyClassWeights = new Dictionary<Class, float[]>
 	{
         // endurance strength finesse intelligence spirit
-        { Class.Warrior, new float[] { 0.35f, 0.3f, 0.2f, 0f, 0.15f} },
-		{ Class.Archer, new float[] { 0.3f, 0.05f, 0.35f, 0f, 0.3f} },
-		{ Class.Rogue, new float[] { 0.2f, 0.25f, 0.15f, 0.05f, 0.35f} },
-		{ Class.Mage, new float[] { 0.2f, 0.0f, 0.2f, 0.3f, 0.3f} },
+        { Class.Warrior, new float[] { 0.45f, 0.45f, 0.0f, 0.0f, 0.1f} },
+		{ Class.Archer, new float[] { 0.25f, 0.0f, 0.6f, 0.0f, 0.15f} },
+		{ Class.Rogue, new float[] { 0.4f, 0.35f, 0.2f, 0.0f, 0.05f} },
+		{ Class.Mage, new float[] { 0.2f, 0.0f, 0.0f, 0.5f, 0.3f} },
 
 		{ Class.All_Rounder, new float[] { 0.2375f, 0.175f, 0.2f, 0.2125f, 0.0875f} },
 
 		{ Class.Warrior_Archer, new float[] { 0.3333333333f, 0.2666666667f, 0.2666666667f, 0.1333333333f, 0.0f} },
 		{ Class.Warrior_Rogue, new float[] { 0.3333333333f, 0.2666666667f, 0.2f, 0.2f, 0.0f} },
-		{ Class.Warrior_Mage, new float[] { 0.3166666667f, 0.2f, 0.1333333333f, 0.1166666667f, 0.1166666667f} },
+		{ Class.Warrior_Mage, new float[] { 0.3f, 0.25f, 0.0f, 0.25f, 0.2f} },
 
 		{ Class.Archer_Warrior, new float[] { 0.2666666667f, 0.2333333333f, 0.3333333333f, 0.1666666667f, 0.0f} },
 		{ Class.Archer_Rogue, new float[] { 0.2f, 0.2f, 0.3333333333f, 0.2666666667f, 0.0f} },
@@ -242,6 +242,7 @@ public class Variables : MonoBehaviour
 		"Maul",
 		"Shortspear",
 		"Spear",
+		"Fist",
 	};
 
 
@@ -250,6 +251,7 @@ public class Variables : MonoBehaviour
 		"Thrown Weapon",
 		"Shortsword",
 		"Dagger",
+		"Thrusting Sword",
 	};
 
 
