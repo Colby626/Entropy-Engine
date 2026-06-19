@@ -69,10 +69,13 @@ public class SelectedCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 			statsText.AppendLine($"<b><u>{npcData.Name}</u></b>"); // Underline and bold
 			statsText.AppendLine($"Level: {npcData.Level}");
 			statsText.AppendLine("AC: " + npcData.AC);
-			statsText.AppendLine("DR: " + npcData.DR);
-            statsText.AppendLine("Scaling Dmg: " + npcData.ScalingBonus);
+            statsText.AppendLine("Strength Dmg Bonus: " + npcData.StrengthDamageBonus);
+            statsText.AppendLine("Finesse Dmg Bonus: " + npcData.DexterityDamageBonus);
             statsText.AppendLine("Spell Dmg Bonus: " + npcData.SpellDamageBonus);
-			statsText.AppendLine("Plus To Hit: " + npcData.PlusToHit);
+            statsText.AppendLine("Resistance: " + npcData.Resistance);
+            statsText.AppendLine("Plus To Hit: " + npcData.PlusToHit); 
+            statsText.AppendLine("Spell Save DC: " + npcData.SpellSaveDC);
+            statsText.AppendLine("Dodge Bonus: " + npcData.DodgeBonus);
             statsText.AppendLine("Charisma: " + npcData.Charisma);
 			statsText.AppendLine("Movement Spaces: " + npcData.MovementSpeed);
 			statsText.AppendLine("Strength: " + npcData.Strength);

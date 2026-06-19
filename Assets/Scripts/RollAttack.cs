@@ -551,7 +551,7 @@ public class RollAttack : MonoBehaviour
         return total;
     }
 
-    /*private int RollExplodingDice(int numDice, int maxRoll)
+    private int RollExplodingDice(int numDice, int maxRoll)
     {
         int total = 0;
 
@@ -574,5 +574,5 @@ public class RollAttack : MonoBehaviour
     public void Clear()
 	{
 		combatLog.text = "";
-	}*/
+	}
 }

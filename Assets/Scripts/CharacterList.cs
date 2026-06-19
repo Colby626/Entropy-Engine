@@ -11,6 +11,7 @@ public class CharacterList : MonoBehaviour
 		public string Name;
         public string System;
         public Rarity Rarity;
+        public Tier Tier;
         public int Level;
 
 		public int Strength;
@@ -37,6 +38,7 @@ public class CharacterList : MonoBehaviour
         public int MagicSavingThrowBonus;
         public int SpellSaveDC;
         public int ScalingBonus;
+        public int DodgeBonus;
 
         public int StrengthDamageBonus;
         public int DexterityDamageBonus;
@@ -122,12 +124,59 @@ public class CharacterList : MonoBehaviour
 
 	public void Generate50LevelNPC(NPC npc, Rarity npcRarity)
 	{
-        npc.ScalingBonus = ScalingFromAbilities(npc.Abilities, npc.Strength, npc.Finesse);
-        npc.DR += DRFromAbilities(npc);
+        //npc.ScalingBonus = ScalingFromAbilities(npc.Abilities, npc.Strength, npc.Finesse);
+        //npc.DR += DRFromAbilities(npc);
+        //npc.PlusToHit = PlusToHitFromAbilities(npc.Abilities);
         npc.MovementSpeed = WearingHeavyArmor(npc.Abilities) ? npc.MovementSpeed - 2 : npc.MovementSpeed;
+        npc.AC = ACFromAbilties(npc.Abilities, npc.Tier);
         npcs.Add(npc);
 		AddNPCToScrollview(npc);
 	}
+
+    private int ACFromAbilties(string abilities, Tier tier)
+    {
+        string pattern = @"(Heavy Armor|Light Armor): (\d+)";
+
+        Regex regex = new(pattern);
+
+        Match match = regex.Match(abilities);
+
+        if (match.Success)
+        {
+            string armor = match.Groups[1].Value;
+
+            switch (armor)
+            {
+                case "Heavy Armor":
+                {
+                    if (tier == Tier.Common) return 10;
+                    if (tier == Tier.Uncommon) return 12;
+                    if (tier == Tier.Rare) return 14;
+                    if (tier == Tier.Epic) return 16;
+                    if (tier == Tier.Legendary) return 18;
+                    if (tier == Tier.Cataclysmic) return 20;
+                    else return 0;
+                }
+                case "Light Armor":
+                {
+                    if (tier == Tier.Common) return 6;
+                    if (tier == Tier.Uncommon) return 8;
+                    if (tier == Tier.Rare) return 10;
+                    if (tier == Tier.Epic) return 12;
+                    if (tier == Tier.Legendary) return 14;
+                    if (tier == Tier.Cataclysmic) return 16;
+                    else return 0;
+                }
+                default:
+                {
+                    Debug.Log($"Unknown Armor type {armor}");
+                    return 0;
+                }
+            }
+        }
+
+        return 0;
+    }
 
     private int ScalingFromAbilities(string abilities, int strength, int finesse)
     {

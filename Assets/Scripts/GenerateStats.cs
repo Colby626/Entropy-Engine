@@ -105,6 +105,7 @@ public class GenerateStats : MonoBehaviour
             System = "50 Level",
             Level = level,
 			Rarity = currentRarity,
+            Tier = currentTier,
 
 			Endurance = enduranceStat,
 			Strength = strengthStat,
@@ -112,19 +113,20 @@ public class GenerateStats : MonoBehaviour
 			Intelligence = intelligenceStat,
 			Spirit = spiritStat,
 
-			MaxHealth = enduranceStat * 20, 
-			CurrentHealth = enduranceStat * 20, 
+			MaxHealth = enduranceStat * 5, 
+			CurrentHealth = enduranceStat * 5, 
 			MaxMana = spiritStat * 10,
 			CurrentMana = spiritStat * 10, 
-			PlusToHit = (finesseStat / 5) + ((strengthStat / 5) * 2) + (intelligenceStat / 5),
 			InitiativeBonus = intelligenceStat / 5,
-			MeleeDamageBonus = strengthStat * 5, 
-			RangedDamageBonus = finesseStat * 5, 
-			SpellDamageBonus = intelligenceStat * 5, 
-            AC = 8 + (finesseStat / 5),
+            StrengthDamageBonus = strengthStat,
+            DexterityDamageBonus = finesseStat, 
+			SpellDamageBonus = intelligenceStat, 
+            Resistance = enduranceStat / 5,
+            SpellSaveDC = 10 + spiritStat / 5,
+            PlusToHit = ((int)currentTier + 1) * 2,
             Charisma = spiritStat / 5,
-            DR = (enduranceStat / 5) * 5,
-            MovementSpeed = 3 + strengthStat / 5,
+            MovementSpeed = 5 + strengthStat / 5,
+            DodgeBonus = finesseStat / 5,
 
             Abilities = GenerateAbilities(),
 
@@ -392,7 +394,8 @@ public class GenerateStats : MonoBehaviour
 			Tier.Rare => Random.Range(21, 31),
 			Tier.Epic => Random.Range(31, 41),
 			Tier.Legendary => Random.Range(41, 51),
-			_ => 0,
+            Tier.Cataclysmic => Random.Range(51, 61),
+            _ => 0,
 		};
 	}
 
@@ -475,7 +478,11 @@ public class GenerateStats : MonoBehaviour
 		{
 			sum += 12;
 		}
-		return sum;
+        if (level > 50)
+        {
+            sum += 15;
+        }
+        return sum;
 	}
 
 	public void Start()
@@ -854,12 +861,12 @@ public class GenerateStats : MonoBehaviour
 		}
 		else if (className.StartsWith("Archer"))
 		{
-			skillLevels["Medium Armor"] = 1;
+			skillLevels["Light Armor"] = 1;
 			weaponChoice = archerWeapons[Random.Range(0, archerWeapons.Length)];
 		}
 		else if (className.StartsWith("Rogue"))
 		{
-			skillLevels["Medium Armor"] = 1;
+			skillLevels["Light Armor"] = 1;
 			weaponChoice = rogueWeapons[Random.Range(0, rogueWeapons.Length)];
 		}
 		else if (className.StartsWith("Mage"))

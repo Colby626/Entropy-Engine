@@ -32,7 +32,8 @@ public class Variables : MonoBehaviour
 		Uncommon,
 		Rare,
 		Epic,
-		Legendary
+		Legendary,
+		Cataclysmic
 	}
 
 	public enum Class
@@ -83,9 +84,9 @@ public class Variables : MonoBehaviour
 	public static readonly Dictionary<Class, float[]> classWeights = new Dictionary<Class, float[]>
 	{
         // endurance strength dexterity intelligence spirit
-        { Class.Warrior, new float[] { 0.45f, 0.45f, 0.0f, 0.0f, 0.1f} },
-		{ Class.Archer, new float[] { 0.25f, 0.0f, 0.6f, 0.0f, 0.15f} },
-		{ Class.Rogue, new float[] { 0.4f, 0.35f, 0.2f, 0.0f, 0.05f} },
+        { Class.Warrior, new float[] { 0.45f, 0.40f, 0.1f, 0.0f, 0.05f} },
+		{ Class.Archer, new float[] { 0.3f, 0.1f, 0.5f, 0.0f, 0.1f} },
+		{ Class.Rogue, new float[] { 0.35f, 0.30f, 0.25f, 0.0f, 0.1f} },
 		{ Class.Mage, new float[] { 0.2f, 0.0f, 0.0f, 0.5f, 0.3f} },
 
 		{ Class.All_Rounder, new float[] { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f} },
@@ -138,12 +139,12 @@ public class Variables : MonoBehaviour
 	public static readonly Dictionary<Class, float[]> fiftyClassWeights = new Dictionary<Class, float[]>
 	{
         // endurance strength finesse intelligence spirit
-        { Class.Warrior, new float[] { 0.45f, 0.45f, 0.0f, 0.0f, 0.1f} },
-		{ Class.Archer, new float[] { 0.25f, 0.0f, 0.6f, 0.0f, 0.15f} },
-		{ Class.Rogue, new float[] { 0.4f, 0.35f, 0.2f, 0.0f, 0.05f} },
+        { Class.Warrior, new float[] { 0.45f, 0.30f, 0.20f, 0.0f, 0.05f} },
+		{ Class.Archer, new float[] { 0.25f, 0.2f, 0.4f, 0.0f, 0.15f} },
+		{ Class.Rogue, new float[] { 0.3f, 0.25f, 0.35f, 0.0f, 0.1f} },
 		{ Class.Mage, new float[] { 0.2f, 0.0f, 0.0f, 0.5f, 0.3f} },
 
-		{ Class.All_Rounder, new float[] { 0.2375f, 0.175f, 0.2f, 0.2125f, 0.0875f} },
+		{ Class.All_Rounder, new float[] { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f} },
 
 		{ Class.Warrior_Archer, new float[] { 0.3333333333f, 0.2666666667f, 0.2666666667f, 0.1333333333f, 0.0f} },
 		{ Class.Warrior_Rogue, new float[] { 0.3333333333f, 0.2666666667f, 0.2f, 0.2f, 0.0f} },
